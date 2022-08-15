@@ -242,13 +242,37 @@ class Plugin extends PluginBase
         // Dynamic Method - Receive Similar Posts from current Model
         $model->addDynamicMethod(
             'bloghub_similar_posts', 
-            fn($exclude = null, $limit = 3) => $this->getSimilarPosts($model, $exclude, $limit)
+            fn($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
         );
 
         // Dynamic Method - Receive Random Posts from current Model
         $model->addDynamicMethod(
             'bloghub_random_posts', 
-            fn($exclude = null, $limit = 3) => $this->getSimilarPosts($model, $exclude, $limit)
+            fn($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
+        );
+
+        // Dynamic Method - Get Next Post in the same category
+        $model->addDynamicMethod(
+            'bloghub_next_post_in_category', 
+            fn() => $this->getNextPostInCategory($model)
+        );
+
+        // Dynamic Method - Get Previous Post in the same category
+        $model->addDynamicMethod(
+            'bloghub_prev_post_in_category', 
+            fn() => $this->getPrevPostInCategory($model)
+        );
+
+        // Dynamic Method - Get Next Post
+        $model->addDynamicMethod(
+            'bloghub_next_post', 
+            fn() => $this->getNextPost($model)
+        );
+
+        // Dynamic Method - Get Previous Post
+        $model->addDynamicMethod(
+            'bloghub_prev_post', 
+            fn() => $this->getPrevPost($model)
         );
     }
 
@@ -260,7 +284,7 @@ class Plugin extends PluginBase
      * @param int $limit
      * @return array
      */
-    protected function getSimilarPosts(Post $model, $excludes = null, int $limit = 3)
+    protected function getSimilarPosts(Post $model, int $limit = 3, $exclude = null)
     {
         $tags = $model->bloghub_tags->map(fn($item) => $item->id)->all();
         $categories = $model->categories->map(fn($item) => $item->id)->all();
@@ -296,7 +320,7 @@ class Plugin extends PluginBase
      * @param int $limit
      * @return array
      */
-    protected function getRandomPosts(Post $model, $excludes = null, int $limit = 3)
+    protected function getRandomPosts(Post $model, int $limit = 3, $exclude = null)
     {
 
         // Exclude
@@ -313,6 +337,63 @@ class Plugin extends PluginBase
         // Return Result
         $result = $query->get()->filter(fn($item) => !in_array($item['id'], $excludes))->all();
         return $result;
+    }
+
+    /**
+     * Get Next Post in the same Category
+     *
+     * @param Post $model
+     * @return Post|null
+     */
+    protected function getNextPostInCategory(Post $model)
+    {
+        $categories = $model->categories->map(fn($item) => $item->id)->all();
+        $query = $model->applySibling()
+            ->with('categories')
+            ->whereHas('categories', function(Builder $query) use ($categories) {
+                return $query->whereIn('rainlab_blog_categories.id', $categories);
+            });
+        return $query->first();
+    }
+
+
+    /**
+     * Get Previous Post in the same Category
+     *
+     * @param Post $model
+     * @return Post|null
+     */
+    protected function getPrevPostInCategory(Post $model)
+    {
+        $categories = $model->categories->map(fn($item) => $item->id)->all();
+        $query = $model->applySibling(-1)
+            ->with('categories')
+            ->whereHas('categories', function(Builder $query) use ($categories) {
+                return $query->whereIn('rainlab_blog_categories.id', $categories);
+            });
+        return $query->first();
+    }
+
+    /**
+     * Get Next Post
+     *
+     * @param Post $model
+     * @return Post|null
+     */
+    protected function getNextPost(Post $model)
+    {
+        return $model->nextPost();
+    }
+
+    /**
+     * Get Previous Post
+     *
+     * @param Post $model
+     * @return Post|null
+     */
+    protected function getPrevPost(Post $model)
+    {
+        return $model->previousPost();
     }
     
 }

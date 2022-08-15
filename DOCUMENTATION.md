@@ -16,7 +16,7 @@ Post model arguments. Look below for more details.
 
 ### Adding own meta fields via theme.yaml
 
-Open the `theme.yaml` file of your currentl active template and add the following lines on the 
+Open the `theme.yaml` file of your current active template and add the following lines on the 
 bottom of this file:
 
 ```yaml
@@ -83,12 +83,12 @@ in the same way as you would use `post.catgories`. Here is a small example:
 
 Similar to `post.bloghub_tags` this argument contains all meta data Model objects as an array. We 
 highly recommend using `post.bloghub_meta_data` (see below) to access your custom meta data in a 
-more native way (using the meta data key).
+more native way (using the meta name).
 
 
 ### post.bloghub_meta_data
 
-The `post.bloghub_meta_data` argument contains the key: value pairs of all assigned custom Post 
+The `post.bloghub_meta_data` argument contains the \[name\]: \[value\] pairs of all assigned custom Post 
 meta data (even if the value is empty). Here is a small example:
 
 ```html
@@ -96,6 +96,8 @@ meta data (even if the value is empty). Here is a small example:
     {{ post.bloghub_meta_data.special_title | default(post.title) }}
 </div>
 ```
+
+Keep in mind that the received \[value\] can also be an array!
 
 
 Dynamic Post Methods
