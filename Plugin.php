@@ -85,9 +85,9 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'RatMD\BlogHub\Components\Tags'     => 'bloghubTagArchive',
             'RatMD\BlogHub\Components\Authors'  => 'bloghubAuthorArchive',
-            'RatMD\BlogHub\Components\Dates'    => 'bloghubDateArchive'
+            'RatMD\BlogHub\Components\Dates'    => 'bloghubDateArchive',
+            'RatMD\BlogHub\Components\Tags'     => 'bloghubTagArchive',
         ];
     }
 
@@ -98,7 +98,7 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        return []; // Remove this line to activate
+        return []; // We're using RainLab.Blog's provided permissions
     }
 
     /**
@@ -196,25 +196,25 @@ class Plugin extends PluginBase
         // Dynamic Method - Receive Similar Posts from current Model
         $model->addDynamicMethod(
             'bloghub_similar_posts', 
-            fn($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
+            fn ($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
         );
 
         // Dynamic Method - Receive Random Posts from current Model
         $model->addDynamicMethod(
             'bloghub_random_posts', 
-            fn($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
+            fn ($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
         );
 
         // Dynamic Method - Get Next Post in the same category
         $model->addDynamicMethod(
             'bloghub_next_post_in_category', 
-            fn() => $this->getNextPostInCategory($model)
+            fn () => $this->getNextPostInCategory($model)
         );
 
         // Dynamic Method - Get Previous Post in the same category
         $model->addDynamicMethod(
             'bloghub_prev_post_in_category', 
-            fn() => $this->getPrevPostInCategory($model)
+            fn () => $this->getPrevPostInCategory($model)
         );
 
         // Dynamic Method - Get Next Post
@@ -245,7 +245,7 @@ class Plugin extends PluginBase
         }
 
         // Build Meta Map
-        $meta = $model->bloghub_meta->mapWithKeys(fn($item, $key) => [$item['name'] => $item['value']])->all();
+        $meta = $model->bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
 
         // Add Tags Field
         $form->addSecondaryTabFields([
@@ -269,6 +269,7 @@ class Plugin extends PluginBase
             if (empty($temp)) {
                 continue;
             }
+
             $config[$item['name']] = $temp;
             $config[$item['name']]['type'] = $item['type'];
             if (empty($config[$item['name']]['label'])) {
@@ -278,14 +279,16 @@ class Plugin extends PluginBase
         $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
 
         // Add Custom Meta Fields
-        foreach ($config AS $key => $value) {
-            $form->addSecondaryTabFields([
-                "bloghub_meta_temp[$key]" => array_merge($value, [
-                    'tab' => 'ratmd.bloghub::lang.backend.meta.tab',
-                    'value' => $meta[$key] ?? '',
-                    'default' => $meta[$key] ?? ''
-                ])
-            ]);
+        if (!empty($config)) {
+            foreach ($config AS $key => $value) {
+                $form->addSecondaryTabFields([
+                    "bloghub_meta_temp[$key]" => array_merge($value, [
+                        'tab' => 'ratmd.bloghub::lang.backend.meta.tab',
+                        'value' => $meta[$key] ?? '',
+                        'default' => $meta[$key] ?? ''
+                    ])
+                ]);
+            }
         }
     }
 
@@ -293,14 +296,14 @@ class Plugin extends PluginBase
      * Get Similar Posts (based on Category and/or Tags)
      *
      * @param Post $post
-     * @param mixed $excludes Excluded post id (string or int), multiple as array.
      * @param int $limit
+     * @param mixed $excludes Excluded post id (string or int), multiple as array.
      * @return array
      */
     protected function getSimilarPosts(Post $model, int $limit = 3, $exclude = null)
     {
-        $tags = $model->bloghub_tags->map(fn($item) => $item->id)->all();
-        $categories = $model->categories->map(fn($item) => $item->id)->all();
+        $tags = $model->bloghub_tags->map(fn ($item) => $item->id)->all();
+        $categories = $model->categories->map(fn ($item) => $item->id)->all();
 
         // Exclude
         $excludes = [];
@@ -311,7 +314,7 @@ class Plugin extends PluginBase
         $excludes[] = $model->id;
 
         // Query
-        $query = Post::with(['categories', 'featured_images'])
+        $query = Post::with(['categories', 'featured_images', 'bloghub_tags'])
             ->whereHas('categories', function(Builder $query) use ($categories) {
                 return $query->whereIn('rainlab_blog_categories.id', $categories);
             })
@@ -329,8 +332,8 @@ class Plugin extends PluginBase
      * Get Random Posts
      *
      * @param Post $post
-     * @param mixed $excludes Excluded post id (string or int), multiple as array.
      * @param int $limit
+     * @param mixed $excludes Excluded post id (string or int), multiple as array.
      * @return array
      */
     protected function getRandomPosts(Post $model, int $limit = 3, $exclude = null)
@@ -345,7 +348,7 @@ class Plugin extends PluginBase
         $excludes[] = $model->id;
 
         // Query
-        $query = Post::with(['categories', 'featured_images'])->limit($limit);
+        $query = Post::with(['categories', 'featured_images', 'bloghub_tags'])->limit($limit);
         
         // Return Result
         $result = $query->get()->filter(fn($item) => !in_array($item['id'], $excludes))->all();

@@ -1,11 +1,10 @@
-<?php namespace RatMD\BlogHub\Controllers;
+<?php declare(strict_types=1);
+
+namespace RatMD\BlogHub\Controllers;
 
 use BackendMenu;
 use Backend\Classes\Controller;
 
-/**
- * Meta Backend Controller
- */
 class Meta extends Controller
 {
     public $implement = [
@@ -29,7 +28,6 @@ class Meta extends Controller
     public function __construct()
     {
         parent::__construct();
-
         BackendMenu::setContext('RatMD.BlogHub', 'bloghub', 'meta');
     }
 

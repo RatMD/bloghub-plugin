@@ -1,11 +1,10 @@
-<?php namespace RatMD\BlogHub\Controllers;
+<?php declare(strict_types=1);
+
+namespace RatMD\BlogHub\Controllers;
 
 use BackendMenu;
 use Backend\Classes\Controller;
 
-/**
- * Tags Backend Controller
- */
 class Tags extends Controller
 {
 

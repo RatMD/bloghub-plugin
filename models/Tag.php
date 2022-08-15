@@ -5,9 +5,6 @@ namespace RatMD\BlogHub\Models;
 use Model;
 use Illuminate\Support\Str;
 
-/**
- * Tag Model
- */
 class Tag extends Model
 {
     use \October\Rain\Database\Traits\Validation;

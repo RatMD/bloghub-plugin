@@ -5,6 +5,9 @@ BlogHub - OctoberCMS Plugin
 extension with some additional data and details. This extension is especially designed for our own 
 OctoberCMS templates, but can also be used by any OctoberCMS user and developer, of course.
 
+This extension provides, next to the custom meta data and blog tags, also additional blog archives 
+for the author, date and provided tags. **BlogHub** also extends the `Post` Model with some 
+additional dynamic methods, for example to receive related or random posts.
 
 Features
 --------

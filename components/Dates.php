@@ -2,10 +2,8 @@
 
 namespace RatMD\BlogHub\Components;
 
-use Illuminate\Contracts\Database\Query\Builder;
 use RainLab\Blog\Components\Posts;
 use RainLab\Blog\Models\Post;
-use RatMD\BlogHub\Models\Tag;
 
 class Dates extends Posts
 {

@@ -128,5 +128,4 @@ class Tags extends Posts
         return $tag ?: null;
     }
 
-
 }

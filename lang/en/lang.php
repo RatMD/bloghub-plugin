@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name' => 'RatMD BlogHub',
-        'description' => 'Required extension to run and use the BlogHub template.',
+        'description' => 'Extends RainLab\'s Blog extension with custom meta details, additional archives and more.',
     ],
 
     'components' => [

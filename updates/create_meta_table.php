@@ -43,4 +43,5 @@ class CreateMetaTable extends Migration
     {
         Schema::dropIfExists('ratmd_bloghub_meta');
     }
+    
 }

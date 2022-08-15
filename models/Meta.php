@@ -3,13 +3,10 @@
 namespace RatMD\BlogHub\Models;
 
 use Model;
-use Illuminate\Support\Str;
 
-/**
- * Meta Model
- */
 class Meta extends Model
 {
+    
     /**
      * Table associated with this Model
      * 
