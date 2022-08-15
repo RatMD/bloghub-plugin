@@ -1,9 +1,9 @@
 BlogHub - OctoberCMS Plugin
 ===========================
 
-**BlogHub** extends the RainLab.Blog OctoberCMS extension with some additional data and details. 
-This extension is especially designed for our own OctoberCMS templates, but can also be used by any 
-OctoberCMS user and developer, of course.
+**BlogHub** extends the [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog) OctoberCMS 
+extension with some additional data and details. This extension is especially designed for our own 
+OctoberCMS templates, but can also be used by any OctoberCMS user and developer, of course.
 
 
 Features
@@ -11,10 +11,10 @@ Features
 
 - Custom Meta Data (template-based via `theme.yaml`)
 - Global Custom Meta Data (configurable via backend)
-- Blog Tags with Promote flag, Description and Color.
-- Author related archive component (`bloghubAuthorArchive`).
-- Date related archive component (`bloghubTagArchive`), supports year, month and day.
-- Tag related archive component (`bloghubTagArchive`).
+- Blog Tags with Promote flag, Description and Color
+- Author related archive component (`bloghubAuthorArchive`)
+- Date related archive component (`bloghubTagArchive`), supports year, month and day
+- Tag related archive component (`bloghubTagArchive`)
 - Additional Dynamic Post model methods (see documentation)
 
 
