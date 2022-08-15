@@ -2,8 +2,23 @@
 
 return [
     'plugin' => [
-        'name' => 'BlogHub - Template Extension',
+        'name' => 'RatMD BlogHub',
         'description' => 'Required extension to run and use the BlogHub template.',
+    ],
+
+    'components' => [
+        'authors_title' => 'Posts by Author',
+        'authors_description' => 'Displays a list of posts by author.',
+        'author_filter' => 'Author filter',
+        'author_filter_description' => 'Enter a author login name or URL parameter to filter the posts by.',
+        'dates_title' => 'Posts by Date',
+        'dates_description' => 'Displays a list of posts by date.',
+        'date_filter' => 'Author filter',
+        'date_filter_description' => 'Enter a specific date or URL parameter to filter the posts by.',
+        'tags_title' => 'Posts by Tag',
+        'tags_description' => 'Displays a list of posts by tag.',
+        'tag_filter' => 'Author filter',
+        'tag_filter_description' => 'Enter a tag slug or URL parameter to filter the posts by.',
     ],
 
     'backend' => [

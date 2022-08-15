@@ -9,11 +9,13 @@ OctoberCMS user and developer, of course.
 Features
 --------
 
-- Manage template-related post meta data inside your theme.yaml file.
-- Manage template-independent custom meta data on your OctoberCMS backend.
-- Supports Blog Tags with a "Promote" flag, description and color settings.
-- Provides additional Author and Tag related archive pages.
-- Extends the Post Model with a bunch of dynamic methods (see documentation).
+- Custom Meta Data (template-based via `theme.yaml`)
+- Global Custom Meta Data (configurable via backend)
+- Blog Tags with Promote flag, Description and Color.
+- Author related archive component (`bloghubAuthorArchive`).
+- Date related archive component (`bloghubTagArchive`), supports year, month and day.
+- Tag related archive component (`bloghubTagArchive`).
+- Additional Dynamic Post model methods (see documentation)
 
 
 Requirements

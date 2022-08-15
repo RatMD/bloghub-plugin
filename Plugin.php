@@ -4,17 +4,16 @@ namespace RatMD\BlogHub;
 
 use Backend;
 use Event;
-use Cms\Classes\Theme;
 use Exception;
+use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
-use October\Rain\Database\Collection;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\Meta;
 use RatMD\BlogHub\Models\Settings;
 use Symfony\Component\Yaml\Yaml;
 use System\Classes\PluginBase;
-use System\Models\File;
+
 
 class Plugin extends PluginBase
 {
@@ -73,58 +72,9 @@ class Plugin extends PluginBase
 
         // Extend Post Model
         Post::extend(fn (Post $model) => $this->extendPostModel($model));
-        
 
         // Extend Posts Controller
-        Posts::extendFormFields(function($form, $model, $context) {
-            if (!$model instanceof Post) {
-                return;
-            }
-            $meta = $model->bloghub_meta->mapWithKeys(function ($item, $key) {
-                return [$item['name'] => $item['value']];
-            })->all();
-
-            // Add Tags Field
-            $form->addSecondaryTabFields([
-                'bloghub_tags' => [
-                    'label'     => 'ratmd.bloghub::lang.backend.tags.label',
-                    'mode'      => 'relation',
-                    'tab'       => 'rainlab.blog::lang.post.tab_categories',
-                    'type'      => 'taglist',
-                    'nameFrom'  => 'slug'
-                ]
-            ]);
-
-            // Meta Meta Data
-            $config = [];
-            foreach (Settings::get('meta_data', []) AS $item) {
-                try {
-                    $temp = Yaml::parse($item['config']);
-                } catch (Exception $e) {
-                    $temp = null;
-                }
-                if (empty($temp)) {
-                    continue;
-                }
-                $config[$item['name']] = $temp;
-                $config[$item['name']]['type'] = $item['type'];
-                if (empty($config[$item['name']]['label'])) {
-                    $config[$item['name']]['label'] = $item['name'];
-                }
-            }
-            $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
-
-            // Add Custom Meta Fields
-            foreach ($config AS $key => $value) {
-                $form->addSecondaryTabFields([
-                    "bloghub_meta_temp[$key]" => array_merge($value, [
-                        'tab' => 'ratmd.bloghub::lang.backend.meta.tab',
-                        'value' => $meta[$key] ?? '',
-                        'default' => $meta[$key] ?? ''
-                    ])
-                ]);
-            }
-        });
+        Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsController($form, $model, $context));
     }
 
     /**
@@ -134,7 +84,11 @@ class Plugin extends PluginBase
      */
     public function registerComponents()
     {
-        return []; // Remove this line to activate
+        return [
+            'RatMD\BlogHub\Components\Tags'     => 'bloghubTagArchive',
+            'RatMD\BlogHub\Components\Authors'  => 'bloghubAuthorArchive',
+            'RatMD\BlogHub\Components\Dates'    => 'bloghubDateArchive'
+        ];
     }
 
     /**
@@ -277,6 +231,65 @@ class Plugin extends PluginBase
     }
 
     /**
+     * Extends Posts Controller
+     *
+     * @param mixed $form
+     * @param mixed $model
+     * @param mixed $context
+     * @return void
+     */
+    protected function extendPostsController($form, $model, $context)
+    {
+        if (!$model instanceof Post) {
+            return;
+        }
+
+        // Build Meta Map
+        $meta = $model->bloghub_meta->mapWithKeys(fn($item, $key) => [$item['name'] => $item['value']])->all();
+
+        // Add Tags Field
+        $form->addSecondaryTabFields([
+            'bloghub_tags' => [
+                'label'     => 'ratmd.bloghub::lang.backend.tags.label',
+                'mode'      => 'relation',
+                'tab'       => 'rainlab.blog::lang.post.tab_categories',
+                'type'      => 'taglist',
+                'nameFrom'  => 'slug'
+            ]
+        ]);
+
+        // Custom Meta Data
+        $config = [];
+        foreach (Settings::get('meta_data', []) AS $item) {
+            try {
+                $temp = Yaml::parse($item['config']);
+            } catch (Exception $e) {
+                $temp = null;
+            }
+            if (empty($temp)) {
+                continue;
+            }
+            $config[$item['name']] = $temp;
+            $config[$item['name']]['type'] = $item['type'];
+            if (empty($config[$item['name']]['label'])) {
+                $config[$item['name']]['label'] = $item['name'];
+            }
+        }
+        $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
+
+        // Add Custom Meta Fields
+        foreach ($config AS $key => $value) {
+            $form->addSecondaryTabFields([
+                "bloghub_meta_temp[$key]" => array_merge($value, [
+                    'tab' => 'ratmd.bloghub::lang.backend.meta.tab',
+                    'value' => $meta[$key] ?? '',
+                    'default' => $meta[$key] ?? ''
+                ])
+            ]);
+        }
+    }
+
+    /**
      * Get Similar Posts (based on Category and/or Tags)
      *
      * @param Post $post
@@ -355,7 +368,6 @@ class Plugin extends PluginBase
             });
         return $query->first();
     }
-
 
     /**
      * Get Previous Post in the same Category

@@ -148,3 +148,32 @@ create a Next / Prev Post button on the single post.
 Template Components
 -------------------
 
+We highly recommend reading the documentation for the official [RainLab.Blog plugin](https://octobercms.com/plugin/rainlab-blog),
+since the following components are based on the provided `blogPosts` component and thus work almost 
+similar with the following differences:
+
+
+### bloghubAuthorArchive
+
+The `bloghubAuthorArchive` component provides an additional tag-based archive. It works similar to the 
+Post list page, as described on the [RainLab.Blog plugin](https://octobercms.com/plugin/rainlab-blog),
+but supports one additional parameter: `authorFilter` (which is usually set to `{{ :slug }}`).
+
+
+### bloghubDateArchive
+
+The `bloghubDateArchive` component provides an additional tag-based archive. It works similar to the 
+Post list page, as described on the [RainLab.Blog plugin](https://octobercms.com/plugin/rainlab-blog),
+but supports one additional parameter: `dateFilter` (which is usually set to `{{ :date }}`).
+
+To support year, month and day we recommend using the following URL syntax on the desired page:
+
+```
+url = "/blog/date/:date|^[0-9]{4}(\-[0-9]{2}(\-[0-9]{2}))?/:page?"
+```
+
+### bloghubTagArchive
+
+The `bloghubTagArchive` component provides an additional tag-based archive. It works similar to the 
+Post list page, as described on the [RainLab.Blog plugin](https://octobercms.com/plugin/rainlab-blog),
+but supports one additional parameter: `tagFilter` (which is usually set to `{{ :slug }}`).
