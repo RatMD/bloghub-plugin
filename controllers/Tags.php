@@ -39,7 +39,7 @@ class Tags extends Controller
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('RainLab.Blog', 'blog', 'bhub_tags');
+        BackendMenu::setContext('RainLab.Blog', 'blog', 'bloghub_tags');
     }
     
 }

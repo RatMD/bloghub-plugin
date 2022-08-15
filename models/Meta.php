@@ -64,4 +64,13 @@ class Meta extends Model
         'metable' => []
     ];
 
+    /**
+     * JSONable fields
+     * 
+     * @var string[]
+     */
+    public $jsonable = [
+        'value'
+    ];
+
 }

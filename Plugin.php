@@ -4,16 +4,15 @@ namespace RatMD\BlogHub;
 
 use Backend;
 use Event;
-use Backend\Controllers\Files;
-use Backend\FormWidgets\FileUpload;
-use Backend\Widgets\Form;
 use Cms\Classes\Theme;
+use Exception;
 use Illuminate\Contracts\Database\Query\Builder;
 use October\Rain\Database\Collection;
-use October\Rain\Database\QueryBuilder;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\Meta;
+use RatMD\BlogHub\Models\Settings;
+use Symfony\Component\Yaml\Yaml;
 use System\Classes\PluginBase;
 use System\Models\File;
 
@@ -62,7 +61,7 @@ class Plugin extends PluginBase
     {
         Event::listen('backend.menu.extendItems', function($manager) {
             $manager->addSideMenuItems('RainLab.Blog', 'blog', [
-                'bhub_tags' => [
+                'bloghub_tags' => [
                     'label' => 'ratmd.bloghub::lang.backend.tags.label',
                     'icon'  => 'icon-tags',
                     'code'  => 'tags',
@@ -73,85 +72,21 @@ class Plugin extends PluginBase
         });
 
         // Extend Post Model
-        Post::extend(function (Post $model) {
-
-            // Inject Tags
-            $model->belongsToMany['bhub_tags'] = [
-                'RatMD\BlogHub\Models\Tag',
-                'table' => 'ratmd_bloghub_tags_posts',
-                'order' => 'slug'
-            ];
-
-            // Inject Custom Meta
-            $model->morphMany['bhub_meta'] = [
-                'RatMD\BlogHub\Models\Meta',
-                'table' => 'ratmd_bloghub_meta',
-                'name' => 'metable',
-            ];
-
-            // Provide key => value Map for Custom Meta
-            $model->addDynamicMethod('bhub_meta_data', function () use ($model) {
-                return $model->bhub_meta->mapWithKeys(function ($item, $key) {
-                    return [$item['name'] => $item['value']];
-                })->all();
-            });
-
-            // Provide additional Post Model methods
-            $model->addDynamicMethod('bhub_similar_posts', fn($exclude = null, $limit = 3) 
-                => $this->getSimilarPosts($model, $exclude, $limit));
-            $model->addDynamicMethod('bhub_random_posts', fn($exclude = null, $limit = 3) 
-                => $this->getRandomPosts($model, $exclude, $limit));
-
-            // Insert Custom Meta
-            $model->bindEvent('model.beforeSave', function () use ($model) {
-                $result = [];
-
-                /** @var Collection */
-                $existing = $model->bhub_meta;
-                foreach ($model->getAttributes() AS $key => $value) {
-                    if (strpos($key, 'bhub_meta__') !== 0) {
-                        continue;
-                    }
-                    
-                    $name = substr($key, 11);
-
-                    // Get or Create Meta
-                    $meta = $existing->where('name', '=', $name);
-                    if ($meta->count() === 1) {
-                        $meta = $meta->first();
-                    } else {
-                        $meta = new Meta([
-                            'name' => substr($key, 11),
-                            'value' => $value,
-                        ]);
-                    }
-
-                    // Append
-                    $meta->value = $value;
-                    $result[] = $meta;
-                    unset($model->attributes[$key]);
-                }
-
-                if ($model->exists) {
-                    $model->bhub_meta()->saveMany($result);
-                } else {
-                    $model->bhub_meta = $result;
-                }
-            });
-        });
+        Post::extend(fn (Post $model) => $this->extendPostModel($model));
+        
 
         // Extend Posts Controller
         Posts::extendFormFields(function($form, $model, $context) {
             if (!$model instanceof Post) {
                 return;
             }
-            $meta = $model->bhub_meta->mapWithKeys(function ($item, $key) {
+            $meta = $model->bloghub_meta->mapWithKeys(function ($item, $key) {
                 return [$item['name'] => $item['value']];
             })->all();
 
             // Add Tags Field
             $form->addSecondaryTabFields([
-                'bhub_tags' => [
+                'bloghub_tags' => [
                     'label'     => 'ratmd.bloghub::lang.backend.tags.label',
                     'mode'      => 'relation',
                     'tab'       => 'rainlab.blog::lang.post.tab_categories',
@@ -160,35 +95,35 @@ class Plugin extends PluginBase
                 ]
             ]);
 
+            // Meta Meta Data
+            $config = [];
+            foreach (Settings::get('meta_data', []) AS $item) {
+                try {
+                    $temp = Yaml::parse($item['config']);
+                } catch (Exception $e) {
+                    $temp = null;
+                }
+                if (empty($temp)) {
+                    continue;
+                }
+                $config[$item['name']] = $temp;
+                $config[$item['name']]['type'] = $item['type'];
+                if (empty($config[$item['name']]['label'])) {
+                    $config[$item['name']]['label'] = $item['name'];
+                }
+            }
+            $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
+
             // Add Custom Meta Fields
-            $config = Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? [];
             foreach ($config AS $key => $value) {
                 $form->addSecondaryTabFields([
-                    "bhub_meta__{$key}" => array_merge($value, [
+                    "bloghub_meta_temp[$key]" => array_merge($value, [
                         'tab' => 'ratmd.bloghub::lang.backend.meta.tab',
                         'value' => $meta[$key] ?? '',
                         'default' => $meta[$key] ?? ''
                     ])
                 ]);
             }
-        });
-
-        File::extend(function (File $model) {
-
-            // Inject Custom Meta
-            $model->morphMany['bhub_meta'] = [
-                'RatMD\BlogHub\Models\Meta',
-                'table' => 'ratmd_bloghub_meta',
-                'name' => 'metable',
-            ];
-
-            // Provide key => value Map for Custom Meta
-            $model->addDynamicMethod('bhub_meta_data', function () use ($model) {
-                return $model->bhub_meta->mapWithKeys(function ($item, $key) {
-                    return [$item['name'] => $item['value']];
-                })->all();
-            });
-
         });
     }
 
@@ -219,7 +154,102 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-        return []; // Remove this line to activate
+        return [];
+    }
+
+    /**
+     * Registers settings navigation items for this plugin.
+     *
+     * @return array
+     */
+    public function registerSettings()
+    {
+        return [
+            'bloghub' => [
+                'label'         => 'ratmd.bloghub::lang.backend.settings.label',
+                'description'   => 'ratmd.bloghub::lang.backend.settings.description',
+                'category'      => 'rainlab.blog::lang.blog.menu_label',
+                'icon'          => 'icon-list-ul',
+                'class'         => 'RatMD\BlogHub\Models\Settings',
+                'order'         => 500,
+                'keywords'      => 'blog post meta data',
+                'permissions'   => ['rainlab.blog.manage_settings']
+            ]
+        ];
+    }
+    
+    /**
+     * Extend the Post Model
+     *
+     * @param Post $model
+     * @return void
+     */
+    protected function extendPostModel(Post $model)
+    {
+
+        // Add Tag Relationship
+        $model->belongsToMany['bloghub_tags'] = [
+            'RatMD\BlogHub\Models\Tag',
+            'table' => 'ratmd_bloghub_tags_posts',
+            'order' => 'slug'
+        ];
+
+        // Add Custom Meta Relationship
+        $model->morphMany['bloghub_meta'] = [
+            'RatMD\BlogHub\Models\Meta',
+            'table' => 'ratmd_bloghub_meta',
+            'name' => 'metable',
+        ];
+
+        // Add Temporary Form JSONable
+        $model->addJsonable('bloghub_meta_temp');
+
+        // Handle Backend Form Submits
+        $model->bindEvent('model.beforeSave', function () use ($model) {
+            $metaset = $model->bloghub_meta_temp;
+            unset($model->attributes['bloghub_meta_temp']);
+
+            // Find Meta or Create a new one
+            $existing = $model->bloghub_meta;
+
+            foreach ($metaset AS $name => &$value) {
+                $meta = $existing->where('name', '=', $name);
+                if ($meta->count() === 1) {
+                    $meta = $meta->first();
+                } else {
+                    $meta = new Meta(['name' => $name]);
+                }
+
+                $meta->value = $value;
+                $value = $meta;
+            }
+
+            // Store Metaset
+            if ($model->exists) {
+                $model->bloghub_meta()->saveMany($metaset);
+            } else {
+                $model->bloghub_meta = $metaset;
+            }
+        });
+
+        // Dynamic Method - Create a [name] => [value] meta data map
+        $model->addDynamicMethod('bloghub_meta_data', function () use ($model) {
+            return $model->bloghub_meta->mapWithKeys(function ($item, $key) {
+                return [$item['name'] => $item['value']];
+            })->all();
+        });
+
+        // Dynamic Method - Receive Similar Posts from current Model
+        $model->addDynamicMethod(
+            'bloghub_similar_posts', 
+            fn($exclude = null, $limit = 3) => $this->getSimilarPosts($model, $exclude, $limit)
+        );
+
+        // Dynamic Method - Receive Random Posts from current Model
+        $model->addDynamicMethod(
+            'bloghub_random_posts', 
+            fn($exclude = null, $limit = 3) => $this->getSimilarPosts($model, $exclude, $limit)
+        );
     }
 
     /**
@@ -232,7 +262,7 @@ class Plugin extends PluginBase
      */
     protected function getSimilarPosts(Post $model, $excludes = null, int $limit = 3)
     {
-        $tags = $model->bhub_tags->map(fn($item) => $item->id)->all();
+        $tags = $model->bloghub_tags->map(fn($item) => $item->id)->all();
         $categories = $model->categories->map(fn($item) => $item->id)->all();
 
         // Exclude
@@ -248,7 +278,7 @@ class Plugin extends PluginBase
             ->whereHas('categories', function(Builder $query) use ($categories) {
                 return $query->whereIn('rainlab_blog_categories.id', $categories);
             })
-            ->whereHas('bhub_tags', function(Builder $query) use ($tags) {
+            ->whereHas('bloghub_tags', function(Builder $query) use ($tags) {
                 return $query->whereIn('ratmd_bloghub_tags.id', $tags);
             })
             ->limit($limit);
