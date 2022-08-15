@@ -1,0 +1,4 @@
+1.0.0: 
+  - Initial Release of RatMD.BlogHub
+  - create_meta_table.php
+  - create_tags_table.php

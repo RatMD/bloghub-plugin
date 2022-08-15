@@ -1,0 +1,9 @@
+{
+    "name": "ratmd/bloghub-plugin",
+    "type": "october-plugin",
+    "description": "No description provided yet...",
+    "require": {
+        "php": ">= 7.4 | >= 8.0",
+        "composer/installers": "~1.0"
+    }
+}
