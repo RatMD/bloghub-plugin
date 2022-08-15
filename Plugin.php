@@ -5,6 +5,7 @@ namespace RatMD\BlogHub;
 use Backend;
 use Event;
 use Exception;
+use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
 use RainLab\Blog\Controllers\Posts;
@@ -202,7 +203,7 @@ class Plugin extends PluginBase
         // Dynamic Method - Receive Random Posts from current Model
         $model->addDynamicMethod(
             'bloghub_random_posts', 
-            fn ($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
+            fn ($limit = 3, $exclude = null) => $this->getRandomPosts($model, $limit, $exclude)
         );
 
         // Dynamic Method - Get Next Post in the same category
@@ -293,6 +294,30 @@ class Plugin extends PluginBase
     }
 
     /**
+     * Bind Post Archive URLs
+     *
+     * @param mixed $posts
+     * @return mixed
+     */
+    protected function bindUrls($posts)
+    {
+        /** @var Controller */
+        $ctrl = Controller::getController();
+
+        if ($ctrl->getLayout()->hasComponent('blogPosts')) {
+            $component = $ctrl->getLayout()->getComponentProperties('blogPosts');
+
+            if ($posts instanceof Post) {
+                $posts->setUrl($component['postPage'], $ctrl);
+            } else if (is_array($posts)) {
+                array_walk($posts, fn($post) => $post->setUrl($component['postPage'], $ctrl));
+            }
+        }
+
+        return $posts;
+    }
+
+    /**
      * Get Similar Posts (based on Category and/or Tags)
      *
      * @param Post $post
@@ -325,7 +350,7 @@ class Plugin extends PluginBase
         
         // Return Result
         $result = $query->get()->filter(fn($item) => !in_array($item['id'], $excludes))->all();
-        return $result;
+        return $this->bindUrls($result);
     }
 
     /**
@@ -349,10 +374,10 @@ class Plugin extends PluginBase
 
         // Query
         $query = Post::with(['categories', 'featured_images', 'bloghub_tags'])->limit($limit);
-        
+
         // Return Result
         $result = $query->get()->filter(fn($item) => !in_array($item['id'], $excludes))->all();
-        return $result;
+        return $this->bindUrls($result);
     }
 
     /**
@@ -369,7 +394,8 @@ class Plugin extends PluginBase
             ->whereHas('categories', function(Builder $query) use ($categories) {
                 return $query->whereIn('rainlab_blog_categories.id', $categories);
             });
-        return $query->first();
+            
+        return $this->bindUrls($query->first());
     }
 
     /**
@@ -380,13 +406,14 @@ class Plugin extends PluginBase
      */
     protected function getPrevPostInCategory(Post $model)
     {
-        $categories = $model->categories->map(fn($item) => $item->id)->all();
+        $categories = $model->categories->map(fn ($item) => $item->id)->all();
         $query = $model->applySibling(-1)
             ->with('categories')
             ->whereHas('categories', function(Builder $query) use ($categories) {
                 return $query->whereIn('rainlab_blog_categories.id', $categories);
             });
-        return $query->first();
+        
+        return $this->bindUrls($query->first());
     }
 
     /**
