@@ -88,4 +88,22 @@ class Tag extends Model
         $this->slug = Str::slug($this->slug);
     }
 
+    /**
+     * Sets the "url" attribute with a URL to this object.
+     * 
+     * @param string $pageName
+     * @param Controller $controller
+     * @param array $params Override request URL parameters
+     * @return string
+     */
+    public function setUrl($pageName, $controller, $params = [])
+    {
+        $params = array_merge([
+            'id'   => $this->id,
+            'slug' => $this->slug,
+        ], $params);
+
+        return $this->url = $controller->pageUrl($pageName, $params);
+    }
+
 }

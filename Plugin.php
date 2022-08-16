@@ -187,6 +187,25 @@ class Plugin extends PluginBase
             }
         });
 
+        // Bind URLs (@todo find a better solution)
+        $model->bindEvent('model.afterFetch', function () use ($model) {
+            $tags = $model->bloghub_tags;
+            if ($tags->count() === 0) {
+                return;
+            }
+
+            /** @var Controller|null */
+            $ctrl = Controller::getController();
+            if ($ctrl instanceof Controller) {
+                $viewBag = $ctrl->getLayout()->getViewBag()->getProperties();
+                
+                // Set Tag URL
+                if (isset($viewBag['bloghubTagPage'])) {
+                    $tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl));
+                }
+            }
+        });
+
         // Dynamic Method - Create a [name] => [value] meta data map
         $model->addDynamicMethod('bloghub_meta_data', function () use ($model) {
             return $model->bloghub_meta->mapWithKeys(function ($item, $key) {
@@ -261,20 +280,23 @@ class Plugin extends PluginBase
 
         // Custom Meta Data
         $config = [];
-        foreach (Settings::get('meta_data', []) AS $item) {
-            try {
-                $temp = Yaml::parse($item['config']);
-            } catch (Exception $e) {
-                $temp = null;
-            }
-            if (empty($temp)) {
-                continue;
-            }
+        $settings = Settings::get('meta_data', []);
+        if (is_array($settings)) {
+            foreach (Settings::get('meta_data', []) AS $item) {
+                try {
+                    $temp = Yaml::parse($item['config']);
+                } catch (Exception $e) {
+                    $temp = null;
+                }
+                if (empty($temp)) {
+                    continue;
+                }
 
-            $config[$item['name']] = $temp;
-            $config[$item['name']]['type'] = $item['type'];
-            if (empty($config[$item['name']]['label'])) {
-                $config[$item['name']]['label'] = $item['name'];
+                $config[$item['name']] = $temp;
+                $config[$item['name']]['type'] = $item['type'];
+                if (empty($config[$item['name']]['label'])) {
+                    $config[$item['name']]['label'] = $item['name'];
+                }
             }
         }
         $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
@@ -306,11 +328,35 @@ class Plugin extends PluginBase
 
         if ($ctrl->getLayout()->hasComponent('blogPosts')) {
             $component = $ctrl->getLayout()->getComponentProperties('blogPosts');
+            $viewBag = $ctrl->getLayout()->getViewBag()->getProperties();
 
+            // Set Post URL
             if ($posts instanceof Post) {
                 $posts->setUrl($component['postPage'], $ctrl);
             } else if (is_array($posts)) {
                 array_walk($posts, fn($post) => $post->setUrl($component['postPage'], $ctrl));
+            }
+
+            // Set Author URL
+            if (isset($viewBag['bloghubAuthorPage'])) {
+                
+            }
+            
+            // Set Date URL
+            if (isset($viewBag['bloghubDatePage'])) {
+                
+            }
+            
+            // Set Tag URL
+            if (isset($viewBag['bloghubTagPage'])) {
+                if ($posts instanceof Post) {
+                    $posts->bloghub_tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl));
+                } else if (is_array($posts)) {
+                    array_walk(
+                        $posts, 
+                        fn($post) => $post->bloghub_tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl))
+                    );
+                }
             }
         }
 
