@@ -74,6 +74,12 @@ class Tag extends Model
             'RainLab\Blog\Models\Post',
             'table' => 'ratmd_bloghub_tags_posts',
             'order' => 'published_at desc'
+        ],
+        'posts_count' => [
+            'RainLab\Blog\Models\Post',
+            'table' => 'ratmd_bloghub_tags_posts',
+            'scope' => 'isPublished',
+            'count' => true
         ]
     ];
 
@@ -104,6 +110,16 @@ class Tag extends Model
         ], $params);
 
         return $this->url = $controller->pageUrl($pageName, $params);
+    }
+
+    /**
+     * Get Posts Count Value
+     *
+     * @return int
+     */
+    public function getPostCountAttribute()
+    {
+        return optional($this->posts_count->first())->count ?? 0;
     }
 
 }

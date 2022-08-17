@@ -2,20 +2,24 @@
 
 namespace RatMD\BlogHub\Components;
 
-use Illuminate\Contracts\Database\Query\Builder;
-use RainLab\Blog\Components\Posts;
-use RainLab\Blog\Models\Post;
-use RatMD\BlogHub\Models\Tag;
+use Cms\Classes\Page;
+use Cms\Classes\ComponentBase;
+use October\Rain\Database\Builder;
+use RatMD\BlogHub\Models\Tag as TagModel;
 
-class Tags extends Posts
+class Tags extends ComponentBase
 {
+    /**
+     * A collection of tags to display
+     *
+     * @var Collection
+     */
+    public $tags;
 
     /**
-     * The post list filtered by this tag model
-     *
-     * @var Model
+     * @var string Reference to the page name for linking to categories.
      */
-    public $tag;
+    public $tagPage;
 
     /**
      * Component Details
@@ -37,95 +41,53 @@ class Tags extends Posts
      */
     public function defineProperties()
     {
-        $properties = parent::defineProperties();
-        $properties['tagFilter'] = [
-            'title'       => 'ratmd.bloghub::lang.components.tag_filter_title',
-            'description' => 'ratmd.bloghub::lang.components.tag_filter_description',
-            'type'        => 'string',
-            'default'     => '',
+        return [
+            'tagPage' => [
+                'title'       => 'ratmd.bloghub::lang.components.tags_page',
+                'description' => 'ratmd.bloghub::lang.components.tags_page_description',
+                'type'        => 'dropdown',
+                'default'     => 'blog/tag',
+                'group'       => 'rainlab.blog::lang.settings.group_links',
+            ],
         ];
-        return $properties;
     }
 
     /**
-     * Prepare Variables
+     * Get Tag Page Option
      *
      * @return void
      */
-    protected function prepareVars()
+    public function getTagPageOptions()
     {
-        $this->tag = $this->page['tag'] = $this->loadTag();
+        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
     /**
-     * List Posts
+     * Run
      *
+     * @return void
+     */
+    public function onRun()
+    {
+        $this->tagPage = $this->page['tagPage'] = $this->property('tagPage');
+        $this->tags = $this->page['tags'] = $this->loadTags();
+    }
+
+    /**
+     * Load popular tags
+     * 
      * @return mixed
      */
-    protected function listPosts()
+    protected function loadTags()
     {
-        $tag = $this->tag->id;
-        $category = $this->category ? $this->category->id : null;
-        $categorySlug = $this->category ? $this->category->slug : null;
-
-        /*
-         * List all the posts, eager load their categories
-         */
-        $isPublished = !parent::checkEditor();
-
-        $posts = Post::with(['categories', 'featured_images', 'bloghub_tags'])
-            ->whereHas('bloghub_tags', function(Builder $query) use ($tag) {
-                return $query->where('ratmd_bloghub_tags.id', $tag);
-            })
-            ->listFrontEnd([
-                'page'             => $this->property('pageNumber'),
-                'sort'             => $this->property('sortOrder'),
-                'perPage'          => $this->property('postsPerPage'),
-                'search'           => trim(input('search') ?? ''),
-                'bloghub_tags'     => $tag,
-                'category'         => $category,
-                'published'        => $isPublished,
-                'exceptPost'       => is_array($this->property('exceptPost'))
-                    ? $this->property('exceptPost')
-                    : preg_split('/,\s*/', $this->property('exceptPost'), -1, PREG_SPLIT_NO_EMPTY),
-                'exceptCategories' => is_array($this->property('exceptCategories'))
-                    ? $this->property('exceptCategories')
-                    : preg_split('/,\s*/', $this->property('exceptCategories'), -1, PREG_SPLIT_NO_EMPTY),
-            ]);
-
-        /*
-         * Add a "url" helper attribute for linking to each post and category
-         */
-        $posts->each(function($post) use ($categorySlug) {
-            $post->setUrl($this->postPage, $this->controller, ['category' => $categorySlug]);
-
-            $post->categories->each(function($category) {
-                $category->setUrl($this->categoryPage, $this->controller);
-            });
-        });
-
-        return $posts;
-    }
-    
-    /**
-     * Load Tag
-     *
-     * @return Tag|null
-     */
-    protected function loadTag()
-    {
-        if (!$slug = $this->property('tagFilter')) {
-            return null;
-        }
-
-        $tag = new Tag;
-
-        $tag = $tag->isClassExtendedWith('RainLab.Translate.Behaviors.TranslatableModel')
-            ? $tag->transWhere('slug', $slug)
-            : $tag->where('slug', $slug);
-
-        $tag = $tag->first();
-        return $tag ?: null;
+        $tags = TagModel::withCount(['posts_count'])
+            ->where('posts_count_count', '>', 0)
+            ->orderBy('posts_count_count', 'desc')
+            ->limit(5)
+            ->get();
+        
+        $tags->each(fn ($tag) => $tag->setUrl($this->tagPage, $this->controller));
+        return $tags;
     }
 
 }

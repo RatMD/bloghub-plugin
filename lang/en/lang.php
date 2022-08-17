@@ -15,10 +15,21 @@ return [
         'dates_description' => 'Displays a list of posts by date.',
         'date_filter' => 'Author filter',
         'date_filter_description' => 'Enter a specific date or URL parameter to filter the posts by.',
-        'tags_title' => 'Posts by Tag',
-        'tags_description' => 'Displays a list of posts by tag.',
+        'tag_title' => 'Posts by Tag',
+        'tag_description' => 'Displays a list of posts by tag.',
         'tag_filter' => 'Author filter',
         'tag_filter_description' => 'Enter a tag slug or URL parameter to filter the posts by.',
+        'tags_title' => 'Tags List',
+        'tags_description' => 'Displays a list of blog tags on the page.',
+        'tags_page' => 'Tag page',
+        'tags_page_description' => 'Name of the tag page file for the tag links. This property is used by the default component partial.',
+    ],
+
+    'sorting' => [
+        'bloghub_views_asc' => 'Views (ascending)',
+        'bloghub_views_desc' => 'Views (descending)',
+        'bloghub_unique_views_asc' => 'Unique Views (ascending)',
+        'bloghub_unique_views_desc' => 'Unique Views (descending)'
     ],
 
     'backend' => [

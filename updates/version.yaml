@@ -2,3 +2,7 @@
   - Initial Release of RatMD.BlogHub
   - create_meta_table.php
   - create_tags_table.php
+1.1.0:
+  - Add View & Unique View numbers
+  - update_posts_table.php
+  - create_visitors_table.php

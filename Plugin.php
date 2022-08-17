@@ -3,6 +3,7 @@
 namespace RatMD\BlogHub;
 
 use Backend;
+use Backend\Facades\BackendAuth;
 use Event;
 use Exception;
 use Cms\Classes\Controller;
@@ -12,6 +13,7 @@ use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\Meta;
 use RatMD\BlogHub\Models\Settings;
+use RatMD\BlogHub\Models\Visitor;
 use Symfony\Component\Yaml\Yaml;
 use System\Classes\PluginBase;
 
@@ -50,6 +52,11 @@ class Plugin extends PluginBase
     public function register()
     {
 
+        // Extend allowed sorting options
+        Post::$allowedSortingOptions['bloghub_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_asc';
+        Post::$allowedSortingOptions['bloghub_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_desc';
+        Post::$allowedSortingOptions['bloghub_unique_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_asc';
+        Post::$allowedSortingOptions['bloghub_unique_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_desc';
     }
 
     /**
@@ -71,6 +78,21 @@ class Plugin extends PluginBase
             ]);
         });
 
+        // Collect (Unique) Views
+        Event::listen('cms.page.end', function (Controller $ctrl) {
+            $post = $ctrl->getPageObject()->vars['post'] ?? null;
+            if ($post && $post instanceof Post && BackendAuth::getUser() === null) {
+                $visitor = Visitor::currentUser();
+                if (!$visitor->hasSeen($post)) {
+                    $post->bloghub_unique_views = is_numeric($post->bloghub_unique_views)? $post->bloghub_unique_views+1: 1;
+                    $visitor->markAsSeen($post);
+                }
+
+                $post->bloghub_views = is_numeric($post->bloghub_views)? $post->bloghub_views+1: 1;
+                $post->save();
+            }
+        });
+
         // Extend Post Model
         Post::extend(fn (Post $model) => $this->extendPostModel($model));
 
@@ -88,7 +110,8 @@ class Plugin extends PluginBase
         return [
             'RatMD\BlogHub\Components\Authors'  => 'bloghubAuthorArchive',
             'RatMD\BlogHub\Components\Dates'    => 'bloghubDateArchive',
-            'RatMD\BlogHub\Components\Tags'     => 'bloghubTagArchive',
+            'RatMD\BlogHub\Components\Tag'      => 'bloghubTagArchive',
+            'RatMD\BlogHub\Components\Tags'     => 'bloghubTags',
         ];
     }
 
@@ -162,6 +185,9 @@ class Plugin extends PluginBase
         // Handle Backend Form Submits
         $model->bindEvent('model.beforeSave', function () use ($model) {
             $metaset = $model->bloghub_meta_temp;
+            if (empty($metaset)) {
+                return;
+            }
             unset($model->attributes['bloghub_meta_temp']);
 
             // Find Meta or Create a new one
@@ -294,6 +320,8 @@ class Plugin extends PluginBase
 
                 $config[$item['name']] = $temp;
                 $config[$item['name']]['type'] = $item['type'];
+
+                // Add Label if missing
                 if (empty($config[$item['name']]['label'])) {
                     $config[$item['name']]['label'] = $item['name'];
                 }
@@ -304,9 +332,11 @@ class Plugin extends PluginBase
         // Add Custom Meta Fields
         if (!empty($config)) {
             foreach ($config AS $key => $value) {
+                if (empty($value['tab'])) {
+                    $value['tab'] = 'ratmd.bloghub::lang.backend.meta.tab';
+                }
                 $form->addSecondaryTabFields([
                     "bloghub_meta_temp[$key]" => array_merge($value, [
-                        'tab' => 'ratmd.bloghub::lang.backend.meta.tab',
                         'value' => $meta[$key] ?? '',
                         'default' => $meta[$key] ?? ''
                     ])
