@@ -4,7 +4,6 @@ namespace RatMD\BlogHub\Components;
 
 use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
-use October\Rain\Database\Builder;
 use RatMD\BlogHub\Models\Tag as TagModel;
 
 class Tags extends ComponentBase

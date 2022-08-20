@@ -4,16 +4,31 @@ namespace RatMD\BlogHub\Components;
 
 use RainLab\Blog\Components\Posts;
 use RainLab\Blog\Models\Post;
+use Redirect;
 
 class Dates extends Posts
 {
 
     /**
-     * The post list filtered by date
+     * Post Date Archive array
      *
      * @var array
      */
     public $date = [];
+
+    /**
+     * Post Date Archive Type 
+     *
+     * @var ?string
+     */
+    public $dateType = null;
+
+    /**
+     * Formatted Date Archive String
+     *
+     * @var string
+     */
+    public $dateFormat = '';
 
     /**
      * Component Details
@@ -46,13 +61,38 @@ class Dates extends Posts
     }
 
     /**
-     * Prepare Variables
-     *
-     * @return void
+     * Run Component
+     * 
+     * @return mixed
      */
-    protected function prepareVars()
+    public function onRun()
     {
-        $this->date = $this->page['date'] = $this->loadDate();
+        [$date, $type] = $this->loadDate();
+        if (empty($date)) {
+            $this->setStatusCode(404);
+            return $this->controller->run('404');
+        }
+
+        // Set Page Variables
+        $this->date = $this->page['date'] = $date;
+        $this->dateType = $this->page['dateType'] = $type;
+        $this->dateFormat = $this->page['dateFormat'] = $this->formatDate($this->date);
+        $this->posts = $this->page['posts'] = $this->listPosts();
+
+        // Return 404 on empty date archives
+        if ($this->posts->count() === 0) {
+            $this->setStatusCode(404);
+            return $this->controller->run('404');
+        }
+
+        // Set Latest Page Number
+        if ($pageNumberParam = $this->paramName('pageNumber')) {
+            $currentPage = $this->property('pageNumber');
+
+            if ($currentPage > ($lastPage = $this->posts->lastPage()) && $currentPage > 1) {
+                return Redirect::to($this->currentPageUrl([$pageNumberParam => $lastPage]));
+            }
+        }
     }
 
     /**
@@ -62,9 +102,6 @@ class Dates extends Posts
      */
     protected function listPosts()
     {
-        if (empty($this->date)) {
-            return [];
-        }
         $date = $this->date;
         $category = $this->category ? $this->category->id : null;
         $categorySlug = $this->category ? $this->category->slug : null;
@@ -119,50 +156,73 @@ class Dates extends Posts
     }
     
     /**
-     * Load Date
+     * Load & Validate Date
      *
      * @return array
      */
     protected function loadDate()
     {
         $date = [];
+        $type = null;
 
         // Explode Date string
         $data = explode('-', $this->property('dateFilter'));
-        $year = $data[0];
-        $month = $data[1] ?? null;
-        $day = $data[2] ?? null;
+        if (count($data) > 3) {
+            return [null, null];
+        }
 
-        // Validate Year
-        if (!is_numeric($year)) {
-            return [];
+        // Year Archive
+        if (count($data) >= 1) {
+            $type = 'year';
+
+            if (is_numeric($data[0]) && ($year = intval($data[0])) && $year >= 1970 && $year <= intval(date('Y'))) {
+                $date['year'] = $year;
+            } else {
+                return [null, null];
+            }
         }
         
-        $year = intval($year);
-        if ($year > 1970) {
-            $date['year'] = $year;
-        } else {
-            return [];
-        }
+        // Month Archive
+        if (count($data) >= 2) {
+            $type = 'month';
 
-        // Validate Month
-        if (is_numeric($month)) {
-            $month = intval($month);
-            if ($month >= 1 && $month <= 12) {
+            if (is_numeric($data[1]) && ($month = intval($data[1])) && $month >= 1 && $month <= 12) {
                 $date['month'] = $month;
+            } else {
+                return [null, null];
             }
         }
 
-        // Validate Day
-        if (array_key_exists('month', $date) && is_numeric($day)) {
-            $day = intval($day);
-
-            if ($day >= 1 && $day <= intval(date('t', strtotime("$year-$month-01")))) {
+        // Day Archive
+        if (count($data) == 3) {
+            $type = 'day';
+            
+            if (is_numeric($data[2]) && ($day = intval($data[2])) && $day >= 1 && $day <= intval(date('t', strtotime("$year-$month-01")))) {
                 $date['day'] = $day;
+            } else {
+                return [null, null];
             }
         }
 
-        return $date;
+        // Return Result
+        return [$date, $type];
+    }
+
+    /**
+     * Format Date
+     *
+     * @param array $date
+     * @return void
+     */
+    protected function formatDate(array $date)
+    {
+        if (isset($date['day'])) {
+            return date('F, d. Y', strtotime("{$date['year']}-{$date['month']}-{$date['day']} 00:00:00"));
+        } else if (isset($date['month'])) {
+            return date('F, Y', strtotime("{$date['year']}-{$date['month']}-01 00:00:00"));
+        } else {
+            return $date['year'];
+        }
     }
 
 }

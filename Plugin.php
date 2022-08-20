@@ -3,9 +3,13 @@
 namespace RatMD\BlogHub;
 
 use Backend;
-use Backend\Facades\BackendAuth;
+use Backend\Classes\FormField;
 use Event;
 use Exception;
+use Backend\Facades\BackendAuth;
+use Backend\Controllers\Users as BackendUsers;
+use Backend\Models\User as BackendUser;
+use Backend\Widgets\Form;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -98,6 +102,12 @@ class Plugin extends PluginBase
 
         // Extend Posts Controller
         Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsController($form, $model, $context));
+
+        // Extend Backend User Model
+        BackendUser::extend(fn (BackendUser $model) => $this->extendBackendUserModel($model));
+
+        // Extend Backend Users Controller
+        BackendUsers::extendFormFields(fn ($form, $model, $context) => $this->extendBackendUsersController($form, $model, $context));
     }
 
     /**
@@ -279,16 +289,22 @@ class Plugin extends PluginBase
     /**
      * Extends Posts Controller
      *
-     * @param mixed $form
+     * @param Form $form
      * @param mixed $model
      * @param mixed $context
      * @return void
      */
-    protected function extendPostsController($form, $model, $context)
+    protected function extendPostsController(Form $form, $model, $context)
     {
         if (!$model instanceof Post) {
             return;
         }
+
+        /** @var FormField */
+        $toolbar = $form->getFields()['toolbar'];
+        $toolbar->useConfig([
+            'path' => '$/ratmd/bloghub/controllers/posts/_post_toolbar.htm'
+        ]);
 
         // Build Meta Map
         $meta = $model->bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
@@ -343,6 +359,64 @@ class Plugin extends PluginBase
                 ]);
             }
         }
+    }
+
+    /**
+     * Extend the BackendUser Model
+     *
+     * @param BackendUser $model
+     * @return void
+     */
+    protected function extendBackendUserModel(BackendUser $model)
+    {
+        $model->addDynamicMethod('bloghub_display', function () use ($model) {
+            if (!empty($model->display_name)) {
+                return $model->display_name;
+            }
+            
+            $name = '';
+            if ($model->first_name) {
+                $name = $model->first_name;
+            }
+            if ($model->last_name) {
+                $name = ($model->last_name? ' ': '') . $model->first_name;
+            }
+            return empty($name)? ucfirst($model->login): $name;
+        });
+        $model->addDynamicMethod('bloghub_slug', fn() => $model->author_slug ?? $model->login);
+    }
+
+    /**
+     * Extend the BackendUsers Model1
+     *
+     * @param Form $form
+     * @param mixed $model
+     * @param mixed $context
+     * @return void
+     */
+    protected function extendBackendUsersController(Form $form, $model, $context)
+    {
+        if (!$model instanceof BackendUser) {
+            return;
+        }
+
+        // Add Display Name
+        $form->addTabFields([
+            'display_name' => [
+                'label'         => 'ratmd.bloghub::lang.backend_users.display_name.label',
+                'description'   => 'ratmd.bloghub::lang.backend_users.display_name.description',
+                'tab'           => 'backend::lang.user.account',
+                'type'          => 'text',
+                'span'          => 'left'
+            ],
+            'author_slug' => [
+                'label'         => 'ratmd.bloghub::lang.backend_users.author_slug.label',
+                'description'   => 'ratmd.bloghub::lang.backend_users.author_slug.description',
+                'tab'           => 'backend::lang.user.account',
+                'type'          => 'text',
+                'span'          => 'right'
+            ]
+        ]);
     }
 
     /**

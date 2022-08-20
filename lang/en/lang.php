@@ -32,6 +32,17 @@ return [
         'bloghub_unique_views_desc' => 'Unique Views (descending)'
     ],
 
+    'backend_users' => [
+        'display_name' => [
+            'label' => 'Display Name',
+            'description' => 'Change the name shown on the frontend.',
+        ],
+        'author_slug' => [
+            'label' => 'Author Slug',
+            'description' => 'Change the author slug used on the frontend archives (Leave empty to use "Login").',
+        ]
+    ],
+
     'backend' => [
         'tags' => [
             'label' => 'Tags',

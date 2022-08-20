@@ -48,13 +48,18 @@ class Tag extends Posts
     }
 
     /**
-     * Prepare Variables
-     *
-     * @return void
+     * Run Component
+     * 
+     * @return mixed
      */
-    protected function prepareVars()
+    public function onRun()
     {
         $this->tag = $this->page['tag'] = $this->loadTag();
+        if (empty($this->tag)) {
+            $this->setStatusCode(404);
+            return $this->controller->run('404');
+        }
+        return parent::onRun();
     }
 
     /**

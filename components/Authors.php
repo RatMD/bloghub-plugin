@@ -47,13 +47,18 @@ class Authors extends Posts
     }
 
     /**
-     * Prepare Variables
-     *
-     * @return void
+     * Run Component
+     * 
+     * @return mixed
      */
-    protected function prepareVars()
+    public function onRun()
     {
         $this->author = $this->page['author'] = $this->loadAuthor();
+        if (empty($this->author)) {
+            $this->setStatusCode(404);
+            return $this->controller->run('404');
+        }
+        return parent::onRun();
     }
 
     /**
@@ -110,12 +115,21 @@ class Authors extends Posts
      */
     protected function loadAuthor()
     {
-        if (!$username = $this->property('authorFilter')) {
+        if (!$slug = $this->property('authorFilter')) {
             return null;
         }
 
-        $user = User::where('login', $username)->first();
-        return $user ?: null;
+        if(($user = User::where('author_slug', $slug)->first()) === null) {
+            if (($user = User::where('login', $slug)->first()) === null) {
+                return null;
+            }
+
+            if (!empty($user->author_slug)) {
+                return null;
+            }
+        }
+
+        return $user;
     }
 
 }

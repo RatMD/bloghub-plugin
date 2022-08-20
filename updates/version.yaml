@@ -6,3 +6,6 @@
   - Add View & Unique View numbers
   - update_posts_table.php
   - create_visitors_table.php
+1.2.0:
+  - Extend Backend Users (Authors)
+  - update_backend_users_table.php
