@@ -9,14 +9,17 @@ OctoberCMS templates, but can also be used by any OctoberCMS user and developer,
 Features
 --------
 
-- Adds an URL to the (no longer hidden) Preview Button
-- Custom Meta Data (template-based via `theme.yaml`)
-- Global Custom Meta Data (configurable via backend)
-- Blog Tags with Promote flag, Description and Color
-- Author related archive component (`bloghubAuthorArchive`)
-- Date related archive component (`bloghubTagArchive`), supports year, month and day
-- Tag related archive component (`bloghubTagArchive`)
-- Additional Dynamic Post model methods (see documentation)
+- Shows the (former hidden and URL-less) Preview Button
+- Extends the backend user with a 'Display Name' and 'Author Slug'
+- Counts (Unique) Views, excluding logged-in backend users
+- Implements Custom Meta Data (template-based via `theme.yaml`)
+- Implements Global Custom Meta Data (configurable via backend)
+- Adds Blog Tags with Promote flag, Description and Color
+- Supports Author related archive via component (`bloghubAuthorArchive`)
+- Supports Date related archive via component (`bloghubDateArchive`), supports year, month and day
+- Supports Tag related archive via component (`bloghubTagArchive`)
+- Supports Tags list via component (`bloghubTags`)
+- Enhances Post and User models with additional methods and properties. 
 
 
 Requirements
