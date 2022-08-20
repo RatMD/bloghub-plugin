@@ -3,11 +3,10 @@
 namespace RatMD\BlogHub;
 
 use Backend;
-use Backend\Classes\FormField;
 use Event;
 use Exception;
-use Backend\Facades\BackendAuth;
 use Backend\Controllers\Users as BackendUsers;
+use Backend\Facades\BackendAuth;
 use Backend\Models\User as BackendUser;
 use Backend\Widgets\Form;
 use Cms\Classes\Controller;
@@ -20,7 +19,6 @@ use RatMD\BlogHub\Models\Settings;
 use RatMD\BlogHub\Models\Visitor;
 use Symfony\Component\Yaml\Yaml;
 use System\Classes\PluginBase;
-
 
 class Plugin extends PluginBase
 {
@@ -232,7 +230,7 @@ class Plugin extends PluginBase
 
             /** @var Controller|null */
             $ctrl = Controller::getController();
-            if ($ctrl instanceof Controller) {
+            if ($ctrl instanceof Controller && !empty($ctrl->getLayout())) {
                 $viewBag = $ctrl->getLayout()->getViewBag()->getProperties();
                 
                 // Set Tag URL
@@ -299,12 +297,6 @@ class Plugin extends PluginBase
         if (!$model instanceof Post) {
             return;
         }
-
-        /** @var FormField */
-        //$toolbar = $form->getFields()['toolbar'];
-        //$toolbar->useConfig([
-        //    'path' => '$/ratmd/bloghub/controllers/posts/_post_toolbar.htm'
-        //]);
 
         // Build Meta Map
         $meta = $model->bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();

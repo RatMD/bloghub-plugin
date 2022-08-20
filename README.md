@@ -9,7 +9,6 @@ OctoberCMS templates, but can also be used by any OctoberCMS user and developer,
 Features
 --------
 
-- Shows the (former hidden and URL-less) Preview Button
 - Extends the backend user with a 'Display Name' and 'Author Slug'
 - Counts (Unique) Views, excluding logged-in backend users
 - Implements Custom Meta Data (template-based via `theme.yaml`)
