@@ -25,7 +25,11 @@ class CreateMetaTable extends Migration
         Schema::create('ratmd_bloghub_meta', function(Blueprint $table) {
             $table->engine = 'InnoDB';
 
-            $table->id();
+            if (method_exists($table, 'id')) {
+                $table->id();
+            } else {
+                $table->increments('id');
+            }
             $table->string('name', 64);
             $table->text('value')->nullable();
             $table->integer('metable_id')->unsigned();

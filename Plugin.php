@@ -301,10 +301,10 @@ class Plugin extends PluginBase
         }
 
         /** @var FormField */
-        $toolbar = $form->getFields()['toolbar'];
-        $toolbar->useConfig([
-            'path' => '$/ratmd/bloghub/controllers/posts/_post_toolbar.htm'
-        ]);
+        //$toolbar = $form->getFields()['toolbar'];
+        //$toolbar->useConfig([
+        //    'path' => '$/ratmd/bloghub/controllers/posts/_post_toolbar.htm'
+        //]);
 
         // Build Meta Map
         $meta = $model->bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
