@@ -75,6 +75,10 @@ class Visitor extends Model
         }
 
         $posts = $this->getAttribute('posts');
+        if (!is_array($posts)) {
+            $posts = [];
+        }
+
         return in_array($post, $posts);
     }
 
@@ -91,6 +95,10 @@ class Visitor extends Model
         }
 
         $posts = $this->getAttribute('posts');
+        if (!is_array($posts)) {
+            $posts = [];
+        }
+        
         if (!in_array($post, $this->posts)) {
             $posts[] = $post;
             $this->setAttribute('posts', $posts);
