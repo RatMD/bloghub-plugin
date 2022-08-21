@@ -1,13 +1,20 @@
 BlogHub - Changelog
 ===================
 
-Version 1.2.1
--------------
+Version 1.2.2 - In Progress
+---------------------------
+- Add: 'View / Unique' column definition to Posts controller.
+- Add: 'Filter Tags' scope column definition to Post and Posts controller.
+- Update: Locale strings and language files.
+
+
+Version 1.2.1 - Stable
+----------------------
 - Add: 'About Me' field for backend users.
 
 
-Version 1.2.0
--------------
+Version 1.2.0 - Stable
+----------------------
 - Add: Extend `backend_users` table with `display_name` and `author_slug` fields.
 - Add: Missing URL on the Preview button.
 - Add: Date archive type: 'year', 'month' or 'day'.
@@ -20,8 +27,8 @@ Version 1.2.0
 - Update: Use `author_slug` instead of login (when `author_slug` is not empty).
 
 
-Version 1.1.0
--------------
+Version 1.1.0 - Stable
+----------------------
 - Add: View / Unique View table and counter system. 
 - Add: Tags list component (similar to the Categories list component).
 - Add: `posts_count` belongsToMany value and getter.
@@ -30,6 +37,6 @@ Version 1.1.0
 - Update: Move Post list by tag slug component from `Tags` to `Tag`.
 
 
-Version 1.0.0
--------------
+Version 1.0.0 - Stable
+----------------------
 - Initial Release

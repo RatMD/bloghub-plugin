@@ -9,9 +9,11 @@ use Backend\Controllers\Users as BackendUsers;
 use Backend\Facades\BackendAuth;
 use Backend\Models\User as BackendUser;
 use Backend\Widgets\Form;
+use Backend\Widgets\Lists;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
+use October\Rain\Database\Builder as DatabaseBuilder;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\Meta;
@@ -71,7 +73,7 @@ class Plugin extends PluginBase
         Event::listen('backend.menu.extendItems', function($manager) {
             $manager->addSideMenuItems('RainLab.Blog', 'blog', [
                 'bloghub_tags' => [
-                    'label' => 'ratmd.bloghub::lang.backend.tags.label',
+                    'label' => 'ratmd.bloghub::lang.model.tags.label',
                     'icon'  => 'icon-tags',
                     'code'  => 'tags',
                     'owner' => 'RainLab.Blog',
@@ -97,9 +99,27 @@ class Plugin extends PluginBase
 
         // Extend Post Model
         Post::extend(fn (Post $model) => $this->extendPostModel($model));
+        Post::extend(function (Post $model) {
+            $model->addDynamicMethod('scopeFilterTags', function ($query, $tags) {
+                return $query->whereHas('bloghub_tags', function($q) use ($tags) {
+                    $q->withoutGlobalScope(NestedTreeScope::class)->whereIn('id', $tags);
+                });
+            });
+        });
 
         // Extend Posts Controller
-        Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsController($form, $model, $context));
+        Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsForm($form, $model, $context));
+        Posts::extendListColumns(fn (Lists $list, $model) => $this->extendPostsList($list, $model));
+        Posts::extendListFilterScopes(function ($filter) {
+            $filter->addScopes([
+                'bloghub_tags' => [
+                    'label' => 'ratmd.bloghub::lang.model.tags.label',
+                    'modelClass' => 'RatMD\BlogHub\Models\Tag',
+                    'nameFrom' => 'slug',
+                    'scope' => 'FilterTags'
+                ]
+            ]);
+        });
 
         // Extend Backend User Model
         BackendUser::extend(fn (BackendUser $model) => $this->extendBackendUserModel($model));
@@ -152,8 +172,8 @@ class Plugin extends PluginBase
     {
         return [
             'bloghub' => [
-                'label'         => 'ratmd.bloghub::lang.backend.settings.label',
-                'description'   => 'ratmd.bloghub::lang.backend.settings.description',
+                'label'         => 'ratmd.bloghub::lang.settings.label',
+                'description'   => 'ratmd.bloghub::lang.settings.description',
                 'category'      => 'rainlab.blog::lang.blog.menu_label',
                 'icon'          => 'icon-list-ul',
                 'class'         => 'RatMD\BlogHub\Models\Settings',
@@ -292,7 +312,7 @@ class Plugin extends PluginBase
      * @param mixed $context
      * @return void
      */
-    protected function extendPostsController(Form $form, $model, $context)
+    protected function extendPostsForm(Form $form, $model, $context)
     {
         if (!$model instanceof Post) {
             return;
@@ -304,7 +324,7 @@ class Plugin extends PluginBase
         // Add Tags Field
         $form->addSecondaryTabFields([
             'bloghub_tags' => [
-                'label'     => 'ratmd.bloghub::lang.backend.tags.label',
+                'label'     => 'ratmd.bloghub::lang.model.tags.label',
                 'mode'      => 'relation',
                 'tab'       => 'rainlab.blog::lang.post.tab_categories',
                 'type'      => 'taglist',
@@ -341,7 +361,7 @@ class Plugin extends PluginBase
         if (!empty($config)) {
             foreach ($config AS $key => $value) {
                 if (empty($value['tab'])) {
-                    $value['tab'] = 'ratmd.bloghub::lang.backend.meta.tab';
+                    $value['tab'] = 'ratmd.bloghub::lang.settings.defaultTab';
                 }
                 $form->addSecondaryTabFields([
                     "bloghub_meta_temp[$key]" => array_merge($value, [
@@ -351,6 +371,30 @@ class Plugin extends PluginBase
                 ]);
             }
         }
+    }
+
+    /**
+     * Extend Posts List
+     *
+     * @param Lists $list
+     * @param mixed $model
+     * @return void
+     */
+    protected function extendPostsList(Lists $list, $model)
+    {
+        if (!$model instanceof Post) {
+            return;
+        }
+
+        $list->addColumns([
+            'bloghub_views' => [
+                'label' => 'ratmd.bloghub::lang.model.visitors.views',
+                'type' => 'number',
+                'select' => 'concat(bloghub_views, " / ", bloghub_unique_views)',
+                'align' => 'left'
+            ]
+        ]);
+
     }
 
     /**
@@ -395,22 +439,22 @@ class Plugin extends PluginBase
         // Add Display Name
         $form->addTabFields([
             'display_name' => [
-                'label'         => 'ratmd.bloghub::lang.backend_users.display_name.label',
-                'description'   => 'ratmd.bloghub::lang.backend_users.display_name.description',
+                'label'         => 'ratmd.bloghub::lang.model.users.displayName',
+                'description'   => 'ratmd.bloghub::lang.model.users.displayNameDescription',
                 'tab'           => 'backend::lang.user.account',
                 'type'          => 'text',
                 'span'          => 'left'
             ],
             'author_slug' => [
-                'label'         => 'ratmd.bloghub::lang.backend_users.author_slug.label',
-                'description'   => 'ratmd.bloghub::lang.backend_users.author_slug.description',
+                'label'         => 'ratmd.bloghub::lang.model.users.authorSlug',
+                'description'   => 'ratmd.bloghub::lang.model.users.authorSlugDescription',
                 'tab'           => 'backend::lang.user.account',
                 'type'          => 'text',
                 'span'          => 'right'
             ],
             'about_me' => [
-                'label'         => 'ratmd.bloghub::lang.backend_users.about_me.label',
-                'description'   => 'ratmd.bloghub::lang.backend_users.about_me.description',
+                'label'         => 'ratmd.bloghub::lang.model.users.aboutMe',
+                'description'   => 'ratmd.bloghub::lang.model.users.aboutMeDescription',
                 'tab'           => 'backend::lang.user.account',
                 'type'          => 'textarea',
             ]

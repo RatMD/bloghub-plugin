@@ -6,6 +6,37 @@ return [
         'description' => 'Erweitert RainLab\'s Blog Plugin mist benutzerdefinierten Meta Feldern, Archivseiten und mehr.',
     ],
 
+    'model' => [
+        'tags' => [
+            'label' => 'Schlagwörter',
+            'slug' => 'Slug',
+            'slugComment' => 'Slugs werden für die Archivseiten im Frontend verwendet.',
+            'title' => 'Titel',
+            'titleComment' => 'Unterstütztende Templates können den Titel anstelle des Slugs anzeigen.',
+            'description' => 'Beschreibung',
+            'descriptionComment' => 'Unterstützende Templates können die Beschreibung auf den Archivseiten anzeigen.',
+            'promote' => 'Schlagwort bewerben',
+            'promoteComment' => 'Unterstützende Templates können zu-bewerbende Schlagwörter speziell darstellen.',
+            'color' => 'Farbe',
+            'colorComment' => 'Unterstützende Templates können die gewählte Farbe zur Darstellung nutzen.',
+            'posts' => 'Zugeordnete Beiträge',
+            'postsComment' => 'Die einzelnen Beiträge die diesem Schlagwort zugeordnet sind.',
+            'postsEmpty' => 'Keine Beiträge verfügbar.',
+            'postsNumber' => 'Beitragsanzahl'
+        ],
+        'users' => [
+            'displayName' => 'Anzeigename',
+            'displayNameComment' => 'Eine eigene Version deines Namens, unterstützende Templates können diesen an deinen Beiträgen anzeigen.',
+            'authorSlug' => 'Autorenslug',
+            'authorSlugComment' => 'Autorenslugs werden für die Archivseiten anstelle des Loginnamens verwendet.',
+            'aboutMe' => 'Über Mich',
+            'aboutMeDescription' => 'Eine kleine Beschreibung über dich selbst, unterstützende Templates können diesen bei deinen Beiträgen anzeigen.'
+        ],
+        'visitors' => [
+            'views' => 'Aufrufe / Einzigartig'
+        ]
+    ],
+
     'components' => [
         'authors_title' => 'Beiträge eines Autoren',
         'authors_description' => 'Zeigt eine Liste von Beiträgen eines Autorens an.',
@@ -32,84 +63,48 @@ return [
         'bloghub_unique_views_desc' => 'Einzigartige Aufrufe (absteigend)'
     ],
 
-    'backend_users' => [
-        'display_name' => [
-            'label' => 'Anzeigename',
-            'description' => 'Ändere den Namen der im Frontend angezeigt wird.',
-        ],
-        'author_slug' => [
-            'label' => 'Autor-Slug',
-            'description' => 'Ändere den Autoren-Slug der bei den Frontend-Archivsteien anstelle des Loginnames verwendet wird.',
-        ],
-        'about_me' => [
-            'label' => 'Über Dich',
-            'description' => 'Eine kurze Beschreibung über dich selbst.',
-        ]
-    ],
+    'settings' => [
+        'defaultTab' => 'Meta Daten',
+        'label' => 'Benutzerdefinierte Meta-Daten',
+        'description' => 'Verwalte die globalen benutzerdefinierten Meta-Daten für deine Beiträge.',
+        'prompt' => 'Ein neues Meta-Feld hinzufügen',
 
-    'backend' => [
-        'tags' => [
-            'label' => 'Schlagwörter',
-            'singular' => 'Schlagwort',
-            'plural' => 'Schlagwörter',
-            'slug' => 'Slug',
-            'title' => 'Titel',
-            'description' => 'Beschreibung',
-            'descriptionComment' => 'Unterstützende Templates zeigen die Beschreibung auf der Archivseite an.',
-            'promote' => 'Schlagwort bewerben',
-            'promoteComment' => 'Unterstützende Templates heben zu-bewerbende Schlagwörter besonders hervor.',
-            'color' => 'Farbe',
-            'colorComment' => ' Unterstützende Templates werden die gewählte Farbe zur Hervorhebung nutzen.',
-            'posts' => 'Zugewiesene Beiträge',
-            'postsEmpty' => 'Keine Beiträge verfügbar.'
+        'hint' => [
+            'label' => 'Benutzerdefiniere Meta-Namen müssen einzigartig sein',
+            'comment' => 'Die hier konfigurierten benutzerdefinierten Meta-daten werden von den - in der theme.yaml gesetzten Werten - überschrieben. Achte daher auf die Vergabe von einzigarten Namen.'
         ],
-
-        'meta' => [
-            'tab' => 'Meta-Daten'
+        'name' => [
+            'label' => 'Meta Feldname',
+            'comment' => 'Der Meta Feldname auf dem im Frontend zugegriffen werden kann.'
         ],
-
-        'settings' => [
-            'label' => 'Benutzerdefinierte Meta-Daten',
-            'description' => 'Verwalte die globalen benutzerdefinierten Meta-Daten für deine Beiträge.',
-            'prompt' => 'Ein neues Meta-Feld hinzufügen',
-
-            'hint' => [
-                'label' => 'Benutzerdefiniere Meta-Namen müssen einzigartig sein',
-                'comment' => 'Die hier konfigurierten benutzerdefinierten Meta-daten werden von den - in der theme.yaml gesetzten Werten - überschrieben. Achte daher auf die Vergabe von einzigarten Namen.'
-            ],
-            'name' => [
-                'label' => 'Meta Feldname',
-                'comment' => 'Der Meta Feldname auf dem im Frontend zugegriffen werden kann.'
-            ],
-            'type' => [
-                'label' => 'Meta Feldtyp',
-                'comment' => 'Der Meta Feldtyp bestimmt die Ausgabe im Backend.'
-            ],
-            'config' => [
-                'label' => 'Meta Feld-Konfiguration',
-                'comment' => 'Trage hier deine benutzerdefinierte Konfiguration ein. Die Dokumentation findest du <a href="https://docs.octobercms.com/3.x/element/form/widget-taglist.html" target="_blank">bei OctoberCMS Docs</a>.'
-            ],
-            'types' => [
-                'text' => 'Text Field',
-                'number' => 'Number Field',
-                'password' => 'Password Field',
-                'email' => 'E-Mail Field',
-                'textarea' => 'Textarea Field',
-                'dropdown' => 'Dropdown Selector',
-                'radio' => 'Radio Field',
-                'balloon' => 'Balloon Selector',
-                'checkbox' => 'Checkbox Field',
-                'checkboxlist' => 'Checkbox List',
-                'switch' => 'Switch Button',
-                'codeeditor' => 'Code Editor',
-                'colorpicker' => 'Color Picker',
-                'datepicker' => 'Date/Time Picker',
-                'fileupload' => 'File Upload Field',
-                'markdown' => 'Markdown Editor',
-                'mediafinder' => 'Media Finder',
-                'richeditor' => 'Rich WYSIWYG Editor',
-                'taglist' => 'Tag List',
-            ]
+        'type' => [
+            'label' => 'Meta Feldtyp',
+            'comment' => 'Der Meta Feldtyp bestimmt die Ausgabe im Backend.'
+        ],
+        'config' => [
+            'label' => 'Meta Feld-Konfiguration',
+            'comment' => 'Trage hier deine benutzerdefinierte Konfiguration ein. Die Dokumentation findest du <a href="https://docs.octobercms.com/3.x/element/form/widget-taglist.html" target="_blank">bei OctoberCMS Docs</a>.'
+        ],
+        'types' => [
+            'text' => 'Text Field',
+            'number' => 'Number Field',
+            'password' => 'Password Field',
+            'email' => 'E-Mail Field',
+            'textarea' => 'Textarea Field',
+            'dropdown' => 'Dropdown Selector',
+            'radio' => 'Radio Field',
+            'balloon' => 'Balloon Selector',
+            'checkbox' => 'Checkbox Field',
+            'checkboxlist' => 'Checkbox List',
+            'switch' => 'Switch Button',
+            'codeeditor' => 'Code Editor',
+            'colorpicker' => 'Color Picker',
+            'datepicker' => 'Date/Time Picker',
+            'fileupload' => 'File Upload Field',
+            'markdown' => 'Markdown Editor',
+            'mediafinder' => 'Media Finder',
+            'richeditor' => 'Rich WYSIWYG Editor',
+            'taglist' => 'Tag List',
         ]
     ]
 ];

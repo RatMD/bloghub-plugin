@@ -4,23 +4,26 @@
 
 columns:
     slug:
-        label: ratmd.bloghub::lang.backend.tags.slug
+        label: ratmd.bloghub::lang.model.tags.slug
         searchable: true
     
     title:
-        label: ratmd.bloghub::lang.backend.tags.title
+        label: ratmd.bloghub::lang.model.tags.title
         searchable: true
     
     promote:
-        label: ratmd.bloghub::lang.backend.tags.promote
+        label: ratmd.bloghub::lang.model.tags.promote
+        type: switch
         default: false
     
     color:
-        label: ratmd.bloghub::lang.backend.tags.color
+        label: ratmd.bloghub::lang.model.tags.color
         type: colorpicker
     
     posts:
-        label: Posts
+        label: ratmd.bloghub::lang.model.tags.postsNumber
+        type: number
+        align: left
         select: >
             (
                 SELECT count(*)
