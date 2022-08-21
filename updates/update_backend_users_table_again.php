@@ -10,7 +10,7 @@ use System\Classes\PluginManager;
 /**
  * UpdateBackendUsers Migration
  */
-class UpdateBackendUsersTable extends Migration
+class UpdateBackendUsersTableAgain extends Migration
 {
 
     /**
@@ -19,8 +19,7 @@ class UpdateBackendUsersTable extends Migration
     public function up()
     {
         Schema::table('backend_users', function (Blueprint $table) {
-            $table->string('display_name', 128)->nullable();
-            $table->string('author_slug', 128)->unique()->nullable();
+            $table->text('about_me')->nullable();
         });
     }
 
@@ -29,7 +28,7 @@ class UpdateBackendUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('backend_users', ['display_name', 'author_slug']);
+        Schema::dropColumns('backend_users', ['about_me']);
     }
 
 }

@@ -9,3 +9,6 @@
 1.2.0:
   - Extend Backend Users (Authors)
   - update_backend_users_table.php
+1.2.1:
+  - Add 'About Me' field for backend users.
+  - update_backend_users_table_again.php

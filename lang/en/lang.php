@@ -40,6 +40,10 @@ return [
         'author_slug' => [
             'label' => 'Author Slug',
             'description' => 'Change the author slug used on the frontend archives (Leave empty to use "Login").',
+        ],
+        'about_me' => [
+            'label' => 'About Me',
+            'description' => 'A small description about yourself, used on the frontend post pages.',
         ]
     ],
 

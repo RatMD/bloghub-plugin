@@ -407,6 +407,12 @@ class Plugin extends PluginBase
                 'tab'           => 'backend::lang.user.account',
                 'type'          => 'text',
                 'span'          => 'right'
+            ],
+            'about_me' => [
+                'label'         => 'ratmd.bloghub::lang.backend_users.about_me.label',
+                'description'   => 'ratmd.bloghub::lang.backend_users.about_me.description',
+                'tab'           => 'backend::lang.user.account',
+                'type'          => 'textarea',
             ]
         ]);
     }
