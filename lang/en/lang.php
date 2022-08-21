@@ -9,6 +9,8 @@ return [
     'model' => [
         'tags' => [
             'label' => 'Tags',
+            'manage' => 'Manage Tags',
+            'recordName' => 'Tag',
             'slug' => 'Slug',
             'slugComment' => 'Tag slugs are used for the archive pages on the frontend.',
             'title' => 'Title',

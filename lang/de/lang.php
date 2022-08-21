@@ -9,6 +9,8 @@ return [
     'model' => [
         'tags' => [
             'label' => 'Schlagwörter',
+            'manage' => 'Schlagwörter verwalten',
+            'recordName' => 'Schlagwort',
             'slug' => 'Slug',
             'slugComment' => 'Slugs werden für die Archivseiten im Frontend verwendet.',
             'title' => 'Titel',

@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Tag
+name: ratmd.bloghub::lang.model.tags.recordName
 
 # Model Form Field configuration
 form: $/ratmd/bloghub/models/tag/fields.yaml

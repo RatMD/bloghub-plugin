@@ -13,7 +13,6 @@ use Backend\Widgets\Lists;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
-use October\Rain\Database\Builder as DatabaseBuilder;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\Meta;

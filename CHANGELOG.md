@@ -1,11 +1,13 @@
 BlogHub - Changelog
 ===================
 
-Version 1.2.2 - In Progress
----------------------------
+Version 1.2.2 - Stable
+----------------------
 - Add: 'View / Unique' column definition to Posts controller.
 - Add: 'Filter Tags' scope column definition to Post and Posts controller.
+- Add: Missing locale strings.
 - Update: Locale strings and language files.
+- Remove: Meta controller and definitions.
 
 
 Version 1.2.1 - Stable

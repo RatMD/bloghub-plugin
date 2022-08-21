@@ -9,7 +9,7 @@ list: $/ratmd/bloghub/models/tag/columns.yaml
 modelClass: RatMD\BlogHub\Models\Tag
 
 # List Title
-title: Manage Tags
+title: ratmd.bloghub::lang.model.tags.manage
 
 # Link URL for each record
 recordUrl: ratmd/bloghub/tags/update/:id

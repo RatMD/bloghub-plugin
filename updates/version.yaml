@@ -12,3 +12,5 @@
 1.2.1:
   - Add 'About Me' field for backend users.
   - update_backend_users_table_again.php
+1.2.2:
+  - Minor Changes
