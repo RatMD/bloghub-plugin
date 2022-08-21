@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.2.1
+-------------
+- Add: 'About Me' field for backend users.
+
+
 Version 1.2.0
 -------------
 - Add: Extend `backend_users` table with `display_name` and `author_slug` fields.

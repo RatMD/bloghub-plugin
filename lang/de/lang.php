@@ -40,6 +40,10 @@ return [
         'author_slug' => [
             'label' => 'Autor-Slug',
             'description' => 'Ändere den Autoren-Slug der bei den Frontend-Archivsteien anstelle des Loginnames verwendet wird.',
+        ],
+        'about_me' => [
+            'label' => 'Über Dich',
+            'description' => 'Eine kurze Beschreibung über dich selbst.',
         ]
     ],
 
