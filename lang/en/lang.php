@@ -36,7 +36,14 @@ return [
         ],
         'post' => [
             'reading_time' => 'Reading Time: :min min :sec seconds',
-            'reading_time_sec' => 'Reading Time: :sec seconds'
+            'reading_time_sec' => 'Reading Time: :sec seconds',
+            'published_seconds_ago' => 'Published a few seconds ago.',
+            'published_ago' => 'Published :amount :format ago.',
+            'published_format_years' => 'years',
+            'published_format_months' => 'months',
+            'published_format_days' => 'days',
+            'published_format_hours' => 'hours',
+            'published_format_minutes' => 'minutes',
         ],
         'visitors' => [
             'views' => 'Views / Unique'

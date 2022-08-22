@@ -5,6 +5,7 @@ Version 1.2.3 - *In Progress*
 -----------------------------
 - Add: `BlogHubPostModel` behaviour (Work in Progress).
 - Add: Estimated reading time (Work in Progress).
+- Add: Published * ago date/time view (Work in Progress).
 
 Version 1.2.2 - Stable
 ----------------------
