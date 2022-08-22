@@ -119,12 +119,12 @@ class Authors extends Posts
             return null;
         }
 
-        if(($user = User::where('author_slug', $slug)->first()) === null) {
+        if(($user = User::where('ratmd_bloghub_author_slug', $slug)->first()) === null) {
             if (($user = User::where('login', $slug)->first()) === null) {
                 return null;
             }
 
-            if (!empty($user->author_slug)) {
+            if (!empty($user->ratmd_bloghub_author_slug)) {
                 return null;
             }
         }

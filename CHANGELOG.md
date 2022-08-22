@@ -1,11 +1,12 @@
 BlogHub - Changelog
 ===================
 
-Version 1.2.3 - *In Progress*
------------------------------
+Version 1.2.3 - Stable
+----------------------
 - Add: `BlogHubPostModel` behaviour (Work in Progress).
 - Add: Estimated reading time (Work in Progress).
 - Add: Published * ago date/time view (Work in Progress).
+- Fix: Table / Coulmn names for OctoberCMS Marketplace.
 
 Version 1.2.2 - Stable
 ----------------------

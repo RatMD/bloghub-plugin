@@ -57,10 +57,10 @@ class Plugin extends PluginBase
     {
 
         // Extend allowed sorting options
-        Post::$allowedSortingOptions['bloghub_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_asc';
-        Post::$allowedSortingOptions['bloghub_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_desc';
-        Post::$allowedSortingOptions['bloghub_unique_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_asc';
-        Post::$allowedSortingOptions['bloghub_unique_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_desc';
+        Post::$allowedSortingOptions['ratmd_bloghub_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_asc';
+        Post::$allowedSortingOptions['ratmd_bloghub_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_desc';
+        Post::$allowedSortingOptions['ratmd_bloghub_unique_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_asc';
+        Post::$allowedSortingOptions['ratmd_bloghub_unique_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_desc';
     }
 
     /**
@@ -88,11 +88,11 @@ class Plugin extends PluginBase
             if ($post && $post instanceof Post && BackendAuth::getUser() === null) {
                 $visitor = Visitor::currentUser();
                 if (!$visitor->hasSeen($post)) {
-                    $post->bloghub_unique_views = is_numeric($post->bloghub_unique_views)? $post->bloghub_unique_views+1: 1;
+                    $post->ratmd_bloghub_unique_views = is_numeric($post->ratmd_bloghub_unique_views)? $post->ratmd_bloghub_unique_views+1: 1;
                     $visitor->markAsSeen($post);
                 }
 
-                $post->bloghub_views = is_numeric($post->bloghub_views)? $post->bloghub_views+1: 1;
+                $post->ratmd_bloghub_views = is_numeric($post->ratmd_bloghub_views)? $post->ratmd_bloghub_views+1: 1;
                 $post->save();
             }
         });
@@ -182,6 +182,26 @@ class Plugin extends PluginBase
                 'keywords'      => 'blog post meta data',
                 'permissions'   => ['rainlab.blog.manage_settings']
             ]
+        ];
+    }
+
+    /**
+     * Registers any report widgets provided by this package.
+     *
+     * @return array
+     */
+    public function registerReportWidgets()
+    {
+
+        // Work in Progress
+        return [
+            //\RatMD\BlogHub\ReportWidgets\BlogPosts::class => [
+            //    'label' => 'BlogHub Post Statistic',
+            //    'context' => 'dashboard',
+            //    'permission' => [
+            //        'rainlab.blog.access_other_posts'
+            //    ]
+            //]
         ];
     }
     
@@ -321,14 +341,13 @@ class Plugin extends PluginBase
         }
 
         $list->addColumns([
-            'bloghub_views' => [
+            'ratmd_bloghub_views' => [
                 'label' => 'ratmd.bloghub::lang.model.visitors.views',
                 'type' => 'number',
-                'select' => 'concat(bloghub_views, " / ", bloghub_unique_views)',
+                'select' => 'concat(ratmd_bloghub_views, " / ", ratmd_bloghub_unique_views)',
                 'align' => 'left'
             ]
         ]);
-
     }
 
     /**
@@ -340,8 +359,8 @@ class Plugin extends PluginBase
     protected function extendBackendUserModel(BackendUser $model)
     {
         $model->addDynamicMethod('bloghub_display', function () use ($model) {
-            if (!empty($model->display_name)) {
-                return $model->display_name;
+            if (!empty($model->ratmd_bloghub_display_name)) {
+                return $model->ratmd_bloghub_display_name;
             }
             
             $name = '';
@@ -353,7 +372,7 @@ class Plugin extends PluginBase
             }
             return empty($name)? ucfirst($model->login): $name;
         });
-        $model->addDynamicMethod('bloghub_slug', fn() => $model->author_slug ?? $model->login);
+        $model->addDynamicMethod('bloghub_slug', fn() => $model->ratmd_bloghub_author_slug ?? $model->login);
     }
 
     /**
@@ -372,21 +391,21 @@ class Plugin extends PluginBase
 
         // Add Display Name
         $form->addTabFields([
-            'display_name' => [
+            'ratmd_bloghub_display_name' => [
                 'label'         => 'ratmd.bloghub::lang.model.users.displayName',
                 'description'   => 'ratmd.bloghub::lang.model.users.displayNameDescription',
                 'tab'           => 'backend::lang.user.account',
                 'type'          => 'text',
                 'span'          => 'left'
             ],
-            'author_slug' => [
+            'ratmd_bloghub_author_slug' => [
                 'label'         => 'ratmd.bloghub::lang.model.users.authorSlug',
                 'description'   => 'ratmd.bloghub::lang.model.users.authorSlugDescription',
                 'tab'           => 'backend::lang.user.account',
                 'type'          => 'text',
                 'span'          => 'right'
             ],
-            'about_me' => [
+            'ratmd_bloghub_about_me' => [
                 'label'         => 'ratmd.bloghub::lang.model.users.aboutMe',
                 'description'   => 'ratmd.bloghub::lang.model.users.aboutMeDescription',
                 'tab'           => 'backend::lang.user.account',

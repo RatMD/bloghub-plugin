@@ -19,8 +19,8 @@ class UpdateBackendUsersTable extends Migration
     public function up()
     {
         Schema::table('backend_users', function (Blueprint $table) {
-            $table->string('display_name', 128)->nullable();
-            $table->string('author_slug', 128)->unique()->nullable();
+            $table->string('ratmd_bloghub_display_name', 128)->nullable();
+            $table->string('ratmd_bloghub_author_slug', 128)->unique()->nullable();
         });
     }
 
@@ -29,7 +29,7 @@ class UpdateBackendUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('backend_users', ['display_name', 'author_slug']);
+        Schema::dropColumns('backend_users', ['ratmd_bloghub_display_name', 'ratmd_bloghub_author_slug']);
     }
 
 }

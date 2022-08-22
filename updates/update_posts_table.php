@@ -23,8 +23,8 @@ class CreateViewsTable extends Migration
         }
 
         Schema::table('rainlab_blog_posts', function (Blueprint $table) {
-            $table->integer('bloghub_views')->unsigned()->default(0);
-            $table->integer('bloghub_unique_views')->unsigned()->default(0);
+            $table->integer('ratmd_bloghub_views')->unsigned()->default(0);
+            $table->integer('ratmd_bloghub_unique_views')->unsigned()->default(0);
         });
     }
 
@@ -33,7 +33,7 @@ class CreateViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('rainlab_blog_posts', ['bloghub_views', 'bloghub_unique_views']);
+        Schema::dropColumns('rainlab_blog_posts', ['ratmd_bloghub_views', 'ratmd_bloghub_unique_views']);
     }
 
 }
