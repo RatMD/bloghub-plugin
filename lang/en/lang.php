@@ -34,6 +34,10 @@ return [
             'aboutMe' => 'About Me',
             'aboutMeDescription' => 'A small description about yourself, supporting themes may show them on your posts.'
         ],
+        'post' => [
+            'reading_time' => 'Reading Time: :min min :sec seconds',
+            'reading_time_sec' => 'Reading Time: :sec seconds'
+        ],
         'visitors' => [
             'views' => 'Views / Unique'
         ]

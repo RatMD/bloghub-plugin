@@ -15,6 +15,7 @@ use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
+use RatMD\BlogHub\Behaviors\BlogHubPostModel;
 use RatMD\BlogHub\Models\Meta;
 use RatMD\BlogHub\Models\Settings;
 use RatMD\BlogHub\Models\Visitor;
@@ -105,6 +106,7 @@ class Plugin extends PluginBase
                 });
             });
         });
+        Post::extend(fn(Post $model) => $model->implementClassWith(BlogHubPostModel::class));
 
         // Extend Posts Controller
         Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsForm($form, $model, $context));

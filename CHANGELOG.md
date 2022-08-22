@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.2.3 - *In Progress*
+-----------------------------
+- Add: `BlogHubPostModel` behaviour (Work in Progress).
+- Add: Estimated reading time (Work in Progress).
+
 Version 1.2.2 - Stable
 ----------------------
 - Add: 'View / Unique' column definition to Posts controller.
@@ -9,11 +14,9 @@ Version 1.2.2 - Stable
 - Update: Locale strings and language files.
 - Remove: Meta controller and definitions.
 
-
 Version 1.2.1 - Stable
 ----------------------
 - Add: 'About Me' field for backend users.
-
 
 Version 1.2.0 - Stable
 ----------------------
@@ -28,7 +31,6 @@ Version 1.2.0 - Stable
 - Update: Return 404 when no tag is found ([bloghubTagArchive] Component).
 - Update: Use `author_slug` instead of login (when `author_slug` is not empty).
 
-
 Version 1.1.0 - Stable
 ----------------------
 - Add: View / Unique View table and counter system. 
@@ -37,7 +39,6 @@ Version 1.1.0 - Stable
 - Add: `Visitor` model.
 - Add: `views` and `unique_views` sorting options to the Post model.
 - Update: Move Post list by tag slug component from `Tags` to `Tag`.
-
 
 Version 1.0.0 - Stable
 ----------------------

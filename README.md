@@ -9,7 +9,7 @@ OctoberCMS templates, but can also be used by any OctoberCMS user and developer,
 Features
 --------
 
-- Extends the backend user with a 'Display Name' and 'Author Slug'
+- Extended Backend Users ('Display Name', 'Author Slug' and 'About Me')
 - Counts (Unique) Views, excluding logged-in backend users
 - Implements Custom Meta Data (template-based via `theme.yaml`)
 - Implements Global Custom Meta Data (configurable via backend)
