@@ -25,11 +25,7 @@ class CreateTagsTable extends Migration
         Schema::create('ratmd_bloghub_tags', function(Blueprint $table) {
             $table->engine = 'InnoDB';
 
-            if (method_exists($table, 'id')) {
-                $table->id();
-            } else {
-                $table->increments('id');
-            }
+            $table->increments('id');
             $table->string('slug', 64)->unique();
             $table->string('title', 128)->nullable();
             $table->text('description')->nullable();

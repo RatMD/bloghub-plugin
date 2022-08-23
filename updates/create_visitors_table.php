@@ -25,11 +25,7 @@ class CreateVisitorsTable extends Migration
         Schema::create('ratmd_bloghub_visitors', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
-            if (method_exists($table, 'id')) {
-                $table->id();
-            } else {
-                $table->increments('id');
-            }
+            $table->increments('id');
             $table->string('user', 64);
             $table->json('posts')->default('[]');
 
