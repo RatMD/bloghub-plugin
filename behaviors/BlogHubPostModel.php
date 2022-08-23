@@ -27,21 +27,21 @@ class BlogHubPostModel extends ExtensionBase
         $this->model = $model;
 
         // Add Tag Relationship
-        $this->model->belongsToMany['bloghub_tags'] = [
+        $this->model->belongsToMany['ratmd_bloghub_tags'] = [
             'RatMD\BlogHub\Models\Tag',
             'table' => 'ratmd_bloghub_tags_posts',
             'order' => 'slug'
         ];
 
         // Add Custom Meta Relationship
-        $this->model->morphMany['bloghub_meta'] = [
+        $this->model->morphMany['ratmd_bloghub_meta'] = [
             'RatMD\BlogHub\Models\Meta',
             'table' => 'ratmd_bloghub_meta',
             'name' => 'metable',
         ];
 
         // Add Temporary Form JSONable
-        $this->model->addJsonable('bloghub_meta_temp');
+        $this->model->addJsonable('ratmd_bloghub_meta_temp');
         
         // Handle Backend Form Submits
         $model->bindEvent('model.beforeSave', fn() => $this->beforeSave());
@@ -57,14 +57,14 @@ class BlogHubPostModel extends ExtensionBase
      */
     protected function beforeSave()
     {
-        $metaset = $this->model->bloghub_meta_temp;
+        $metaset = $this->model->ratmd_bloghub_meta_temp;
         if (empty($metaset)) {
             return;
         }
-        unset($this->model->attributes['bloghub_meta_temp']);
+        unset($this->model->attributes['ratmd_bloghub_meta_temp']);
 
         // Find Meta or Create a new one
-        $existing = $this->model->bloghub_meta;
+        $existing = $this->model->ratmd_bloghub_meta;
 
         foreach ($metaset AS $name => &$value) {
             $meta = $existing->where('name', '=', $name);
@@ -80,9 +80,9 @@ class BlogHubPostModel extends ExtensionBase
 
         // Store Metaset
         if ($this->model->exists) {
-            $this->model->bloghub_meta()->saveMany($metaset);
+            $this->model->ratmd_bloghub_meta()->saveMany($metaset);
         } else {
-            $this->model->bloghub_meta = $metaset;
+            $this->model->ratmd_bloghub_meta = $metaset;
         }
     }
 
@@ -93,7 +93,7 @@ class BlogHubPostModel extends ExtensionBase
      */
     protected function afterFetch()
     {
-        $tags = $this->model->bloghub_tags;
+        $tags = $this->model->ratmd_bloghub_tags;
         if ($tags->count() === 0) {
             return;
         }

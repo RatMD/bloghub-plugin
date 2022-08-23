@@ -77,7 +77,7 @@ class Authors extends Posts
          */
         $isPublished = !parent::checkEditor();
 
-        $posts = Post::with(['categories', 'featured_images', 'bloghub_tags'])
+        $posts = Post::with(['categories', 'featured_images', 'ratmd_bloghub_tags'])
             ->where('user_id', '=', $author)
             ->listFrontEnd([
                 'page'             => $this->property('pageNumber'),

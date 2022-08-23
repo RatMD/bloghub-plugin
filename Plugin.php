@@ -72,7 +72,7 @@ class Plugin extends PluginBase
     {
         Event::listen('backend.menu.extendItems', function($manager) {
             $manager->addSideMenuItems('RainLab.Blog', 'blog', [
-                'bloghub_tags' => [
+                'ratmd_bloghub_tags' => [
                     'label' => 'ratmd.bloghub::lang.model.tags.label',
                     'icon'  => 'icon-tags',
                     'code'  => 'tags',
@@ -101,7 +101,7 @@ class Plugin extends PluginBase
         Post::extend(fn (Post $model) => $this->extendPostModel($model));
         Post::extend(function (Post $model) {
             $model->addDynamicMethod('scopeFilterTags', function ($query, $tags) {
-                return $query->whereHas('bloghub_tags', function($q) use ($tags) {
+                return $query->whereHas('ratmd_bloghub_tags', function($q) use ($tags) {
                     $q->withoutGlobalScope(NestedTreeScope::class)->whereIn('id', $tags);
                 });
             });
@@ -113,7 +113,7 @@ class Plugin extends PluginBase
         Posts::extendListColumns(fn (Lists $list, $model) => $this->extendPostsList($list, $model));
         Posts::extendListFilterScopes(function ($filter) {
             $filter->addScopes([
-                'bloghub_tags' => [
+                'ratmd_bloghub_tags' => [
                     'label' => 'ratmd.bloghub::lang.model.tags.label',
                     'modelClass' => 'RatMD\BlogHub\Models\Tag',
                     'nameFrom' => 'slug',
@@ -215,8 +215,8 @@ class Plugin extends PluginBase
     {
 
         // Dynamic Method - Create a [name] => [value] meta data map
-        $model->addDynamicMethod('bloghub_meta_data', function () use ($model) {
-            return $model->bloghub_meta->mapWithKeys(function ($item, $key) {
+        $model->addDynamicMethod('ratmd_bloghub_meta_data', function () use ($model) {
+            return $model->ratmd_bloghub_meta->mapWithKeys(function ($item, $key) {
                 return [$item['name'] => $item['value']];
             })->all();
         });
@@ -273,11 +273,11 @@ class Plugin extends PluginBase
         }
 
         // Build Meta Map
-        $meta = $model->bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
+        $meta = $model->ratmd_bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
 
         // Add Tags Field
         $form->addSecondaryTabFields([
-            'bloghub_tags' => [
+            'ratmd_bloghub_tags' => [
                 'label'     => 'ratmd.bloghub::lang.model.tags.label',
                 'mode'      => 'relation',
                 'tab'       => 'rainlab.blog::lang.post.tab_categories',
@@ -318,7 +318,7 @@ class Plugin extends PluginBase
                     $value['tab'] = 'ratmd.bloghub::lang.settings.defaultTab';
                 }
                 $form->addSecondaryTabFields([
-                    "bloghub_meta_temp[$key]" => array_merge($value, [
+                    "ratmd_bloghub_meta_temp[$key]" => array_merge($value, [
                         'value' => $meta[$key] ?? '',
                         'default' => $meta[$key] ?? ''
                     ])
@@ -449,11 +449,11 @@ class Plugin extends PluginBase
             // Set Tag URL
             if (isset($viewBag['bloghubTagPage'])) {
                 if ($posts instanceof Post) {
-                    $posts->bloghub_tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl));
+                    $posts->ratmd_bloghub_tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl));
                 } else if (is_array($posts)) {
                     array_walk(
                         $posts, 
-                        fn($post) => $post->bloghub_tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl))
+                        fn($post) => $post->ratmd_bloghub_tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl))
                     );
                 }
             }
@@ -472,7 +472,7 @@ class Plugin extends PluginBase
      */
     protected function getSimilarPosts(Post $model, int $limit = 3, $exclude = null)
     {
-        $tags = $model->bloghub_tags->map(fn ($item) => $item->id)->all();
+        $tags = $model->ratmd_bloghub_tags->map(fn ($item) => $item->id)->all();
         $categories = $model->categories->map(fn ($item) => $item->id)->all();
 
         // Exclude
@@ -484,11 +484,11 @@ class Plugin extends PluginBase
         $excludes[] = $model->id;
 
         // Query
-        $query = Post::with(['categories', 'featured_images', 'bloghub_tags'])
+        $query = Post::with(['categories', 'featured_images', 'ratmd_bloghub_tags'])
             ->whereHas('categories', function(Builder $query) use ($categories) {
                 return $query->whereIn('rainlab_blog_categories.id', $categories);
             })
-            ->whereHas('bloghub_tags', function(Builder $query) use ($tags) {
+            ->whereHas('ratmd_bloghub_tags', function(Builder $query) use ($tags) {
                 return $query->whereIn('ratmd_bloghub_tags.id', $tags);
             })
             ->limit($limit);
@@ -518,7 +518,7 @@ class Plugin extends PluginBase
         $excludes[] = $model->id;
 
         // Query
-        $query = Post::with(['categories', 'featured_images', 'bloghub_tags'])->limit($limit);
+        $query = Post::with(['categories', 'featured_images', 'ratmd_bloghub_tags'])->limit($limit);
 
         // Return Result
         $result = $query->get()->filter(fn($item) => !in_array($item['id'], $excludes))->all();

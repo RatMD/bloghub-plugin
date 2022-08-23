@@ -10,7 +10,7 @@ menu under Settings `->` Blog `->` Custom Meta Data. The meta fields of the firs
 be visible as long as the current theme is activated, while the second one works independent of the 
 theme but - however - must be implemented on your own of course.
 
-You can access your custom meta data values by using the `bloghub_meta_data` or `bloghub_meta` 
+You can access your custom meta data values by using the `ratmd_bloghub_meta_data` or `ratmd_bloghub_meta` 
 Post model arguments. Look below for more details.
 
 
@@ -57,13 +57,13 @@ ratmd.bloghub:
 Additional Post Arguments
 -------------------------
 
-### post.bloghub_tags
+### post.ratmd_bloghub_tags
 
 This argument contains all `Tag` models as array, including all available values. You can use them 
 in the same way as you would use `post.catgories`. Here is a small example:
 
 ```html
-{% for tag in post.bloghub_tags %}
+{% for tag in post.ratmd_bloghub_tags %}
     {% if tag.promote %}
         <a href="{{ tag.url }}" title="Tag Archive: {{ tag.title | default(tag.slug) }}">
             <span class="post-tag post-tag-promoted"{{ tag.color ? ' style="background-color: {{ tag.color }}"' : '' }}>
@@ -79,21 +79,21 @@ in the same way as you would use `post.catgories`. Here is a small example:
 ```
 
 
-### post.bloghub_meta
+### post.ratmd_bloghub_meta
 
-Similar to `post.bloghub_tags` this argument contains all meta data Model objects as an array. We 
-highly recommend using `post.bloghub_meta_data` (see below) to access your custom meta data in a 
+Similar to `post.ratmd_bloghub_tags` this argument contains all meta data Model objects as an array. We 
+highly recommend using `post.ratmd_bloghub_meta_data` (see below) to access your custom meta data in a 
 more native way (using the meta name).
 
 
-### post.bloghub_meta_data
+### post.ratmd_bloghub_meta_data
 
-The `post.bloghub_meta_data` argument contains the \[name\]: \[value\] pairs of all assigned custom Post 
+The `post.ratmd_bloghub_meta_data` argument contains the \[name\]: \[value\] pairs of all assigned custom Post 
 meta data (even if the value is empty). Here is a small example:
 
 ```html
 <div class="post-title">
-    {{ post.bloghub_meta_data.special_title | default(post.title) }}
+    {{ post.ratmd_bloghub_meta_data.special_title | default(post.title) }}
 </div>
 ```
 
