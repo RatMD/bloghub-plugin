@@ -6,8 +6,6 @@
 <div id="{{ replyPartial }}"></div>
 
 {{ form_ajax('onWriteComment', { id: __SELF__.id ~ '_form', 'data-bloghub-handler': 'comment-form' }) }}
-    <input type="hidden" name="comment_form_id" value="{{ __SELF__.id }}" />
-
     <div class="row g-3">
         {% if not isLoggedIn %}
             {% if showCommentFormHoneypot %}
@@ -87,7 +85,7 @@
         {% if showCommentFormTos %}
             <div class="col-12">
                 <div class="form-check">
-                    <input id="{{ __SELF__.id }}_termsOfUse" type="checkbox" value="1" class="form-check-input" required />
+                    <input id="{{ __SELF__.id }}_termsOfUse" type="checkbox" name="comment_tos" value="1" class="form-check-input" required />
                     <label for="{{ __SELF__.id }}_termsOfUse" class="form-check-label">
                         {{ commentFormTosLabel | raw }}
                     </label>
@@ -96,7 +94,27 @@
         {% endif %}
 
         {% if showCommentFormCaptcha %}
-    captcha field
+            <div class="col-12 d-flex">
+                <div class="flex-auto">
+                    <img id="{{ __SELF__.id }}_captchaImage" src="{{ captchaImage }}" style="width: 113px;" />
+                </div>
+                <div class="flex-fill ps-5">
+                    <div class="input-group">
+                        <input 
+                            id="{{ __SELF__.id }}_captcha" 
+                            name="comment_captcha" 
+                            class="form-control form-control-sm" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.captcha_placeholder' | trans }}" 
+                            required />
+                        <button 
+                            type="button" 
+                            class="btn btn-sm btn-secondary"
+                            data-bloghub-handler="onReloadCaptcha" 
+                            data-bloghub-id="{{ __SELF__.id }}"
+                        >{{ 'ratmd.bloghub::lang.frontend.comments.captcha_reload' | trans }}</button>
+                    </div>
+                </div>
+            </div>
         {% endif %}
 
         {% if showCommentFormHoneypot %}
@@ -127,9 +145,18 @@
             {% if showCommentFormHoneypot %}
                 <input type="hidden" name="comment_honey" value="{{ honeypotTime }}" />
             {% endif %}
+            <input type="hidden" name="comment_time" value="{{ validationTime }}" />
+            <input type="hidden" name="comment_validation" value="{{ validationHash }}" />
+            <input type="hidden" name="comment_form_id" value="{{ __SELF__.id }}" />
             
-            <button type="button" class="btn btn-secondary me-2" style="display:none;">{{ 'ratmd.bloghub::lang.frontend.comments.cancel_reply' | trans }}</button>
-            <button type="submit" class="btn btn-primary">{{ 'ratmd.bloghub::lang.frontend.comments.submit_comment' | trans }}</button>
+            <button 
+                id="{{ __SELF__.id }}_cancel" 
+                type="button" 
+                class="btn btn-secondary me-2" 
+                data-bloghub-handler="onCancelReply" 
+                data-bloghub-id="{{ __SELF__.id }}"
+                style="display:none;">{{ 'ratmd.bloghub::lang.frontend.comments.cancel_reply' | trans }}</button>
+            <button id="{{ __SELF__.id }}_submit" type="submit" class="btn btn-primary">{{ 'ratmd.bloghub::lang.frontend.comments.submit_comment' | trans }}</button>
         </div>
     </div>
 {{ form_close() }}

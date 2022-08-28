@@ -1,13 +1,15 @@
 
 {% if showComments %}
     <div id="comments">
-        <div class="comment-list">
-            {% partial __SELF__ ~ '::comment-list' %}
-        </div>
+        {% if commentsFormPosition == 'below' %}
+            <div class="comment-list">
+                {% partial __SELF__ ~ '::comment-list' %}
+            </div>
+        {% endif %}
 
-        {% if commentsMode != 'hidden' %}
+        {% if showCommentsForm %}
             <div class="comment-form">
-                {% if showCommentsForm %}
+                {% if currentUserCanComment %}
                     {% partial __SELF__ ~ '::comment-form' %}
                 {% else %}
                     <div class="alert alert-info">
@@ -22,6 +24,12 @@
                         {% endif %}
                     </div>
                 {% endif %}
+            </div>
+        {% endif %}
+
+        {% if commentsFormPosition == 'above' %}
+            <div class="comment-list">
+                {% partial __SELF__ ~ '::comment-list' %}
             </div>
         {% endif %}
     </div>

@@ -52,6 +52,7 @@ return [
         'comments_section' => [
             'label' => 'Comments Section',
             'comment' => 'Display a comments section with comment form on the single post CMS page.',
+            'group_form' => 'Comment Form',
             'post_slug' => 'Post filter',
             'post_slug_comment' => 'Enter a post slug or URL parameter to filter the comments by.',
             'comments_per_page' => 'Comments per Page',
@@ -61,10 +62,14 @@ return [
             'comments_anchor_comment' => 'The ID of the main comment container, used as URL anchor on the pagination links.',
             'pin_favorites' => 'Pin Favorites',
             'pin_favorites_comment' => 'Pin Author-Favorites comments on top of the comment list.',
-            'disable_form' => 'Disable Comment Form',
-            'disable_form_comment' => 'Disables the comment submit form, regardless of the post option.',
             'hide_on_dislike' => 'Hide disliked comments',
             'hide_on_dislike_comment' => 'Hide disliked comments, use either an absolute number or start your number with a colon to define a relation to the likes.',
+            'form_position' => 'Form Position',
+            'form_position_comment' => 'Change the Position for the Comment Form section.',
+            'form_position_above' => 'Above the comments',
+            'form_position_below' => 'Below the comments',
+            'disable_form' => 'Disable Comment Form',
+            'disable_form_comment' => 'Disables the comment submit form, regardless of the post option.',
         ],
 
 
@@ -102,8 +107,11 @@ return [
             'title' => 'Your Comment Title',
             'comment' => 'Your Comment',
             'comment_markdown_hint' => 'You can use the Markdown syntax to style your comment.',
+            'captcha' => 'Captcha Code',
+            'captcha_reload' => 'Reload Captcha', 
+            'captcha_placeholder' => 'Enter the code from the image', 
             'submit_comment' => 'Write a new Comment',
-            'cancel_reply' => 'Cencel this Reply',
+            'cancel_reply' => 'Cancel this Reply',
             'submit_reply' => 'Reply to this comment',
             'like' => 'Like',
             'like_title' => 'Like this Comment',
@@ -112,11 +120,11 @@ return [
             'favorite' => 'Favorite',
             'favorite_title' => 'Favorite this Comment',
             'reply' => 'Reply',
-            'reply_title' => 'Reply tp this Comment',
+            'reply_title' => 'Reply to this Comment',
             'disabled_open' => 'You\'re not allowed to comment on this post.',
             'disabled_restricted' => 'You must be logged-in to comment on this post.',
             'disabled_private' => 'Only registered backend users are allowed to comment on this post.',
-            'disabled_closed' => 'The comment section for this post has been disabled'
+            'disabled_closed' => 'The comment section for this post has been closed.'
         ],
         'errors' => [
             'unknown_post' => 'The passed post id or slug is unknown or invalid.',
@@ -124,7 +132,17 @@ return [
             'form_disabled' => 'The comment form is disabled on this post.',
             'not_allowed_to_comment' => 'You\'re not allowed to comment or reply on this post.',
             'invalid_csrf_token' => 'The passed CSRF token is invalid. Please reload the page and try again.',
-            'honeypot_filled' => 'The passed data seems strange, please try again later.'
+            'invalid_validation_code' => 'The passed Comment Validation code is invalid. Please reload the page and try again.',
+            'invalid_captcha' => 'The passed Captcha Code was wrong.',
+            'honeypot_filled' => 'The passed data seems strange, please try again later.',
+            'tos_not_accepted' => 'You need to accept the Terms of Service to comment on this post.',
+            'parent_not_found' => 'The parent comment on which you tried to reply does not exist or has been deleted.',
+            'parent_invalid' => 'The parent comment on which you tried to reply is invalid or has been moved.',
+            'not_allowed_to' => 'You are not allowed to call this action.',
+            'disabled_method' => 'This function has been disabled by the website administrator.',
+            'no_permissions_for' => 'You don\'t have the permission to call this action.',
+            'missing_comment_id' => 'The comment id is missing or invalid.',
+            'invalid_comment_id' => 'The passed comment id does not exist.'
         ]
     ],
 

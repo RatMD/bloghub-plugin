@@ -2,6 +2,7 @@
 
 namespace RatMD\BlogHub;
 
+use App;
 use Backend;
 use Event;
 use Exception;
@@ -73,7 +74,6 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-
         // Add side menuts to RainLab.Blog
         Event::listen('backend.menu.extendItems', function($manager) {
             $manager->addSideMenuItems('RainLab.Blog', 'blog', [

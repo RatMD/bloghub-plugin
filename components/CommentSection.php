@@ -10,10 +10,7 @@ use Request;
 use Session;
 use Backend\Facades\BackendAuth;
 use Cms\Classes\ComponentBase;
-use Cms\Classes\Page;
-use Cms\Classes\Theme;
 use RainLab\Blog\Models\Post;
-use RainLab\Pages\Classes\Page as RainLabPage;
 use RatMD\BlogHub\Models\BlogHubSettings;
 use RatMD\BlogHub\Models\Comment;
 use System\Classes\PluginManager;
@@ -93,18 +90,31 @@ class CommentSection extends ComponentBase
                 'type'              => 'checkbox',
                 'default'           => '0'
             ],
-            'disableForm' => [
-                'title'             => 'ratmd.bloghub::lang.components.comments_section.disable_form',
-                'description'       => 'ratmd.bloghub::lang.components.comments_section.disable_form_comment',
-                'type'              => 'checkbox',
-                'default'           => '0'
-            ],
             'hideOnDislikes' => [
                 'title'             => 'ratmd.bloghub::lang.components.comments_section.hide_on_dislike',
                 'description'       => 'ratmd.bloghub::lang.components.comments_section.hide_on_dislike_comment',
                 'type'              => 'string',
                 'default'           => '0'
-            ]
+            ],
+            'formPosition' => [
+                'group'             => 'ratmd.bloghub::lang.components.comments_section.group_form',
+                'title'             => 'ratmd.bloghub::lang.components.comments_section.form_position',
+                'description'       => 'ratmd.bloghub::lang.components.comments_section.form_position_comment',
+                'type'              => 'dropdown',
+                'default'           => 'above',
+                'useSearch'         => false,
+                'options'           => [
+                    'above'             => 'ratmd.bloghub::lang.components.comments_section.form_position_above',
+                    'below'             => 'ratmd.bloghub::lang.components.comments_section.form_position_below',
+                ]
+            ],
+            'disableForm' => [
+                'group'             => 'ratmd.bloghub::lang.components.comments_section.group_form',
+                'title'             => 'ratmd.bloghub::lang.components.comments_section.disable_form',
+                'description'       => 'ratmd.bloghub::lang.components.comments_section.disable_form_comment',
+                'type'              => 'checkbox',
+                'default'           => '0'
+            ],
         ];
     }
 
@@ -179,7 +189,40 @@ class CommentSection extends ComponentBase
      */
     protected function getComments()
     {
-        return Comment::where('post_id', $this->post->id)->getNested();
+        $page = $this->property('pageNumber');
+        if ($page > 1) {
+            $offset = ($page-1) * $this->property('commentsPerPage');
+        } else {
+            $offset = 0;
+        }
+
+        $order = $this->property('sortOrder');
+        if (!array_key_exists($order, $this->getSortOrderOptions())) {
+            $order = 'published_at DESC';
+        }
+
+        // Start Query
+        $query = Comment::where('post_id', $this->post->id)
+            ->limit($this->property('commentsPerPage'))
+            ->offset($offset);
+        
+        // Pin Favorites
+        if ($this->property('pinFavorites') !== '0' && $this->property('pinFavorites') !== false) {
+            $query->orderBy('favorite DESC');
+        }
+
+        // Hide on Dislike
+        if (($value = $this->property('hideOnDislike'))) {
+            if (strpos($value, ':') === 0 && is_numeric(substr($value, 1))) {
+                $val = substr($value, 1);
+                $query->whereRaw("dislike / like >= $val");
+            } else {
+                $query->where('dislike', '<', $value);
+            }
+        }
+
+        // Finish Query
+        return $query->orderByRaw($order)->get()->toNested();
     }
 
     /**
@@ -231,11 +274,6 @@ class CommentSection extends ComponentBase
         }
     }
 
-
-##
-##  CHECK METHODS
-##
-
     /**
      * Check if someone is logged in
      *
@@ -245,32 +283,6 @@ class CommentSection extends ComponentBase
     {
         return $this->getCurrentUser() !== null;
     }
-
-    /**
-     * Checks if the comment form is enabled on the current post.
-     *
-     * @return boolean
-     */
-    protected function isCommentFormEnabled()
-    {
-
-    }
-
-    /**
-     * Checks if the current user can comment on the current post.
-     *
-     * @return boolean
-     */
-    protected function canUserComment()
-    {
-
-    }
-    
-
-
-##
-##  COMPONENT METHODS
-##
 
     /**
      * Run Component
@@ -285,6 +297,7 @@ class CommentSection extends ComponentBase
             $this->page['showComments'] = false;
             $this->page['showCommentsForm'] = false;
             $this->page['comments'] = null;
+            $this->page['commentsFormPosition'] = $this->property('formPosition');
             $this->page['commentsMode'] = 'closed';
             $this->page['currentUser'] = null;
             $this->page['currentUserIsGuest'] = true;
@@ -292,11 +305,20 @@ class CommentSection extends ComponentBase
             $this->page['currentUserIsBackend'] = false;
             $this->page['isLoggedIn'] = false;
             $this->page['currentUserCanLike'] = false;
-            $this->page['currentUserCanDisike'] = false;
+            $this->page['currentUserCanDislike'] = false;
             $this->page['currentUserCanFavorite'] = false;
             $this->page['currentUserCanComment'] = false;
         } else {
             $this->prepareVars($post);
+
+            if ($this->page['showCommentFormCaptcha']) {
+                $builder = (new \Gregwar\Captcha\CaptchaBuilder)->build();
+                Session::put('bloghubCaptchaPhrase', $builder->getPhrase());
+                $this->page['captchaImage'] = $builder->inline();
+            }
+
+            $this->page['comments'] = $this->getComments();
+
             $this->addJs('/plugins/ratmd/bloghub/assets/js/comments.js');
             $this->addCss('/plugins/ratmd/bloghub/assets/css/comments.css');
         }
@@ -318,26 +340,32 @@ class CommentSection extends ComponentBase
 
         // Show Comments List
         $this->page['showComments'] = true;
+        $this->page['commentsFormPosition'] = $this->property('formPosition');
+        if ($this->property('disableForm') === '1') {
+            $this->page['commentsMode'] = 'hidden';
+            $this->page['showCommentsForm'] = false;
+        } else {
+            $this->page['showCommentsForm'] = true;
+        }
         
         // Set Comments Mode
         $this->page['commentsMode'] = $post->ratmd_bloghub_comment_mode;
-
-        if ($this->property('disableForm') === '1') {
-            $this->page['commentsMode'] = 'hidden';         // Disable Form [Page Property]
-        }
         if ($this->config('guest_comments') === '0' && $this->page['commentsMode'] === 'public') {
             $this->page['commentsMode'] = 'restricted';     // Guests cannot comment [Settings]
         }
 
-        // Set ShowCommentsForm
+        // Set currentUserCanComment
         if ($this->page['commentsMode'] === 'open') {
-            $this->page['showCommentsForm'] = true;
+            $this->page['currentUserCanComment'] = true;
         } else if ($this->page['commentsMode'] === 'restricted') {
-            $this->page['showCommentsForm'] = $this->isSomeoneLoggedIn();
+            $this->page['currentUserCanComment'] = $this->isSomeoneLoggedIn();
         } else if ($this->page['commentsMode'] === 'private') {
-            $this->page['showCommentsForm'] = $this->getBackendUser() !== null;
+            $this->page['currentUserCanComment'] = $this->getBackendUser() !== null;
+        } else if ($this->page['commentsMode'] === 'closed') {
+            $this->page['currentUserCanComment'] = false;
         } else {
             $this->page['showCommentsForm'] = false;
+            $this->page['currentUserCanComment'] = false;
         }
 
         // Set current user
@@ -347,10 +375,9 @@ class CommentSection extends ComponentBase
         $this->page['currentUserIsBackend'] = $this->getBackendUser() !== null;
         $this->page['isLoggedIn'] = $this->isSomeoneLoggedIn();
 
-        $this->page['currentUserCanComment'] = $this->page['showCommentsForm'];
         $this->page['currentUserCanLike'] = $like && (!$restrict || $this->page['isLoggedIn']);
-        $this->page['currentUserCanDisike'] = $dislike && (!$restrict || $this->page['isLoggedIn']);
-        $this->page['currentUserCanFavorite'] = $favorite && $user && $user->id === $this->post->user_id;
+        $this->page['currentUserCanDislike'] = $dislike && (!$restrict || $this->page['isLoggedIn']);
+        $this->page['currentUserCanFavorite'] = $favorite && $user && intval($user->id) === intval($post->user_id);
         
         // Skip when no comment form is shown
         if (!$this->page['currentUserCanComment']) {
@@ -369,15 +396,16 @@ class CommentSection extends ComponentBase
 
         // Comment Form Captcha
         if ($this->config('form_comment_captcha') === '1') {
-
+            $hasCaptcha = true;
             $this->page['showCommentFormCaptcha'] = true;
         } else {
-            
+            $hasCaptcha = false;
             $this->page['showCommentFormCaptcha'] = false;
         }
 
         // Comment Form Honeypot
         if ($this->config('form_comment_honeypot') === '1') {
+            $hasHoneypot = true;
             $time = time();
             $hash = md5(strval($time));
 
@@ -386,8 +414,17 @@ class CommentSection extends ComponentBase
             $this->page['honeypotEmail'] = 'comment_email' . $hash;
             $this->page['honeypotTime'] = $time;
         } else {
+            $hasHoneypot = false;
             $this->page['showCommentFormHoneypot'] = false;
         }
+
+        // Validation fields
+        $this->page['validationTime'] = time();
+        $this->page['validationHash'] = hash_hmac(
+            'SHA256', 
+            strval($this->page['validationTime']), 
+            strval(0 + ($hasCaptcha ? 10 : 0) + ($hasHoneypot ? 5 : 0))
+        );
     }
 
     /**
@@ -422,13 +459,96 @@ class CommentSection extends ComponentBase
     }
 
     /**
+     * Verify Comment Validation Code
+     *
+     * @param string $code
+     * @param string $time
+     * @param boolean $hasCaptcha
+     * @param boolean $hasHoneypot
+     * @return boolean
+     */
+    protected function verifyValidationCode(string $code, string $time, bool &$hasCaptcha, bool &$hasHoneypot)
+    {
+        if (hash_equals(hash_hmac('SHA256', $time, '0'), $code)) {
+            return true;
+        }
+
+        if (hash_equals(hash_hmac('SHA256', $time, '5'), $code)) {
+            $hasHoneypot = true;
+            return true;
+        }
+
+        if (hash_equals(hash_hmac('SHA256', $time, '10'), $code)) {
+            $hasCaptcha = true;
+            return true;
+        }
+
+        if (hash_equals(hash_hmac('SHA256', $time, '15'), $code)) {
+            $hasCaptcha = true;
+            $hasHoneypot = true;
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
+     * Action - Reload Captcha
+     *
+     * @return mixed
+     */
+    public function onReloadCaptcha()
+    {
+        $builder = (new \Gregwar\Captcha\CaptchaBuilder)->build();
+        Session::put('bloghubCaptchaPhrase', $builder->getPhrase());
+
+        // Send new Image
+        return [
+            'captchaImage' => $builder->inline()
+        ];
+    }
+
+    /**
      * Action - Like Comment
      *
      * @return mixed
      */
     public function onLike()
     {
+        if (empty($post = $this->getPost())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
+        }
+        $this->prepareVars($post);
 
+        // Check if Like is enabled
+        if ($this->config('like_comment') !== '1') {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.disabled_method'));
+        }
+
+        // Check if Comment exists
+        if (empty($comment_id = input('comment_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_comment_id'));
+        }
+        if (empty($comment = Comment::where('id', $comment_id)->first())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_comment_id'));
+        }
+
+        // Check if current user can dislike
+        if (!$this->page['currentUserCanLike']) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to'));
+        }
+
+        // Add Like & Return
+        $comment->likes = $comment->likes+1;
+        if ($comment->save()) {
+            return [
+                'status' => 'success',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+            ];
+        }
     }
 
     /**
@@ -438,7 +558,40 @@ class CommentSection extends ComponentBase
      */
     public function osDislike()
     {
+        if (empty($post = $this->getPost())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
+        }
+        $this->prepareVars($post);
 
+        // Check if Dislike is enabled
+        if ($this->config('dislike_comment') !== '1') {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.disabled_method'));
+        }
+
+        // Check if Comment exists
+        if (empty($comment_id = input('comment_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_comment_id'));
+        }
+        if (empty($comment = Comment::where('id', $comment_id)->first())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_comment_id'));
+        }
+
+        // Check if current user can dislike
+        if (!$this->page['currentUserCanDislike']) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to'));
+        }
+
+        // Add Dislike & Return
+        $comment->dislikes = $comment->dislikes+1;
+        if ($comment->save()) {
+            return [
+                'status' => 'success',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+            ];
+        }
     }
 
     /**
@@ -448,17 +601,88 @@ class CommentSection extends ComponentBase
      */
     public function onFavorite()
     {
+        if (empty($post = $this->getPost())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
+        }
+        $this->prepareVars($post);
 
+        // Check if Favorite is enabled
+        if ($this->config('author_favorites') !== '1') {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.disabled_method'));
+        }
+
+        // Check if Comment exists
+        if (empty($comment_id = input('comment_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_comment_id'));
+        }
+        if (empty($comment = Comment::where('id', $comment_id)->first())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_comment_id'));
+        }
+
+        // Check if current user can favorite
+        if (!$this->page['currentUserCanFavorite']) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to'));
+        }
+
+        // Favorite Comment
+        $comment->favorite = true;
+        if ($comment->save()) {
+            return [
+                'status' => 'success',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+            ];
+        }
     }
 
     /**
-     * Action - Accept Comment
+     * Action - Approve Comment
      *
      * @return void
      */
-    public function onAccept()
+    public function onApprove()
     {
+        if (empty($post = $this->getPost())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
+        }
+        $this->prepareVars($post);
 
+        // Check if Comment exists
+        if (empty($comment_id = input('comment_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_comment_id'));
+        }
+        if (empty($comment = Comment::where('id', $comment_id)->first())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_comment_id'));
+        }
+
+        // Check if current user is backend user
+        if (!$this->page['currentUserIsBackend']) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to'));
+        }
+
+        // Check if current user is allowed to moderatoe
+        if (!$this->getBackendUser()->hasPermission('ratmd.bloghub.comments.moderate_comments')) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.no_permissions_for'));
+        }
+
+        // Reject Comment
+        if ($comment->status === 'pending') {
+            if ($comment->approve()) {
+                return [
+                    'status' => 'success',
+                ];
+            } else {
+                return [
+                    'status' => 'error'
+                ];
+            }
+        } else {
+            return [
+                'status' => 'error',
+            ];
+        }
     }
 
     /**
@@ -468,7 +692,45 @@ class CommentSection extends ComponentBase
      */
     public function onReject()
     {
+        if (empty($post = $this->getPost())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
+        }
+        $this->prepareVars($post);
 
+        // Check if Comment exists
+        if (empty($comment_id = input('comment_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_comment_id'));
+        }
+        if (empty($comment = Comment::where('id', $comment_id)->first())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_comment_id'));
+        }
+
+        // Check if current user is backend user
+        if (!$this->page['currentUserIsBackend']) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to'));
+        }
+
+        // Check if current user is allowed to moderatoe
+        if (!$this->getBackendUser()->hasPermission('ratmd.bloghub.comments.moderate_comments')) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.no_permissions_for'));
+        }
+
+        // Reject Comment
+        if ($comment->status === 'pending') {
+            if ($comment->reject()) {
+                return [
+                    'status' => 'success',
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                ];
+            }
+        } else {
+            return [
+                'status' => 'error',
+            ];
+        }
     }
 
     /**
@@ -478,28 +740,59 @@ class CommentSection extends ComponentBase
      */
     public function onReply()
     {
-        if (empty($this->getPost())) {
+        if (empty($post = $this->getPost())) {
             throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
         }
+        $this->prepareVars($post);
 
-        $this->preparePost();
-        $this->prepareVars();
+        // Check if Comment exists
+        if (empty($comment_id = input('comment_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_comment_id'));
+        }
+        if (empty($comment = Comment::where('id', $comment_id)->first())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_comment_id'));
+        }
 
+        // Validate Form ID
         if (empty($formId = input('form_id'))) {
             throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_form_id'));
         }
 
-        if (!$this->isCommentFormEnabled()) {
+        // Check if form is disabled
+        if (!$this->page['showCommentsForm']) {
             throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.form_disabled'));
         }
-        
-        if (!$this->userCanComment()) {
+
+        // Check if current user can comment
+        if (!$this->page['currentUserCanComment']) {
             throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to_comment'));
         }
 
+        // Return Reply Partial and submit button text
         return [
-            '#' . $formId . '_reply' => 'Reply to',
+            '#' . $formId . '_reply' => $this->renderPartial('@comment-reply', [
+                'comment' => $comment
+            ]),
+            'comment' => $comment,
             'submitButtonText' => Lang::get('ratmd.bloghub::lang.frontend.comments.submit_reply')
+        ];
+    }
+
+
+    /**
+     * Action - Cancel Reply to Comment
+     *
+     * @return void
+     */
+    public function onCancelReply()
+    {
+        if (empty($formId = input('form_id'))) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_form_id'));
+        }
+
+        return [
+            '#' . $formId . '_reply' => '',
+            'submitButtonText' => Lang::get('ratmd.bloghub::lang.frontend.comments.submit_comment')
         ];
     }
 
@@ -510,15 +803,17 @@ class CommentSection extends ComponentBase
      */
     public function onWriteComment()
     {
-        $this->preparePost();
-        $this->prepareVars();
+        if (empty($post = $this->getPost())) {
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
+        }
+        $this->prepareVars($post);
 
-        // Get current Form ID
+        // Validate Form ID
         if (empty($formId = input('comment_form_id'))) {
             throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.missing_form_id'));
         }
-        
-        // CSRF Validation
+
+        // Validate CSRF Token
         if (!$this->verifyCsrfToken()) {
             throw new AjaxException([
                 '#' . $formId . '_alert' => $this->renderPartial('@alert', [
@@ -528,10 +823,35 @@ class CommentSection extends ComponentBase
             ]);
         }
 
-        // Honeypot Validation
-        $honey = input('comment_honey');
-        if ($honey && strlen($honey) > 0) {
-            if (!empty(input('comment_user')) || empty(input('comment_email'))) {
+        // Validate Comment Validation Code
+        $hasCaptcha = false;
+        $hasHoneypot = false;
+        if (!$this->verifyValidationCode(input('comment_validation'), input('comment_time'), $hasCaptcha, $hasHoneypot)) {
+            throw new AjaxException([
+                '#' . $formId . '_alert' => $this->renderPartial('@alert', [
+                    'type' => 'danger',
+                    'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_validation_code')
+                ])
+            ]);
+        }
+
+        // Validate Comment Captcha
+        if ($hasCaptcha) {
+            if (!hash_equals(Session::get('bloghubCaptchaPhrase'), input('comment_captcha'))) {
+                throw new AjaxException([
+                    '#' . $formId . '_alert' => $this->renderPartial('@alert', [
+                        'type' => 'danger',
+                        'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.invalid_captcha')
+                    ])
+                ]);
+            }
+        }
+
+        // Validate Honeypot Field
+        if ($hasHoneypot) {
+            $honey = input('comment_honey');
+
+            if (empty($honey) || !empty(input('comment_user')) || !empty(input('comment_email'))) {
                 throw new AjaxException([
                     '#' . $formId . '_alert' => $this->renderPartial('@alert', [
                         'type' => 'danger',
@@ -539,34 +859,26 @@ class CommentSection extends ComponentBase
                     ])
                 ]);
             }
+
+            $honey = md5($honey);
         }
 
-        // Check Slug
-        if (empty($this->slug)) {
+        // Check current User
+        if (!$this->page['currentUserCanComment']) {
             throw new AjaxException([
                 '#' . $formId . '_alert' => $this->renderPartial('@alert', [
                     'type' => 'danger',
-                    'message' => 'The passed post slug is invalid or missing.'
-                ])
-            ]);
-        }
-
-        // Check Form Submission
-        if (!$this->page['showCommentsForm']) {
-            throw new AjaxException([
-                '#' . $formId . '_alert' => $this->renderPartial('@alert', [
-                    'type' => 'danger',
-                    'message' => 'You\'re not allowed to comment on this post.'
+                    'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.not_allowed_to_commentd')
                 ])
             ]);
         }
 
         // Validate Terms of Service
-        if ($this->config('form_tos_checkbox') === '1' && !($this->config('form_tos_hide_on_user') && $this->isSomeoneLoggedIn())) {
+        if ($this->page['showCommentFormTos'] && input('comment_tos') !== '1') {
             throw new AjaxException([
                 '#' . $formId . '_alert' => $this->renderPartial('@alert', [
                     'type' => 'danger',
-                    'message' => 'You need to check the Term of Service to comment on this post.'
+                    'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.tos_not_accepted')
                 ])
             ]);
         }
@@ -584,8 +896,8 @@ class CommentSection extends ComponentBase
                 $comment->status = 'published';
             }
         } else {
-            $comment->author = input('comment_user');
-            $comment->author_email = input('comment_email');
+            $comment->author = isset($honey) ? input('comment_user' . $honey) : input('comment_user');
+            $comment->author_email = isset($honey) ? input('comment_email' . $honey) : input('comment_email');
             $comment->author_uid = sha1(request()->ip());
 
             if ($this->config('moderate_guest_comments') === '0') {
@@ -599,26 +911,38 @@ class CommentSection extends ComponentBase
         }
 
         // Set Related Post
-        $comment->post = $this->post;
+        $comment->post = $post;
         
         // Validate Comment Parent
         $parentId = input('comment_parent');
-        if (!empty ($parentId)) {
+        if (!empty($parentId)) {
+
+            // Comment ID unknown
             if (empty($parent = Comment::where('id', $parentId)->first())) {
                 throw new AjaxException([
                     '#' . $formId . '_alert' => $this->renderPartial('@alert', [
                         'type' => 'danger',
-                        'message' => 'The parent comment could not be found.'
+                        'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.parent_not_found')
                     ])
                 ]);
             }
+
+            // Comment not on the same Post
+            if ($parent->post_id !== $post->id) {
+                throw new AjaxException([
+                    '#' . $formId . '_alert' => $this->renderPartial('@alert', [
+                        'type' => 'danger',
+                        'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.parent_invalid')
+                    ])
+                ]);
+            }
+
             $comment->parent_id = $parent->id;
         }
 
         return [
             'status' => $comment->save()
         ];
-
     }
 
 }
