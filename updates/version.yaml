@@ -47,4 +47,8 @@ v1.3.0:
   - Add Blog Comments column to 'rainlab_blog_posts'.
   - create_comments_table.php
   - migrate_settings_table.php
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+  - migrate_visitors_table.php
+>>>>>>> c5bd13e ([TASK] WiP)

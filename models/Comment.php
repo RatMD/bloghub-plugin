@@ -8,7 +8,7 @@ use Model;
  */
 class Comment extends Model
 {
-    use \October\Rain\Database\Traits\NestedTree;
+    use \October\Rain\Database\Traits\SimpleTree;
     use \October\Rain\Database\Traits\Validation;
 
     /**
@@ -55,8 +55,8 @@ class Comment extends Model
      * @var array rules for validation
      */
     public $rules = [
-        'author' => 'string|min:3',
-        'author_email' => 'email',
+        'author' => 'nullable|string|min:3',
+        'author_email' => 'nullable|email',
         'status' => 'required|in:pending,published,spam',
         'content' => 'required|string|min:3'
     ];
@@ -207,6 +207,29 @@ class Comment extends Model
             'amount' => $amount,
             'format' => trans('ratmd.bloghub::lang.model.post.published_format_' . $format)
         ]);
+    }
+
+    /**
+     * Approve a Comment
+     * 
+     * @return bool
+     */
+    public function approve()
+    {
+        $this->status = 'published';
+        $this->published_at = date("Y-m-d H:i:s");
+        return $this->save();
+    }
+    
+    /**
+     * Reject a Comment
+     * 
+     * @return bool
+     */
+    public function reject()
+    {
+        $this->status = 'rejected';
+        return $this->save();
     }
 
 }
