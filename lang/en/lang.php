@@ -2,11 +2,171 @@
 
 return [
     'plugin' => [
+<<<<<<< HEAD
         'name' => 'RatMD BlogHub',
         'description' => 'Extends RainLab\'s Blog extension with custom meta details, additional archives and more.',
     ],
 
     'model' => [
+=======
+        'name' => 'BlogHub by rat.md',
+        'description' => 'Extends RainLab\'s Blog extension with comments, meta data, tags, archives and much more.',
+    ],
+
+    'components' => [
+        'bloghub_group' => 'BlogHub Settings',
+
+        'base' => [
+            'label' => 'Base Configuration',
+            'comment' => 'The Base BlogHub configuration, should be included on the base CMS layouts.',
+            'archive_author' => 'Author CMS Page',
+            'archive_author_comment' => 'Name of the CMS Page used for the author archive.',
+            'archive_date' => 'Date CMS Page',
+            'archive_date_comment' => 'Name of the CMS Page used for the date archive.',
+            'archive_tag' => 'Tag CMS Page',
+            'archive_tag_comment' => 'Name of the CMS Page used for the tag archive.',
+            'author_slug' => 'Use Author Slug only',
+            'author_slug_comment' => 'Uses the author_slug backend column field only.',
+            'date_invalid' => '404 on invalid dates',
+            'date_invalid_comment' => 'Shows the 404 error message on invalid dates.',
+            'date_empty' => '404 on empty dates',
+            'date_empty_comment' => 'Shows the 404 error message on empty date archives.',
+            'tag_multiple' => 'Allow multiple tags',
+            'tag_multiple_comment' => 'Allows multiple tag queries using + or , on the tag archive pages.',
+        ],
+        'author' => [
+            'label' => 'Posts by Author',
+            'comment' => 'Displays a list of posts by author.',
+            'filter' => 'Author filter',
+            'filter_comment' => 'Enter a author login name or URL parameter to filter the posts by.',
+        ],
+        'comment_count' => [
+            'label' => 'Posts by Comments',
+            'comment' => 'Displays a list of posts by the comments counter.'
+        ],
+        'date' => [
+            'label' => 'Posts by Date',
+            'comment' => 'Displays a list of posts by date.',
+            'filter' => 'Date filter',
+            'filter_comment' => 'Enter a specific date or URL parameter to filter the posts by.',
+        ],
+        'tag' => [
+            'label' => 'Posts by Tag',
+            'comment' => 'Displays a list of posts by tag.',
+            'filter' => 'Tag filter',
+            'filter_comment' => 'Enter a tag slug or URL parameter to filter the posts by.',
+        ],
+        'comments_section' => [
+            'label' => 'Comments Section',
+            'comment' => 'Display a comments section with comment form on the single post CMS page.',
+            'post_slug' => 'Post filter',
+            'post_slug_comment' => 'Enter a post slug or URL parameter to filter the comments by.',
+            'comments_per_page' => 'Comments per Page',
+            'comments_order' => 'Comment order',
+            'comments_order_comment' => 'Attribute on which the comments should be ordered.',
+            'comments_anchor' => 'Container Anchor',
+            'comments_anchor_comment' => 'The ID of the main comment container, used as URL anchor on the pagination links.',
+            'pin_favorites' => 'Pin Favorites',
+            'pin_favorites_comment' => 'Pin Author-Favorites comments on top of the comment list.',
+            'disable_form' => 'Disable Comment Form',
+            'disable_form_comment' => 'Disables the comment submit form, regardless of the post option.',
+            'hide_on_dislike' => 'Hide disliked comments',
+            'hide_on_dislike_comment' => 'Hide disliked comments, use either an absolute number or start your number with a colon to define a relation to the likes.',
+        ],
+
+
+
+
+
+
+        'tags_list' => [
+            'label' => 'Tag List',
+            'comment' => 'Displays a list of blog tags on the page.'
+        ],
+        'tags_cloud' => [
+            'label' => 'Tag Cloud',
+            'comment' => 'Displays a Tag Cloud with the most used or promoted tags.'
+        ],
+
+
+        'comments_list' => [
+            'label' => 'Comments List',
+            'comment' => 'Displays a list of comments on the page.',
+            'exclude_posts' => 'Exclude Posts',
+            'exclude_posts_description' => 'Exclude specific post ids or post slugs (comma-separated list).',
+            'amount' => 'Comment Amount',
+            'amount_description' => 'The amount of comments to be passed to the page.',
+            'amount_validation' => 'Invalid format of the the amount value.',
+            'only_favorites' => 'Show Favorites only',
+            'only_favorites_description' => 'Shows only comments which has been marked as favorites by the authors.',
+        ]
+    ],
+
+    'frontend' => [
+        'comments' => [
+            'username' => 'Your Username',
+            'email' => 'Your Mail address',
+            'title' => 'Your Comment Title',
+            'comment' => 'Your Comment',
+            'comment_markdown_hint' => 'You can use the Markdown syntax to style your comment.',
+            'submit_comment' => 'Write a new Comment',
+            'cancel_reply' => 'Cencel this Reply',
+            'submit_reply' => 'Reply to this comment',
+            'like' => 'Like',
+            'like_title' => 'Like this Comment',
+            'dislike' => 'Dislike',
+            'dislike_title' => 'Dislike this Comment',
+            'favorite' => 'Favorite',
+            'favorite_title' => 'Favorite this Comment',
+            'reply' => 'Reply',
+            'reply_title' => 'Reply tp this Comment',
+            'disabled_open' => 'You\'re not allowed to comment on this post.',
+            'disabled_restricted' => 'You must be logged-in to comment on this post.',
+            'disabled_private' => 'Only registered backend users are allowed to comment on this post.',
+            'disabled_closed' => 'The comment section for this post has been disabled'
+        ],
+        'errors' => [
+            'unknown_post' => 'The passed post id or slug is unknown or invalid.',
+            'missing_form_id' => 'The component id is missing or invalid.',
+            'form_disabled' => 'The comment form is disabled on this post.',
+            'not_allowed_to_comment' => 'You\'re not allowed to comment or reply on this post.',
+            'invalid_csrf_token' => 'The passed CSRF token is invalid. Please reload the page and try again.',
+            'honeypot_filled' => 'The passed data seems strange, please try again later.'
+        ]
+    ],
+
+    'model' => [
+        'comments' => [
+            'label' => 'Comments',
+            'post_visibility' => [
+                'label' => 'Comments Visibility',
+                'comment' => 'Show  or Hide the comments section on this post.'
+            ],
+            'post_mode' => [
+                'label' => 'Comment Mode',
+                'comment' => 'Change the comment mode for this post.',
+                'open' => 'Open (Everyone can comment)',
+                'restricted' => 'Restricted (Only logged-In Users can comment)',
+                'private' => 'Private (Only logged-in backend users can comment)',
+                'closed' => 'Closed (Noone can comment)'
+            ],
+            'seconds_ago' => 'A few seconds ago',
+            'x_ago' => ':amount :format ago'
+        ],
+        
+        'post' => [
+            'reading_time' => 'Reading Time: :min min :sec seconds',
+            'reading_time_sec' => 'Reading Time: :sec seconds',
+            'published_seconds_ago' => 'Published a few seconds ago.',
+            'published_ago' => 'Published :amount :format ago.',
+            'published_format_years' => 'years',
+            'published_format_months' => 'months',
+            'published_format_days' => 'days',
+            'published_format_hours' => 'hours',
+            'published_format_minutes' => 'minutes',
+        ],
+
+>>>>>>> bd5ef37 ([DEV])
         'tags' => [
             'label' => 'Tags',
             'manage' => 'Manage Tags',
@@ -26,6 +186,10 @@ return [
             'postsEmpty' => 'No posts available.',
             'postsNumber' => 'No of Posts'
         ],
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd5ef37 ([DEV])
         'users' => [
             'displayName' => 'Display Name',
             'displayNameComment' => 'A custom version of your name, supporting themes may show them on your posts.',
@@ -34,6 +198,7 @@ return [
             'aboutMe' => 'About Me',
             'aboutMeDescription' => 'A small description about yourself, supporting themes may show them on your posts.'
         ],
+<<<<<<< HEAD
         'post' => [
             'reading_time' => 'Reading Time: :min min :sec seconds',
             'reading_time_sec' => 'Reading Time: :sec seconds',
@@ -45,11 +210,15 @@ return [
             'published_format_hours' => 'hours',
             'published_format_minutes' => 'minutes',
         ],
+=======
+
+>>>>>>> bd5ef37 ([DEV])
         'visitors' => [
             'views' => 'Views / Unique'
         ]
     ],
 
+<<<<<<< HEAD
     'components' => [
         'authors_title' => 'Posts by Author',
         'authors_description' => 'Displays a list of posts by author.',
@@ -67,12 +236,24 @@ return [
         'tags_description' => 'Displays a list of blog tags on the page.',
         'tags_page' => 'Tag page',
         'tags_page_description' => 'Name of the tag page file for the tag links. This property is used by the default component partial.',
+=======
+    'permissions' => [
+        'access_comments' => 'Manage the blog comments',
+        'access_comments_comment' => 'Allows access to the comments submenu for all posts.',
+        'manage_post_settings' => 'Manage post-related comment settings',
+        'moderate_comments' => 'Moderate blog comments',
+        'delete_commpents' => 'Allowed to delete published comments',
+        'access_tags' => 'Manage the blog tags',
+        'access_tags_comment' => 'Allows to access the tags submenu and to set the post tags itself for all posts.',
+        'promote_tags' => 'Allows to promote tags',
+>>>>>>> bd5ef37 ([DEV])
     ],
 
     'sorting' => [
         'bloghub_views_asc' => 'Views (ascending)',
         'bloghub_views_desc' => 'Views (descending)',
         'bloghub_unique_views_asc' => 'Unique Views (ascending)',
+<<<<<<< HEAD
         'bloghub_unique_views_desc' => 'Unique Views (descending)'
     ],
 
@@ -118,6 +299,157 @@ return [
             'mediafinder' => 'Media Finder',
             'richeditor' => 'Rich WYSIWYG Editor',
             'taglist' => 'Tag List',
+=======
+        'bloghub_unique_views_desc' => 'Unique Views (descending)',
+        'bloghub_comments_count_asc' => 'Number of Comments (ascending)',
+        'bloghub_comments_count_desc' => 'Number of Comments (descending)',
+        'published_at_desc' => 'Published (descending)',
+        'published_at_asc' => 'Published (ascending)',
+        'comments_count_desc' => 'Comments Counter (descending)',
+        'comments_count_asc' => 'Comments Counter (ascending)',
+        'likes_desc' => 'Likes Counter (descending)',
+        'likes_asc' => 'Likes Counter (ascending)',
+        'dislikes_desc' => 'Dislikes Counter (descending)',
+        'dislikes_asc' => 'Dislikes Counter (ascending)',
+    ],
+
+    'settings' => [
+        'config' => [
+            'label' => 'BlogHub',
+            'description' => 'Manage the BlogHub related settings.'
+        ],
+
+        'comments' => [
+            'tab' => 'Comments',
+            'general_section' => 'General Settings',
+            'comment_form_section' => 'Form Settings',
+
+            'author_favorites' => [
+                'label' => 'Author Favorites',
+                'comment' => 'Allow authors to favourite user comments.'
+            ],
+            'like_comment' => [
+                'label' => 'Like Comments',
+                'comment' => 'Enable the Like button on each user comment.'
+            ],
+            'dislike_comment' => [
+                'label' => 'Dislike Comments',
+                'comment' => 'Enable the Dislike button on each user comment.'
+            ],
+            'restrict_to_users' => [
+                'label' => 'Like & Dislike only for users',
+                'comment' => 'Restrict the Like and Dislike functions to logged in users only.'
+            ],
+            'guest_comments' => [
+                'label' => 'Guest Comments',
+                'comment' => 'Allow guests to comment on all enabled posts.'
+            ],
+            'moderate_guest_comments' => [
+                'label' => 'Moderate Guest Comments',
+                'comment' => 'Moderate each guest comment, before it is published and visible to everyone.'
+            ],
+            'moderate_user_comments' => [
+                'label' => 'Moderate User Comments',
+                'comment' => 'Moderate each frontend user comment, before it is published and visible to everyone.'
+            ],
+            'form_comment_title' => [
+                'label' => 'Comment Title Field',
+                'comment' => 'Enable and Use the comment title field.',
+            ],
+            'form_comment_markdown' => [
+                'label' => 'Comment Markdown',
+                'comment' => 'Allow to use markdown in the comment body field.',
+            ],
+            'form_comment_honeypot' => [
+                'label' => 'Comment Honeypot',
+                'comment' => 'Add a Honeypot field to protect your comments from the simplest bots.',
+            ],
+            'form_comment_captcha' => [
+                'label' => 'Comment Captcha',
+                'comment' => 'Add a GREGWAR Captcha field to protect your comments from some bots.',
+            ],
+            'form_tos_checkbox' => [
+                'label' => 'Require Terms of Service',
+                'comment' => 'Shows a Terms of Service agreement checkbox below the comment form.',
+            ],
+            'form_tos_hide_on_user' => [
+                'label' => 'Hide for known Users',
+                'comment' => 'Hides the Terms of Service checkbox for loggedin users and backend users.',
+            ],
+            'form_tos_type' => [
+                'label' => 'Terms of Service Type',
+                'cms_page' => 'CMS Page',
+                'static_page' => 'Static Page'
+            ],
+            'form_tos_label' => [
+                'label' => 'Terms of Service Label',
+                'default' => 'I\'ve read and agree to the [Terms of Service]',
+                'comment' => 'The text within the square brackets will link to the specified page.'
+            ],
+            'form_tos_page' => [
+                'cmsLabel' => 'Terms of Service - CMS Page',
+                'staticLabel' => 'Terms of Service - Static Page',
+                'emptyOption' => '-- Select a Terms of Service Page --',
+                'comment' => 'Select the desired page to link to, or leave empty to show the plain label only.'
+            ]
+        ],
+
+        'meta' => [
+            'defaultTab' => 'Meta Data',
+            'label' => 'Custom Meta Fields',
+            'description' => 'Manage the global custom meta fields for your posts.',
+            'prompt' => 'Add a new Meta Field',
+
+            'hint' => [
+                'label' => 'Make sure your Field Names are unique',
+                'comment' => 'The custom meta fields configured here will be overriden by the meta fields configured in the theme.yaml template file. Thus, keep your keys unique!'
+            ],
+            'name' => [
+                'label' => 'Custom Meta Name',
+                'comment' => 'The custom meta name as available on the frontend.'
+            ],
+            'type' => [
+                'label' => 'Custom Meta Type',
+                'comment' => 'The custom meta field type as available on the backend.'
+            ],
+            'config' => [
+                'label' => 'Custom Meta Configuration',
+                'comment' => 'Pass your field definition configuration here, as documented on the <a href="https://docs.octobercms.com/3.x/element/form/widget-taglist.html" target="_blank">OctoberCMS Docs</a>.'
+            ],
+            'types' => [
+                'text' => 'Text Field',
+                'number' => 'Number Field',
+                'password' => 'Password Field',
+                'email' => 'E-Mail Field',
+                'textarea' => 'Textarea Field',
+                'dropdown' => 'Dropdown Selector',
+                'radio' => 'Radio Field',
+                'balloon' => 'Balloon Selector',
+                'checkbox' => 'Checkbox Field',
+                'checkboxlist' => 'Checkbox List',
+                'switch' => 'Switch Button',
+                'codeeditor' => 'Code Editor',
+                'colorpicker' => 'Color Picker',
+                'datepicker' => 'Date/Time Picker',
+                'fileupload' => 'File Upload Field',
+                'markdown' => 'Markdown Editor',
+                'mediafinder' => 'Media Finder',
+                'richeditor' => 'Rich WYSIWYG Editor',
+                'taglist' => 'Tag List',
+            ]
+        ]
+    ],
+
+    'widgets' => [
+        'comments_list' => [
+            'label' => 'BlogHub - Comments List'
+        ],
+        'posts_list' => [
+            'label' => 'BlogHub - Posts List'
+        ],
+        'posts_statistics' => [
+            'label' => 'BlogHub - Posts Statistics'
+>>>>>>> bd5ef37 ([DEV])
         ]
     ]
 ];

@@ -5,6 +5,10 @@ namespace RatMD\BlogHub\Behaviors;
 use Cms\Classes\Controller;
 use October\Rain\Extension\ExtensionBase;
 use RainLab\Blog\Models\Post;
+<<<<<<< HEAD
+=======
+use RatMD\BlogHub\Classes\BlogHubPost;
+>>>>>>> bd5ef37 ([DEV])
 use RatMD\BlogHub\Models\Meta;
 
 class BlogHubPostModel extends ExtensionBase
@@ -18,6 +22,16 @@ class BlogHubPostModel extends ExtensionBase
     protected Post $model;
 
     /**
+<<<<<<< HEAD
+=======
+     * BlogHub Post Model DataSet
+     *
+     * @var ?BlogHubPost
+     */
+    protected ?BlogHubPost $bloghubSet;
+
+    /**
+>>>>>>> bd5ef37 ([DEV])
      * Constructor
      *
      * @param Post $model
@@ -26,6 +40,7 @@ class BlogHubPostModel extends ExtensionBase
     {
         $this->model = $model;
 
+<<<<<<< HEAD
         // Add Tag Relationship
         $this->model->belongsToMany['ratmd_bloghub_tags'] = [
             'RatMD\BlogHub\Models\Tag',
@@ -35,11 +50,23 @@ class BlogHubPostModel extends ExtensionBase
 
         // Add Custom Meta Relationship
         $this->model->morphMany['ratmd_bloghub_meta'] = [
+=======
+        // Add Blog Comments
+        $model->hasMany['ratmd_bloghub_comments'] = [
+            'RatMD\BlogHub\Models\Comment',
+            'table' => 'ratmd_bloghub_comments',
+            'order' => 'slug'
+        ];
+
+        // Add Blog Meta
+        $model->morphMany['ratmd_bloghub_meta'] = [
+>>>>>>> bd5ef37 ([DEV])
             'RatMD\BlogHub\Models\Meta',
             'table' => 'ratmd_bloghub_meta',
             'name' => 'metable',
         ];
 
+<<<<<<< HEAD
         // Add Temporary Form JSONable
         $this->model->addJsonable('ratmd_bloghub_meta_temp');
         
@@ -48,6 +75,33 @@ class BlogHubPostModel extends ExtensionBase
 
         // Bind URLs (@todo find a better solution)
         $model->bindEvent('model.afterFetch', fn() => $this->afterFetch());
+=======
+        // Add Blog Tags
+        $model->belongsToMany['ratmd_bloghub_tags'] = [
+            'RatMD\BlogHub\Models\Tag',
+            'table' => 'ratmd_bloghub_tags_posts',
+            'order' => 'slug'
+        ];
+
+        // Add Temporary Form JSONable
+        $model->addJsonable('ratmd_bloghub_meta_temp');
+        
+        // Handle Backend Form Submits
+        $model->bindEvent('model.beforeSave', fn() => $this->beforeSave());
+    }
+
+    /**
+     * Get main BlogHub Space
+     *
+     * @return array
+     */
+    public function getBloghubAttribute()
+    {
+        if (empty($this->bloghubSet)) {
+            $this->bloghubSet = new BlogHubPost($this->model);
+        }
+        return $this->bloghubSet;
+>>>>>>> bd5ef37 ([DEV])
     }
 
     /**

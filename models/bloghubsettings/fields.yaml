@@ -1,0 +1,152 @@
+tabs:
+    fields:
+        _general_section:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: section
+            label: ratmd.bloghub::lang.settings.comments.general_section
+        
+        author_favorites:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.author_favorites.label
+            comment: ratmd.bloghub::lang.settings.comments.author_favorites.comment
+            default: true
+        
+        like_comment:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.like_comment.label
+            comment: ratmd.bloghub::lang.settings.comments.like_comment.comment
+            default: true
+            span: left
+        
+        dislike_comment:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.dislike_comment.label
+            comment: ratmd.bloghub::lang.settings.comments.dislike_comment.comment
+            default: true
+            span: right
+        
+        restrict_to_users:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.restrict_to_users.label
+            comment: ratmd.bloghub::lang.settings.comments.restrict_to_users.comment
+            default: false
+            span: left
+        
+        _comment_form_section:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: section
+            label: ratmd.bloghub::lang.settings.comments.comment_form_section
+
+        guest_comments:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.guest_comments.label
+            comment: ratmd.bloghub::lang.settings.comments.guest_comments.comment
+            default: true
+        
+        moderate_guest_comments:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.moderate_guest_comments.label
+            comment: ratmd.bloghub::lang.settings.comments.moderate_guest_comments.comment
+            default: true
+            span: left
+        
+        moderate_user_comments:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.moderate_user_comments.label
+            comment: ratmd.bloghub::lang.settings.comments.moderate_user_comments.comment
+            default: false
+            span: right
+        
+        form_comment_title:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.form_comment_title.label
+            comment: ratmd.bloghub::lang.settings.comments.form_comment_title.comment
+            default: false
+
+        form_comment_markdown:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.form_comment_markdown.label
+            comment: ratmd.bloghub::lang.settings.comments.form_comment_markdown.comment
+            default: true
+
+        form_comment_honeypot:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.form_comment_honeypot.label
+            comment: ratmd.bloghub::lang.settings.comments.form_comment_honeypot.comment
+            default: true
+
+        form_comment_captcha:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.form_comment_captcha.label
+            comment: ratmd.bloghub::lang.settings.comments.form_comment_captcha.comment
+            default: false
+        
+        form_tos_checkbox:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.form_tos_checkbox.label
+            comment: ratmd.bloghub::lang.settings.comments.form_tos_checkbox.comment
+            default: false
+            span: left
+        
+        form_tos_hide_on_user:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: switch
+            label: ratmd.bloghub::lang.settings.comments.form_tos_hide_on_user.label
+            comment: ratmd.bloghub::lang.settings.comments.form_tos_hide_on_user.comment
+            default: true
+            span: right
+
+        form_tos_label:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: text
+            label: ratmd.bloghub::lang.settings.comments.form_tos_label.label
+            default: ratmd.bloghub::lang.settings.comments.form_tos_label.default
+            comment: ratmd.bloghub::lang.settings.comments.form_tos_label.comment
+            span: left
+            trigger:
+                action: show
+                field: form_tos_type
+                condition: value[cms_page][static_page]
+        
+        form_tos_type:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: balloon-selector
+            label: ratmd.bloghub::lang.settings.comments.form_tos_type.label
+            default: cms_page
+            span: left
+        
+        form_tos_cms_page:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: dropdown
+            label: ratmd.bloghub::lang.settings.comments.form_tos_page.cmsLabel
+            emptyOption: ratmd.bloghub::lang.settings.comments.form_tos_page.emptyOption
+            comment: ratmd.bloghub::lang.settings.comments.form_tos_page.comment
+            span: right
+            trigger:
+                action: show
+                field: form_tos_type
+                condition: value[cms_page]
+        
+        form_tos_static_page:
+            tab: ratmd.bloghub::lang.settings.comments.tab
+            type: dropdown
+            label: ratmd.bloghub::lang.settings.comments.form_tos_page.staticLabel
+            emptyOption: ratmd.bloghub::lang.settings.comments.form_tos_page.emptyOption
+            comment: ratmd.bloghub::lang.settings.comments.form_tos_page.comment
+            span: right
+            trigger:
+                action: show
+                field: form_tos_type
+                condition: value[static_page]

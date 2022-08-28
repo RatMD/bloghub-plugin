@@ -32,5 +32,10 @@ Requirements
 Copyright
 ---------
 
+<<<<<<< HEAD
 Copyright © 2022 rat.md.<br/>
+=======
+Copyright © 2022 rat.md.
+
+>>>>>>> bd5ef37 ([DEV])
 Published under the MIT-License.

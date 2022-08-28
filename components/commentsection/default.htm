@@ -1,0 +1,28 @@
+
+{% if showComments %}
+    <div id="comments">
+        <div class="comment-list">
+            {% partial __SELF__ ~ '::comment-list' %}
+        </div>
+
+        {% if commentsMode != 'hidden' %}
+            <div class="comment-form">
+                {% if showCommentsForm %}
+                    {% partial __SELF__ ~ '::comment-form' %}
+                {% else %}
+                    <div class="alert alert-info">
+                        {% if commentsMode == 'open' %}
+                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_open' | trans }}
+                        {% elseif commentsMode == 'restricted' %}
+                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_restricted' | trans }}
+                        {% elseif commentsMode == 'private' %}
+                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_private' | trans }}
+                        {% elseif commentsMode == 'closed' %}
+                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_closed' | trans }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
