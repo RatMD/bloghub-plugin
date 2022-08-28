@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: ratmd.bloghub::lang.model.tags.recordName
+
+# Model Form Field configuration
+form: $/ratmd/bloghub/models/tag/fields.yaml
+
+# Model Class name
+modelClass: RatMD\BlogHub\Models\Tag
+
+# Default redirect location
+defaultRedirect: ratmd/bloghub/tags
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: ratmd/bloghub/tags/update/:id
+    redirectClose: ratmd/bloghub/tags
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: ratmd/bloghub/tags
+    redirectClose: ratmd/bloghub/tags
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

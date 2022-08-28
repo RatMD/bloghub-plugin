@@ -1,0 +1,25 @@
+v1.0.0:
+  - Initial Release of RatMD.BlogHub
+  - create_meta_table.php
+  - create_tags_table.php
+v1.1.0:
+  - Add View & Unique View numbers
+  - update_posts_table.php
+  - create_visitors_table.php
+v1.2.0:
+  - Extend Backend Users (Authors)
+  - update_backend_users_table.php
+v1.2.1:
+  - Add 'About Me' field for backend users.
+  - update_backend_users_table_again.php
+v1.2.2:
+  - Minor Changes
+v1.2.3:
+  - Minor Changes
+v1.2.4:
+  - Fix database migration.
+v1.3.0:
+  - Add Blog Comments table and function.
+  - Add Blog Comments column to 'rainlab_blog_posts'.
+  - create_comments_table.php
+  - migrate_settings_table.php

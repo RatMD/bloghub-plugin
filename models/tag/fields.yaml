@@ -1,0 +1,38 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    promote:
+        type: switch
+        label: ratmd.bloghub::lang.model.tags.promote
+        comment: ratmd.bloghub::lang.model.tags.promoteComment
+
+    title:
+        type: text
+        label: ratmd.bloghub::lang.model.tags.title
+        comment: ratmd.bloghub::lang.model.tags.titleComment
+        span: left
+
+    slug:
+        type: text
+        label: ratmd.bloghub::lang.model.tags.slug
+        comment: ratmd.bloghub::lang.model.tags.slugComment
+        span: right
+    
+    description:
+        type: markdown
+        label: ratmd.bloghub::lang.model.tags.description
+        comment: ratmd.bloghub::lang.model.tags.descriptionComment
+    
+    color:
+        type: colorpicker
+        label: ratmd.bloghub::lang.model.tags.color
+        commentAbove: ratmd.bloghub::lang.model.tags.colorComment
+    
+    posts:
+        type: relation
+        label: ratmd.bloghub::lang.model.tags.posts
+        commentAbove: ratmd.bloghub::lang.model.tags.postsComment
+        nameFrom: title
+        emptyOption: ratmd.bloghub::lang.model.tags.postsEmpty
