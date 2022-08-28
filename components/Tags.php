@@ -28,8 +28,8 @@ class Tags extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'          => 'ratmd.bloghub::lang.components.tags_title',
-            'description'   => 'ratmd.bloghub::lang.components.tags_description'
+            'name'          => 'ratmd.bloghub::lang.components.tags.label',
+            'description'   => 'ratmd.bloghub::lang.components.tags.comment'
         ];
     }
 

@@ -50,7 +50,6 @@ class PostsByCommentCount extends Posts
      */
     protected function listPosts()
     {
-        $author = $this->author->id;
         $category = $this->category ? $this->category->id : null;
         $categorySlug = $this->category ? $this->category->slug : null;
 
@@ -60,10 +59,10 @@ class PostsByCommentCount extends Posts
         $isPublished = !parent::checkEditor();
 
         $posts = Post::with(['categories', 'featured_images', 'ratmd_bloghub_tags', 'ratmd_bloghub_meta'])
-            ->where('user_id', '=', $author)
+            ->withCount('ratmd_bloghub_comments')
             ->listFrontEnd([
                 'page'             => $this->property('pageNumber'),
-                'sort'             => 'comments_count desc',
+                'sort'             => 'ratmd_bloghub_comments_count desc',
                 'perPage'          => $this->property('postsPerPage'),
                 'search'           => trim(input('search') ?? ''),
                 'category'         => $category,

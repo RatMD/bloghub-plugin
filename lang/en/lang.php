@@ -44,18 +44,6 @@ return [
             'label' => 'Posts by Comments',
             'comment' => 'Displays a list of posts by the comments counter.'
         ],
-        'date' => [
-            'label' => 'Posts by Date',
-            'comment' => 'Displays a list of posts by date.',
-            'filter' => 'Date filter',
-            'filter_comment' => 'Enter a specific date or URL parameter to filter the posts by.',
-        ],
-        'tag' => [
-            'label' => 'Posts by Tag',
-            'comment' => 'Displays a list of posts by tag.',
-            'filter' => 'Tag filter',
-            'filter_comment' => 'Enter a tag slug or URL parameter to filter the posts by.',
-        ],
         'comments_section' => [
             'label' => 'Comments Section',
             'comment' => 'Display a comments section with comment form on the single post CMS page.',
@@ -78,20 +66,33 @@ return [
             'disable_form' => 'Disable Comment Form',
             'disable_form_comment' => 'Disables the comment submit form, regardless of the post option.',
         ],
-
-
-
-
-
-
-        'tags_list' => [
-            'label' => 'Tag List',
-            'comment' => 'Displays a list of blog tags on the page.'
+        'date' => [
+            'label' => 'Posts by Date',
+            'comment' => 'Displays a list of posts by date.',
+            'filter' => 'Date filter',
+            'filter_comment' => 'Enter a specific date or URL parameter to filter the posts by.',
         ],
-        'tags_cloud' => [
-            'label' => 'Tag Cloud',
-            'comment' => 'Displays a Tag Cloud with the most used or promoted tags.'
+        'tag' => [
+            'label' => 'Posts by Tags',
+            'comment' => 'Displays a list of posts by tag.',
+            'filter' => 'Tag filter',
+            'filter_comment' => 'Enter a tag slug or URL parameter to filter the posts by.',
         ],
+        'tags' => [
+            'label' => 'Tags List / Cloud',
+            'comment' => 'Displays a list or cloud of (promoted) blog tags.'
+        ],
+        'deprecated' => [
+            'authors_label' => '[OLD] Posts by Author',
+            'authors_comment' => '[DEPRECATED] - Please use "Posts By Author" above.',
+            'dates_label' => '[OLD] Posts by Date',
+            'dates_comment' => '[DEPRECATED] - Please use "Posts By Date" above.',
+            'tags_label' => '[OLD] Posts by Tag',
+            'tags_comment' => '[DEPRECATED] - Please use "Posts by Tags" above.',
+        ],
+
+
+
 
 
         'comments_list' => [
@@ -149,7 +150,8 @@ return [
             'disabled_method' => 'This function has been disabled by the website administrator.',
             'no_permissions_for' => 'You don\'t have the permission to call this action.',
             'missing_comment_id' => 'The comment id is missing or invalid.',
-            'invalid_comment_id' => 'The passed comment id does not exist.'
+            'invalid_comment_id' => 'The passed comment id does not exist.',
+            'unknown_error' => 'An unknown error occured, please try again later.'
         ]
     ],
 
@@ -321,8 +323,8 @@ return [
         'bloghub_unique_views_desc' => 'Unique Views (descending)',
         'bloghub_comments_count_asc' => 'Number of Comments (ascending)',
         'bloghub_comments_count_desc' => 'Number of Comments (descending)',
-        'published_at_desc' => 'Published (descending)',
-        'published_at_asc' => 'Published (ascending)',
+        'created_at_desc' => 'Published (descending)',
+        'created_at_asc' => 'Published (ascending)',
         'comments_count_desc' => 'Comments Counter (descending)',
         'comments_count_asc' => 'Comments Counter (ascending)',
         'likes_desc' => 'Likes Counter (descending)',

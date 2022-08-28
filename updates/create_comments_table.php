@@ -38,7 +38,8 @@ class CreateCommentsTable extends Migration
             $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('author_id')->unsigned()->nullable();
             $table->integer('author_table')->unsigned()->nullable();
-            $table->timestamp('published_at')->nullable();
+            $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
             
             $table->foreign('post_id')->references('id')->on('rainlab_blog_posts')->onDelete('cascade');

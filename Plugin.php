@@ -197,12 +197,20 @@ class Plugin extends PluginBase
             \RatMD\BlogHub\Components\PostsByAuthor::class => 'bloghubPostsByAuthor',
             \RatMD\BlogHub\Components\PostsByCommentCount::class => 'bloghubPostsByCommentCount',
             \RatMD\BlogHub\Components\PostsByDate::class => 'bloghubPostsByDate',
-            //\RatMD\BlogHub\Components\PostsByQuery::class => 'bloghubPostsByQuery',
             \RatMD\BlogHub\Components\PostsByTag::class => 'bloghubPostsByTag',
             \RatMD\BlogHub\Components\CommentList::class => 'bloghubCommentList',
             \RatMD\BlogHub\Components\CommentSection::class => 'bloghubCommentSection',
+<<<<<<< HEAD
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags'
 >>>>>>> bd5ef37 ([DEV])
+=======
+            \RatMD\BlogHub\Components\Tags::class => 'bloghubTags',
+
+            // Deprecated Methods
+            \RatMD\BlogHub\Components\DeprecatedAuthors::class => 'bloghubAuthorArchive',
+            \RatMD\BlogHub\Components\DeprecatedDates::class => 'bloghubDateArchive',
+            \RatMD\BlogHub\Components\DeprecatedTag::class => 'bloghubTagArchive',
+>>>>>>> 2625a82 ([TASK] WiP \2)
         ];
     }
 

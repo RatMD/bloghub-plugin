@@ -46,7 +46,9 @@ class Visitor extends Model
      * @var array
      */
     protected $jsonable = [
-        'posts'
+        'posts',
+        'likes',
+        'dislikes',
     ];
 
     /**
@@ -99,12 +101,137 @@ class Visitor extends Model
             $posts = [];
         }
         
-        if (!in_array($post, $this->posts)) {
+        if (!in_array($post, $posts)) {
             $posts[] = $post;
             $this->setAttribute('posts', $posts);
             return $this->save();
         } else {
             return true;
+        }
+    }
+
+    /**
+     * Get Comment Vote Status
+     *
+     * @param Comment|int $comment
+     * @return ?string
+     */
+    public function getCommentVote($comment)
+    {
+        if ($comment instanceof Comment) {
+            $comment = $comment->id;
+        }
+
+        $likes = $this->getAttribute('likes');
+        $dislikes = $this->getAttribute('dislikes');
+        if (is_array($likes) && in_array($comment, $likes)) {
+            return 'like';
+        } else if (is_array($dislikes) && in_array($comment, $dislikes)) {
+            return 'dislike';
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Add Comment Like
+     *
+     * @param Comment|int $comment
+     * @return bool
+     */
+    public function addCommentLike($comment)
+    {
+        if ($comment instanceof Comment) {
+            $comment = $comment->id;
+        }
+
+        $likes = $this->getAttribute('likes');
+        if (!is_array($likes)) {
+            $likes = [];
+        }
+        
+        if (!in_array($comment, $likes)) {
+            $likes[] = $comment;
+            $this->setAttribute('likes', $likes);
+            return $this->save();
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Remove Comment Like
+     *
+     * @param Comment|int $comment
+     * @return bool
+     */
+    public function removeCommentLike($comment)
+    {
+        if ($comment instanceof Comment) {
+            $comment = $comment->id;
+        }
+
+        $likes = $this->getAttribute('likes');
+        if (!is_array($likes)) {
+            $likes = [];
+        }
+        
+        if (!in_array($comment, $likes)) {
+            return true;
+        } else {
+            $this->setAttribute('likes', array_filter($likes, fn($val) => $val !== $comment));
+            return $this->save();
+        }
+    }
+
+    /**
+     * Add Comment Dislike
+     *
+     * @param Comment|int $comment
+     * @return bool
+     */
+    public function addCommentDislike($comment)
+    {
+        if ($comment instanceof Comment) {
+            $comment = $comment->id;
+        }
+
+        $dislikes = $this->getAttribute('dislikes');
+        if (!is_array($dislikes)) {
+            $dislikes = [];
+        }
+        
+        if (!in_array($comment, $dislikes)) {
+            $dislikes[] = $comment;
+            $this->setAttribute('dislikes', $dislikes);
+            return $this->save();
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Remove Comment Dislike
+     *
+     * @param Comment|int $comment
+     * @return bool
+     */
+    public function removeCommentDislike($comment)
+    {
+        if ($comment instanceof Comment) {
+            $comment = $comment->id;
+        }
+
+        $dislikes = $this->getAttribute('dislikes');
+        if (!is_array($dislikes)) {
+            $dislikes = [];
+        }
+        
+        if (!in_array($comment, $dislikes)) {
+            return true;
+        } else {
+            $this->setAttribute('dislikes', array_filter($dislikes, fn($val) => $val !== $comment));
+            return $this->save();
         }
     }
 

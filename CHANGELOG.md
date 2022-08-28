@@ -10,25 +10,32 @@ Version 1.3.0 - Stable
 ----------------------
 - Add: Blog Comments table, model and functions.
 - Add: Blog Comments columns on rainlab_blog_posts.
-- Add: New comment adn tag related backend permissions.
+- Add: New comment and tag related backend permissions.
 - Add: A new settings menu to configure the BlogHub configuration.
 - Add: New dashboard widget 'Comments List'.
 - Add: New dashboard widget 'Posts List'.
 - Add: New dashboard widget 'Posts Statistics'.
 - Add: Comments count sorting option to Post Model.
 - Add: New `[bloghubBase]` component to configure the base options on the layout level.
-- Add: New `[bloghubPostsByCommentCount]` component to list posts by their comments count.
 - Add: New `[bloghubCommentList]` component to show comment list outside of post page.
 - Add: New `[bloghubCommentSection]` component to show comment list with form on post page.
+- Add: New `[bloghubPostsByAuthor]` component for author archive pages.
+- Add: New `[bloghubPostsByCommentCount]` component to list posts by their comments count.
+- Add: New `[bloghubPostsByDate]` component for date archive pages.
+- Add: New `[bloghubPostsByTag]` component for tag archive pages.
 - Update: Add missing translation strings (for both english and german).
 - Update: Set RatMD.BlogHub as owner on side menu items.
-- Update: `[bloghubAuthorArchive]` has been renamed into `[bloghubPostsByAuthor]` and updated.
-- Update: `[bloghubDateArchive]` has been renamed into `[bloghubPostsByDate]` and updated.
-- Update: The date archive component supports now week archives as well.
-- Update: `[bloghubTagArchive]` has been renamed into `[bloghubPostsByTag]` and updated.
+- Update: The new date archive component supports now week archives as well.
 - Update: `[bloghubTags]` supports more arguments and can display a tag cloud.
 - Update: Support multiple-tags query combinations using + (all) and , (either).
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+- Deprecated: `[bloghubAuthorArchive]` has been marked as deprecated, please use `[bloghubPostsByAuthor]` instead.
+- Deprecated: `[bloghubDateArchive]` has been marked as deprecated, please use `[bloghubPostsByDate]` instead.
+- Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.
+- Bugfix: Replace missing default component partials with working ones.
+>>>>>>> 2625a82 ([TASK] WiP \2)
 
 Version 1.2.4 - Stable
 ----------------------
