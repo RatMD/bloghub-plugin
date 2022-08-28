@@ -1,5 +1,5 @@
 
-<div class="comment d-flex flex-row">
+<div class="comment d-flex flex-row" data-comment-id="{{ comment.id }}">
     <div class="comment-left flex-auto">
         <img src="{{ comment.avatar }}" alt="{{ comment.display_name }}" class="rounded" width="60" height="60" style="width:60px; height:60px;" />
     </div>
@@ -26,8 +26,14 @@
                                 data-bloghub-id="{{ __SELF__.id }}"
                                 data-bloghub-comment-id="{{ comment.id }}"
                                 title="{{ 'ratmd.bloghub::lang.frontend.comments.like_title' | trans }}"
+                                class="btn btn-sm {% if comment.current_likes %}btn-success{% else %}btn-dark{% endif %}"
                             >
                                 {{ 'ratmd.bloghub::lang.frontend.comments.like' | trans }}
+                                {% if comment.current_likes %}
+                                    <span class="badge badge-sm rounded-pill ms-2 bg-success">{{ comment.likes }}</span>
+                                {% else %}
+                                    <span class="badge badge-sm rounded-pill ms-2 bg-dark">{{ comment.likes }}</span>
+                                {% endif %}
                             </a>
                         </li>
                     {% endif %}
@@ -39,8 +45,14 @@
                                 data-bloghub-id="{{ __SELF__.id }}"
                                 data-bloghub-comment-id="{{ comment.id }}"
                                 title="{{ 'ratmd.bloghub::lang.frontend.comments.dislike_title' | trans }}"
+                                class="btn btn-sm {% if comment.current_dislikes %}btn-danger{% else %}btn-dark{% endif %}"
                             >
                                 {{ 'ratmd.bloghub::lang.frontend.comments.dislike' | trans }}
+                                {% if comment.current_dislikes %}
+                                    <span class="badge badge-sm rounded-pill ms-2 bg-danger">{{ comment.dislikes }}</span>
+                                {% else %}
+                                    <span class="badge badge-sm rounded-pill ms-2 bg-dark">{{ comment.dislikes }}</span>
+                                {% endif %}
                             </a>
                         </li>
                     {% endif %}
@@ -52,6 +64,7 @@
                                 data-bloghub-id="{{ __SELF__.id }}"
                                 data-bloghub-comment-id="{{ comment.id }}"
                                 title="{{ 'ratmd.bloghub::lang.frontend.comments.favorite_title' | trans }}"
+                                class="btn btn-sm btn-warning"
                             >
                                 {{ 'ratmd.bloghub::lang.frontend.comments.favorite' | trans }}
                             </a>
@@ -65,6 +78,7 @@
                                 data-bloghub-id="{{ __SELF__.id }}"
                                 data-bloghub-comment-id="{{ comment.id }}"
                                 title="{{ 'ratmd.bloghub::lang.frontend.comments.reply_title' | trans }}"
+                                class="btn btn-sm btn-primary"
                             >
                                 {{ 'ratmd.bloghub::lang.frontend.comments.reply' | trans }}
                             </a>

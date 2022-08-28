@@ -13,15 +13,16 @@
          * Create new BlogHub Comments instance
          */
         constructor() {
-            Array.from(document.querySelectorAll('[data-bloghub-handler]')).map(el => {
-                el.addEventListener('click', (event) => {
-                    let method = el.dataset.bloghubHandler;
+            document.addEventListener('click', (event) => {
+                let target = event.target.closest('[data-bloghub-handler]');
+                if (target) {
+                    let method = target.dataset.bloghubHandler;
 
                     if (typeof this[method] !== 'undefined') {
                         event.preventDefault();
-                        this[method](el);
+                        this[method](target);
                     }
-                });
+                }
             });
         }
 
@@ -84,6 +85,15 @@
                     'form_id': el.dataset.bloghubId,
                     'comment_id': el.dataset.bloghubCommentId
                 },
+                success: function (data, responseCode, xhr) {
+                    let render = document.createElement('DIV');
+                    render.innerHTML = data.comment;
+                    
+                    let comment = document.querySelector(`[data-comment-id="${el.dataset.bloghubCommentId}"]`);
+                    if (comment) {
+                        comment.replaceWith(render.children[0]);
+                    }
+                },
                 error: function(data, responseCode, xhr) {
                     alert(data);
                 }
@@ -99,6 +109,15 @@
                 data: {
                     'form_id': el.dataset.bloghubId,
                     'comment_id': el.dataset.bloghubCommentId
+                },
+                success: function (data, responseCode, xhr) {
+                    let render = document.createElement('DIV');
+                    render.innerHTML = data.comment;
+                    
+                    let comment = document.querySelector(`[data-comment-id="${el.dataset.bloghubCommentId}"]`);
+                    if (comment) {
+                        comment.replaceWith(render.children[0]);
+                    }
                 },
                 error: function(data, responseCode, xhr) {
                     alert(data);

@@ -10,6 +10,7 @@ use Request;
 use Session;
 use Backend\Facades\BackendAuth;
 use Cms\Classes\ComponentBase;
+use Markdown;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\BlogHubSettings;
 use RatMD\BlogHub\Models\Comment;
@@ -76,7 +77,7 @@ class CommentSection extends ComponentBase
                 'title'             => 'ratmd.bloghub::lang.components.comments_section.comments_order',
                 'description'       => 'ratmd.bloghub::lang.components.comments_section.comments_order_comment',
                 'type'              => 'dropdown',
-                'default'           => 'published_at desc',
+                'default'           => 'created_at desc',
             ],
             'commentsAnchor' => [
                 'title'             => 'ratmd.bloghub::lang.components.comments_section.comments_anchor',
@@ -141,8 +142,8 @@ class CommentSection extends ComponentBase
     public function getSortOrderOptions()
     {
         return [
-            'published_at DESC' => Lang::get('ratmd.bloghub::lang.sorting.published_at_desc'),
-            'published_at ASC'  => Lang::get('ratmd.bloghub::lang.sorting.published_at_asc'),
+            'created_at DESC'   => Lang::get('ratmd.bloghub::lang.sorting.created_at_desc'),
+            'created_at ASC'    => Lang::get('ratmd.bloghub::lang.sorting.created_at_asc'),
             'likes DESC'        => Lang::get('ratmd.bloghub::lang.sorting.likes_desc'),
             'likes ASC'         => Lang::get('ratmd.bloghub::lang.sorting.likes_asc'),
             'dislikes DESC'     => Lang::get('ratmd.bloghub::lang.sorting.dislikes_desc'),
@@ -198,7 +199,7 @@ class CommentSection extends ComponentBase
 
         $order = $this->property('sortOrder');
         if (!array_key_exists($order, $this->getSortOrderOptions())) {
-            $order = 'published_at DESC';
+            $order = 'created_at DESC';
         }
 
         // Start Query
@@ -539,15 +540,15 @@ class CommentSection extends ComponentBase
         }
 
         // Add Like & Return
-        $comment->likes = $comment->likes+1;
-        if ($comment->save()) {
+        if ($comment->like()) {
             return [
                 'status' => 'success',
+                'comment' => $this->renderPartial('@single', [
+                    'comment' => $comment
+                ])
             ];
         } else {
-            return [
-                'status' => 'error',
-            ];
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
         }
     }
 
@@ -556,7 +557,7 @@ class CommentSection extends ComponentBase
      *
      * @return mixed
      */
-    public function osDislike()
+    public function onDislike()
     {
         if (empty($post = $this->getPost())) {
             throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_post'));
@@ -582,15 +583,15 @@ class CommentSection extends ComponentBase
         }
 
         // Add Dislike & Return
-        $comment->dislikes = $comment->dislikes+1;
-        if ($comment->save()) {
+        if ($comment->dislike()) {
             return [
                 'status' => 'success',
+                'comment' => $this->renderPartial('@single', [
+                    'comment' => $comment
+                ])
             ];
         } else {
-            return [
-                'status' => 'error',
-            ];
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
         }
     }
 
@@ -631,9 +632,7 @@ class CommentSection extends ComponentBase
                 'status' => 'success',
             ];
         } else {
-            return [
-                'status' => 'error',
-            ];
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
         }
     }
 
@@ -674,14 +673,10 @@ class CommentSection extends ComponentBase
                     'status' => 'success',
                 ];
             } else {
-                return [
-                    'status' => 'error'
-                ];
+                throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
             }
         } else {
-            return [
-                'status' => 'error',
-            ];
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
         }
     }
 
@@ -722,14 +717,10 @@ class CommentSection extends ComponentBase
                     'status' => 'success',
                 ];
             } else {
-                return [
-                    'status' => 'error',
-                ];
+                throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
             }
         } else {
-            return [
-                'status' => 'error',
-            ];
+            throw new AjaxException(Lang::get('ratmd.bloghub::lang.frontend.errors.unknown_error'));
         }
     }
 
@@ -893,7 +884,7 @@ class CommentSection extends ComponentBase
             $comment->authorable = $this->page['currentUser'];
 
             if ($this->config('moderate_user_comments') === '0' || $this->getBackendUser() !== null) {
-                $comment->status = 'published';
+                $comment->status = 'approved';
             }
         } else {
             $comment->author = isset($honey) ? input('comment_user' . $honey) : input('comment_user');
@@ -901,7 +892,7 @@ class CommentSection extends ComponentBase
             $comment->author_uid = sha1(request()->ip());
 
             if ($this->config('moderate_guest_comments') === '0') {
-                $comment->status = 'published';
+                $comment->status = 'approved';
             }
         }
 

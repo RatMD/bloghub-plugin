@@ -1,7 +1,10 @@
-<?php namespace RatMD\BlogHub\Models;
+<?php declarE(strict_types=1);
+
+namespace RatMD\BlogHub\Models;
 
 use Markdown;
 use Model;
+use RatMD\BlogHub\Models\Visitor;
 
 /**
  * Comment Model
@@ -57,7 +60,7 @@ class Comment extends Model
     public $rules = [
         'author' => 'nullable|string|min:3',
         'author_email' => 'nullable|email',
-        'status' => 'required|in:pending,published,spam',
+        'status' => 'required|in:pending,approved,rejected,spam',
         'content' => 'required|string|min:3'
     ];
 
@@ -79,7 +82,8 @@ class Comment extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'published_at'
+        'approved_at',
+        'rejected_at',
     ];
 
     /**
@@ -122,9 +126,21 @@ class Comment extends Model
      */
     public function beforeSave()
     {
-        if (empty($this->published_at)) {
-            if ($this->status === 'published') {
-                $this->published_at = date('Y-m-d H:i:s');
+        if ($this->status === 'approved') {
+            if (empty($this->approved_at)) {
+                $this->approved_at = date('Y-m-d H:i:s');
+            }
+            if (!empty($this->rejected_at)) {
+                $this->rejected_at = null;
+            }
+        }
+
+        if ($this->status === 'rejected') {
+            if (empty($this->rejected_at)) {
+                $this->rejected_at = date('Y-m-d H:i:s');
+            }
+            if (!empty($this->approved_at)) {
+                $this->approved_at = null;
             }
         }
     }
@@ -138,6 +154,20 @@ class Comment extends Model
     {
         $this->attributes['content']= $content;
         $this->attributes['content_html'] = Markdown::parse($content);
+    }
+
+    /**
+     * Get Content Attribute
+     *
+     * @return string
+     */
+    public function getContentAttribute()
+    {
+        if (BlogHubSettings::get('form_comment_markdown', '1') === '1') {
+            return $this->content_html;
+        } else {
+            return $this->content;
+        }
     }
 
     /**
@@ -186,10 +216,10 @@ class Comment extends Model
      */
     public function published_ago()
     {
-        $seconds = (time() - strtotime($this->published_at));
+        $seconds = (time() - $this->created_at->getTimestamp());
 
         if ($seconds >= 2419200) {
-            return date('F, j. Y - H:i', strtotime($this->published_at));
+            return date('F, j. Y - H:i', $this->getTimestamp());
         } elseif ($seconds >= 86400) {
             $amount = intval($seconds / 86400);
             $format = 'days';
@@ -210,14 +240,90 @@ class Comment extends Model
     }
 
     /**
+     * Check if current user already liked this comment
+     *
+     * @return void
+     */
+    public function current_likes()
+    {
+        $visitor = Visitor::currentUser();
+        return $visitor->getCommentVote($this->id) === 'like';
+    }
+
+    /**
+     * Check if current user already disliked this comment
+     *
+     * @return void
+     */
+    public function current_dislikes()
+    {
+        $visitor = Visitor::currentUser();
+        return $visitor->getCommentVote($this->id) === 'dislike';
+    }
+
+    /**
+     * Like a Comment
+     *
+     * @return bool
+     */
+    public function like()
+    {
+        $visitor = Visitor::currentUser();
+
+        $vote = $visitor->getCommentVote($this->id);
+        if ($vote === 'like') {
+            return true;
+        } else if ($vote === 'dislike') {
+            if (!$visitor->removeCommentDislike($this->id)) {
+                return false;
+            }
+            $this->dislikes = $this->dislikes - 1;
+        }
+
+        if ($visitor->addCommentLike($this->id)) {
+            $this->likes = $this->likes + 1;
+            return $this->save();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Dislike A Comment
+     *
+     * @return bool
+     */
+    public function dislike()
+    {
+        $visitor = Visitor::currentUser();
+
+        $vote = $visitor->getCommentVote($this->id);
+        if ($vote === 'dislike') {
+            return true;
+        } else if ($vote === 'like') {
+            if (!$visitor->removeCommentLike($this->id)) {
+                return false;
+            }
+            $this->likes = $this->likes - 1;
+        }
+
+        if ($visitor->addCommentDislike($this->id)) {
+            $this->dislikes = $this->dislikes + 1;
+            return $this->save();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Approve a Comment
      * 
      * @return bool
      */
     public function approve()
     {
-        $this->status = 'published';
-        $this->published_at = date("Y-m-d H:i:s");
+        $this->status = 'approved';
+        $this->approved_at = date("Y-m-d H:i:s");
         return $this->save();
     }
     
@@ -229,6 +335,7 @@ class Comment extends Model
     public function reject()
     {
         $this->status = 'rejected';
+        $this->rejected_at = date("Y-m-d H:i:s");
         return $this->save();
     }
 

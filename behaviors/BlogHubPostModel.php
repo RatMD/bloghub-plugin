@@ -41,6 +41,13 @@ class BlogHubPostModel extends ExtensionBase
             'order' => 'slug'
         ];
 
+        $model->belongsToMany['ratmd_bloghub_comments_count'] = [
+            'RatMD\BlogHub\Models\Comment',
+            'table' => 'ratmd_bloghub_comments',
+            'order' => 'slug',
+            'count' => true
+        ];
+
         // Add Blog Meta
         $model->morphMany['ratmd_bloghub_meta'] = [
             'RatMD\BlogHub\Models\Meta',
