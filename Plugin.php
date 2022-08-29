@@ -2,7 +2,6 @@
 
 namespace RatMD\BlogHub;
 
-use App;
 use Backend;
 use Event;
 use Exception;
