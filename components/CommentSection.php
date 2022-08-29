@@ -81,6 +81,12 @@ class CommentSection extends ComponentBase
                 'type'              => 'dropdown',
                 'default'           => 'created_at desc',
             ],
+            'commentHierarchy' => [
+                'title'             => 'ratmd.bloghub::lang.components.comments_section.comments_hierarchy',
+                'description'       => 'ratmd.bloghub::lang.components.comments_section.comments_hierarchy_comment',
+                'type'              => 'checkbox',
+                'default'           => '1'
+            ],
             'commentsAnchor' => [
                 'title'             => 'ratmd.bloghub::lang.components.comments_section.comments_anchor',
                 'description'       => 'ratmd.bloghub::lang.components.comments_section.comments_anchor_comment',
@@ -238,7 +244,11 @@ class CommentSection extends ComponentBase
         }
 
         // Finish Query
-        $result = $query->get()->toNested();
+        $result = $query->get();
+        if ($this->page['showCommentsHierarchical']) {
+            $result = $result->toNested();
+        }
+
         $pageName = $this->getPage()->getBaseFileName();
         return new LengthAwarePaginator(
             $result->slice($offset, $offset+$limit), 
@@ -324,6 +334,7 @@ class CommentSection extends ComponentBase
         if (empty($post) || (!empty($post) && $post->ratmd_bloghub_comment_visible === '0')) {
             $this->page['showComments'] = false;
             $this->page['showCommentsForm'] = false;
+            $this->page['showCommentsHierarchical'] = $this->property('commentHierarchy') === '1';
             $this->page['comments'] = null;
             $this->page['commentsFormPosition'] = $this->property('formPosition');
             $this->page['commentsMode'] = 'closed';
@@ -369,6 +380,7 @@ class CommentSection extends ComponentBase
 
         // Show Comments List
         $this->page['showComments'] = true;
+        $this->page['showCommentsHierarchical'] = $this->property('commentHierarchy') === '1';
         $this->page['commentsFormPosition'] = $this->property('formPosition');
         if ($this->property('disableForm') === '1') {
             $this->page['commentsMode'] = 'hidden';
@@ -814,7 +826,7 @@ class CommentSection extends ComponentBase
             }
 
             // Comment not on the same Post
-            if ($parent->post_id !== $post->id) {
+            if (intval($parent->post_id) !== intval($post->id)) {
                 throw new AjaxException([
                     'message' => Lang::get('ratmd.bloghub::lang.frontend.errors.parent_invalid')
                 ]);

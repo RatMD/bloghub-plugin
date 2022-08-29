@@ -1,3 +1,14 @@
+{% macro renderParent(parent, depth = 1) %}
+    <div class="border rounded p-3 {% if depth == 1 %}mb-3{% else %}mt-3{% endif %}">
+        <small>{{ 'ratmd.bloghub::lang.frontend.comments.replyto' | trans({ 'name': parent.display_name }) }}</small>
+        <p class="m-0 p-0"><small>{{ parent.content | raw }}</small></p>
+
+        {% if parent.parent %}
+            {{ _self.renderParent(parent.parent, depth + 1) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
 <div class="comment d-flex flex-row p-3{% if comment.status == 'pending' %} bg-light rounded{% endif %}" data-comment-id="{{ comment.id }}">
     <div class="comment-left flex-auto">
         <img src="{{ comment.avatar }}" alt="{{ comment.display_name }}" class="rounded" width="60" height="60" style="width:60px; height:60px;" />
@@ -15,7 +26,11 @@
         </header>
 
         <article class="mt-2">
-            {{ comment.content_html | raw }}
+            {% if not showCommentsHierarchical and comment.parent %}
+                {{ _self.renderParent(comment.parent) }}
+            {% endif %}
+            
+            {{ comment.render_content | raw }}
         </article>
 
         {% if not skip_footer %}

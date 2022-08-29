@@ -173,6 +173,20 @@ class Comment extends Model
     }
 
     /**
+     * Render content, dependen on the configuration
+     *
+     * @return string
+     */
+    public function render_content()
+    {
+        if (BlogHubSettings::get('form_comment_markdown', BlogHubSettings::defaultValue('form_comment_markdown')) === '1') {
+            return $this->content_html;
+        } else {
+            return $this->content;
+        }
+    }
+
+    /**
      * Get Author [GR]avatar
      *
      * @param int $size

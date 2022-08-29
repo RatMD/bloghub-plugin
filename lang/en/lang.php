@@ -46,6 +46,8 @@ return [
             'comments_per_page' => 'Comments per Page',
             'comments_order' => 'Comment order',
             'comments_order_comment' => 'Attribute on which the comments should be ordered.',
+            'comments_hierarchy' => 'Display Hierarchically',
+            'comments_hierarchy_comment' => 'Shows replies hierarchically below the parent comment or flat using quotation.',
             'comments_anchor' => 'Container Anchor',
             'comments_anchor_comment' => 'The ID of the main comment container, used as URL anchor on the pagination links.',
             'pin_favorites' => 'Pin Favorites',
@@ -135,6 +137,7 @@ return [
             'awaiting_moderation' => 'Awaiting Moderation',
             'previous' => 'Previous',
             'next' => 'Next',
+            'replyto' => 'Reply to :name',
         ],
         'errors' => [
             'unknown_post' => 'The passed post id or slug is unknown or invalid.',
