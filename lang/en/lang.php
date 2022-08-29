@@ -175,8 +175,8 @@ return [
         ],
         
         'post' => [
-            'reading_time' => 'Reading Time: :min min :sec seconds',
-            'reading_time_sec' => 'Reading Time: :sec seconds',
+            'read_time' => 'Read Time: :min minutes :sec seconds',
+            'read_time_sec' => 'Read Time: :sec seconds',
             'published_seconds_ago' => 'Published a few seconds ago.',
             'published_ago' => 'Published :amount :format ago.',
             'published_format_years' => 'years',
