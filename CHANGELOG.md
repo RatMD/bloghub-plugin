@@ -23,14 +23,23 @@ Version 1.3.0 - Stable
 - Add: New `[bloghubPostsByCommentCount]` component to list posts by their comments count.
 - Add: New `[bloghubPostsByDate]` component for date archive pages.
 - Add: New `[bloghubPostsByTag]` component for tag archive pages.
+- Add: New vendor `Gregwar/Captcha` for the new comment system. 
 - Update: Add missing translation strings (for both english and german).
 - Update: Set RatMD.BlogHub as owner on side menu items.
 - Update: The new date archive component supports now week archives as well.
 - Update: `[bloghubTags]` supports more arguments and can display a tag cloud.
 - Update: Support multiple-tags query combinations using + (all) and , (either).
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
 =======
+=======
+- Update: The visitors table to collect likes and dislikes for the new comment system.
+- Update: Rename `ratmd_bloghub_settings` settings model to `ratmd_bloghub_meta_settings`.
+- Update: The new `BlogHubPostModel` behaviour has been finished.
+- Update: Estimated reading time is now part of the new `BlogHubPostModel` behaviour
+- Update: Published * ago date/time view is now part of the new `BlogHubPostModel` behaviour.
+>>>>>>> 042632c ([TASK] WiP\3)
 - Deprecated: `[bloghubAuthorArchive]` has been marked as deprecated, please use `[bloghubPostsByAuthor]` instead.
 - Deprecated: `[bloghubDateArchive]` has been marked as deprecated, please use `[bloghubPostsByDate]` instead.
 - Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.
