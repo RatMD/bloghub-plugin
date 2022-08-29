@@ -15,6 +15,7 @@ use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Behaviors\BlogHubBackendUserModel;
 use RatMD\BlogHub\Behaviors\BlogHubPostModel;
+use RatMD\BlogHub\Models\Comment;
 use RatMD\BlogHub\Models\MetaSettings;
 use RatMD\BlogHub\Models\Visitor;
 use Symfony\Component\Yaml\Yaml;
@@ -92,6 +93,7 @@ class Plugin extends PluginBase
                     'code'          => 'ratmd-bloghub-comments',
                     'owner'         => 'RatMD.BlogHub',
                     'url'           => Backend::url('ratmd/bloghub/comments'),
+                    'counter'       => Comment::where('status', 'pending')->count(),
                     'permissions'   => [
                         'ratmd.bloghub.comments'
                     ]

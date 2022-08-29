@@ -1,0 +1,143 @@
+<div class="comment d-flex flex-row p-3{% if comment.status == 'pending' %} bg-light rounded{% endif %}" data-comment-id="{{ comment.id }}">
+    <div class="comment-left flex-auto">
+        <img src="{{ comment.avatar }}" alt="{{ comment.display_name }}" class="rounded" width="60" height="60" style="width:60px; height:60px;" />
+    </div>
+
+    <div class="comment-right flex-fill px-4 py-1">
+        <header class="text-muted">
+            <b>{{ comment.display_name }}</b>
+            &nbsp;&bullet;&nbsp;
+            <time class="text-muted" datetime="{{ comment.published_at }}">{{ comment.published_ago }}</time>
+            {% if comment.status == 'pending' %}
+                &nbsp;&bullet;&nbsp;
+                <span class="text-danger">{{ 'ratmd.bloghub::lang.frontend.comments.awaiting_moderation' | trans }}</span>
+            {% endif %}
+        </header>
+
+        <article class="mt-2">
+            {{ comment.content_html | raw }}
+        </article>
+
+        {% if not skip_footer %}
+            <footer class="mt-4">
+                <ul class="list-inline d-flex fs-6">
+                    {% if comment.status == 'pending' %}
+                        {% if currentUserCanModerate %}
+                            <li class="list-inline-item">
+                                <a 
+                                    href="#" 
+                                    data-bloghub-handler="onChangeStatus" 
+                                    data-bloghub-status="approve"
+                                    data-bloghub-id="{{ comment.id }}"
+                                    title="{{ 'ratmd.bloghub::lang.frontend.comments.approve_title' | trans }}"
+                                    class="btn btn-sm btn-success"
+                                >
+                                    {{ 'ratmd.bloghub::lang.frontend.comments.approve' | trans }}
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a 
+                                    href="#" 
+                                    data-bloghub-handler="onChangeStatus"  
+                                    data-bloghub-status="reject"
+                                    data-bloghub-id="{{ comment.id }}"
+                                    title="{{ 'ratmd.bloghub::lang.frontend.comments.reject_title' | trans }}"
+                                    class="btn btn-sm btn-danger"
+                                >
+                                    {{ 'ratmd.bloghub::lang.frontend.comments.reject' | trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        {% if currentUserCanLike %}
+                            <li class="list-inline-item mx-2">
+                                <a 
+                                    href="#" 
+                                    data-bloghub-handler="onVote" 
+                                    data-bloghub-vote="like"
+                                    data-bloghub-id="{{ comment.id }}"
+                                    title="{{ 'ratmd.bloghub::lang.frontend.comments.like_title' | trans }}"
+                                    class="btn btn-sm position-relative {% if comment.current_likes %}text-success disabled btn-link{% else %}text-muted{% endif %}"
+                                >
+                                    {% if comment.current_likes %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                                        </svg>
+                                        <span class="badge badge-sm position-absolute top-0 start-100 translate-middle rounded-pill bg-success">{{ comment.likes }}</span>
+                                    {% else %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                                        </svg>
+                                        <span class="badge badge-sm position-absolute top-0 start-100 translate-middle rounded-pill bg-light text-muted">{{ comment.likes }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if currentUserCanDislike %}
+                            <li class="list-inline-item mx-2">
+                                <a 
+                                    href="#" 
+                                    data-bloghub-handler="onVote" 
+                                    data-bloghub-vote="dislike"
+                                    data-bloghub-id="{{ comment.id }}"
+                                    title="{{ 'ratmd.bloghub::lang.frontend.comments.dislike_title' | trans }}"
+                                    class="btn btn-sm position-relative {% if comment.current_dislikes %}text-danger disabled btn-link{% else %}text-muted{% endif %}"
+                                >
+                                    {% if comment.current_dislikes %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                        </svg>
+                                        <span class="badge badge-sm position-absolute top-0 start-100 translate-middle rounded-pill bg-danger">{{ comment.dislikes }}</span>
+                                    {% else %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                                        </svg>
+                                        <span class="badge badge-sm position-absolute top-0 start-100 translate-middle rounded-pill bg-light text-muted">{{ comment.dislikes }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if currentUserCanFavorite %}
+                            <li class="list-inline-item mx-2">
+                                <a 
+                                    href="#" 
+                                    data-bloghub-handler="onChangeStatus"  
+                                    data-bloghub-status="favorite"
+                                    data-bloghub-id="{{ comment.id }}"
+                                    title="{% if comment.favorite %}{{ 'ratmd.bloghub::lang.frontend.comments.unfavorite_title' | trans }}{% else %}{{ 'ratmd.bloghub::lang.frontend.comments.favorite_title' | trans }}{% endif %}"
+                                    class="btn btn-sm position-relative {% if comment.favorite %}text-warning{% else %}text-warning{% endif %}"
+                                >
+                                    {% if comment.favorite %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                        </svg>
+                                    {% else %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                        </svg>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if currentUserCanComment %}
+                            <li class="list-inline-item ms-auto">
+                                <a 
+                                    href="#" 
+                                    data-bloghub-handler="onCreateReply"  
+                                    data-bloghub-id="{{ comment.id }}"
+                                    title="{{ 'ratmd.bloghub::lang.frontend.comments.reply_title' | trans }}"
+                                    class="btn btn-sm btn-outline-primary d-inline-flex align-items-center"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+                                        <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/>
+                                    </svg>
+                                    <span class="ms-2">{{ 'ratmd.bloghub::lang.frontend.comments.reply' | trans }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </footer>
+        {% endif %}
+    </div>
+</div>

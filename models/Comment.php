@@ -151,7 +151,7 @@ class Comment extends Model
             }
         }
 
-        if ($this->status === 'rejected') {
+        if ($this->status === 'rejected' || $this->status === 'spam') {
             if (empty($this->rejected_at)) {
                 $this->rejected_at = date('Y-m-d H:i:s');
             }
@@ -168,22 +168,8 @@ class Comment extends Model
      */
     public function setContentAttribute(string $content)
     {
-        $this->attributes['content']= $content;
+        $this->attributes['content'] = $content;
         $this->attributes['content_html'] = Markdown::parse($content);
-    }
-
-    /**
-     * Get Content Attribute
-     *
-     * @return string
-     */
-    public function getContentAttribute()
-    {
-        if (BlogHubSettings::get('form_comment_markdown', '1') === '1') {
-            return $this->content_html;
-        } else {
-            return $this->content;
-        }
     }
 
     /**
@@ -194,14 +180,16 @@ class Comment extends Model
      */
     public function avatar($size = 80)
     {
-        if ($this->author_id) {
+        if (!empty($this->author_email)) {
+            $email = md5(strtolower($this->author_email));
+        } else if ($this->author_id) {
             if ($this->author_table === 'Backend\Models\User') {
                 return $this->authorable->getAvatarThumb($size);
             } else {
                 $email = md5(strtolower($this->authorable->email));
             }
         } else {
-            $email = md5(strtolower($this->author_email));
+            $email = md5('none');
         }
 
         return 'https://www.gravatar.com/avatar/' . $email . '?s='. $size .'&d=mp';
@@ -214,14 +202,16 @@ class Comment extends Model
      */
     public function display_name()
     {
-        if ($this->author_id) {
+        if (!empty($this->author)) {
+            return $this->author;
+        } else if ($this->author_id) {
             if ($this->author_table === 'Backend\Models\User') {
                 return $this->authorable->bloghub_display();
             } else {
                 return $this->authorable->username;
             }
         } else {
-            return $this->author;
+            return 'Guest';
         }
     }
 
@@ -351,6 +341,20 @@ class Comment extends Model
     public function reject()
     {
         $this->status = 'rejected';
+        $this->approved_at = null;
+        $this->rejected_at = date("Y-m-d H:i:s");
+        return $this->save();
+    }
+
+    /**
+     * Mark as Comment as spam
+     * 
+     * @return bool
+     */
+    public function spam()
+    {
+        $this->status = 'spam';
+        $this->approved_at = null;
         $this->rejected_at = date("Y-m-d H:i:s");
         return $this->save();
     }

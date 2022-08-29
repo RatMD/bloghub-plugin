@@ -1,36 +1,16 @@
 
 {% if showComments %}
-    <div id="comments">
+    <div id="comments" data-bloghub-comments>
         {% if commentsFormPosition == 'below' %}
-            <div class="comment-list">
-                {% partial __SELF__ ~ '::comment-list' %}
-            </div>
+            {% partial '@_comment-list' %}
         {% endif %}
 
         {% if showCommentsForm %}
-            <div class="comment-form">
-                {% if currentUserCanComment %}
-                    {% partial __SELF__ ~ '::comment-form' %}
-                {% else %}
-                    <div class="alert alert-info">
-                        {% if commentsMode == 'open' %}
-                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_open' | trans }}
-                        {% elseif commentsMode == 'restricted' %}
-                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_restricted' | trans }}
-                        {% elseif commentsMode == 'private' %}
-                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_private' | trans }}
-                        {% elseif commentsMode == 'closed' %}
-                            {{ 'ratmd.bloghub::lang.frontend.comments.disabled_closed' | trans }}
-                        {% endif %}
-                    </div>
-                {% endif %}
-            </div>
+            {% partial '@_comment-form' %}
         {% endif %}
-
+        
         {% if commentsFormPosition == 'above' %}
-            <div class="comment-list">
-                {% partial __SELF__ ~ '::comment-list' %}
-            </div>
+            {% partial '@_comment-list' %}
         {% endif %}
     </div>
 {% endif %}
