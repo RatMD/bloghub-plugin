@@ -109,7 +109,6 @@ class Plugin extends PluginBase
             $visitor = Visitor::currentUser();
             if (!$visitor->hasSeen($post)) {
                 if ($guest) {
-                    dd($post->ratmd_bloghub_unique_views);
                     $post->ratmd_bloghub_unique_views = is_numeric($post->ratmd_bloghub_unique_views)? $post->ratmd_bloghub_unique_views+1: 1;
                 }
                 $visitor->markAsSeen($post);
