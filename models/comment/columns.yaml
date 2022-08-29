@@ -1,0 +1,18 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    comment:
+        label: ratmd.bloghub::lang.model.comments.title
+        select: concat(title, ' ', content)
+        searchable: true
+    
+    favorite:
+        label: ratmd.bloghub::lang.model.comments.favorite
+        type: switch
+        default: false
+    
+    created_at:
+        label: rainlab.blog::lang.post.created
+        invisible: true

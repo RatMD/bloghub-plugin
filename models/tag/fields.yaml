@@ -7,6 +7,8 @@ fields:
         type: switch
         label: ratmd.bloghub::lang.model.tags.promote
         comment: ratmd.bloghub::lang.model.tags.promoteComment
+        permissions:
+            - ratmd.bloghub.tags.promoted
 
     title:
         type: text

@@ -5,7 +5,7 @@ namespace RatMD\BlogHub\Controllers;
 use BackendMenu;
 use Backend\Classes\Controller;
 
-class Tags extends Controller
+class Comments extends Controller
 {
 
     /**

@@ -67,6 +67,69 @@ class BlogHubPostModel extends ExtensionBase
         
         // Handle Backend Form Submits
         $model->bindEvent('model.beforeSave', fn() => $this->beforeSave());
+        
+        // Register Tags Scope
+        $model->addDynamicMethod('scopeFilterTags', function ($query, $tags) {
+            return $query->whereHas('ratmd_bloghub_tags', function($q) use ($tags) {
+                $q->withoutGlobalScope(NestedTreeScope::class)->whereIn('id', $tags);
+            });
+        });
+        
+        // Register Deprecated Methods
+        $model->bindEvent('model.afterFetch', fn() => $this->registerDeprecatedMethods($model));
+    }
+
+    /**
+     * Register deprecated methods
+     *
+     * @param Post $model
+     * @return void
+     */
+    protected function registerDeprecatedMethods(Post $model)
+    {
+        $bloghub = $this->getBloghubAttribute();
+
+        // Dynamic Method - Create a [name] => [value] meta data map
+        $model->addDynamicMethod(
+            'ratmd_bloghub_meta_data', 
+            fn () => $bloghub->getMeta()
+        );
+
+        // Dynamic Method - Receive Similar Posts from current Model
+        $model->addDynamicMethod(
+            'bloghub_similar_posts', 
+            fn ($limit = 3, $exclude = null) => $bloghub->getRelated($limit, $exclude)
+        );
+
+        // Dynamic Method - Receive Random Posts from current Model
+        $model->addDynamicMethod(
+            'bloghub_random_posts', 
+            fn ($limit = 3, $exclude = null) => $bloghub->getRandom($limit, $exclude)
+        );
+
+        // Dynamic Method - Get Next Post in the same category
+        $model->addDynamicMethod(
+            'bloghub_next_post_in_category', 
+            fn () => $bloghub->getNext(1, true)
+        );
+
+        // Dynamic Method - Get Previous Post in the same category
+        $model->addDynamicMethod(
+            'bloghub_prev_post_in_category', 
+            fn () => $bloghub->getPrevious(1, true)
+        );
+
+        // Dynamic Method - Get Next Post
+        $model->addDynamicMethod(
+            'bloghub_next_post', 
+            fn() => $bloghub->getNext()
+        );
+
+        // Dynamic Method - Get Previous Post
+        $model->addDynamicMethod(
+            'bloghub_prev_post', 
+            fn() => $bloghub->getPrevious()
+        );
     }
 
     /**

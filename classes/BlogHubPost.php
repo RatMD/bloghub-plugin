@@ -47,6 +47,28 @@ class BlogHubPost
     public function __construct(Post $model)
     {
         $this->model = $model;
+
+        $ctrl = $this->getController();
+        if ($ctrl && ($layout = $ctrl->getLayout()) !== null) {
+            if(($posts = $layout->getComponent('blogPosts')) !== null) {
+                $props = $posts->getProperties();
+                $model->setUrl($props['postPage'], $ctrl);
+                $model->categories->each(fn($cat) => $cat->setUrl($props['categoryPage'], $ctrl));
+            }
+
+            // Check New and Deprecated BlogHub Base settings
+            if (empty($props = $layout->getComponent('bloghubBase'))) {
+                $viewBag = $layout->getViewBag()->getProperties();
+                $props = [
+                    'archiveAuthor' => $viewBag['bloghubAuthorPage'] ?? 'blog/author',
+                    'archiveDate' => $viewBag['bloghubDatePage'] ?? 'blog/date',
+                    'archiveTag' => $viewBag['bloghubTagPage'] ?? 'blog/tag',
+                ];
+            } else {
+                $props = $props->getProperties();
+            }
+            $model->ratmd_bloghub_tags->each(fn($tag) => $tag->setUrl($props['archiveTag'], $ctrl));
+        }
     }
 
     /**
@@ -323,7 +345,7 @@ class BlogHubPost
      */
     public function getPrevious($limit = 1, $sameCategories = false)
     {
-        $query = $this->model->applySibling()
+        $query = $this->model->applySibling(-1)
             ->with('categories');
 
         if ($sameCategories) {
@@ -410,7 +432,7 @@ class BlogHubPost
 
         // Return Result
         $result = $query->get()->filter(fn($item) => !in_array($item['id'], $excludes))->all();
-        return $this->bindUrls($result);
+        return $result;
     }
     
 
