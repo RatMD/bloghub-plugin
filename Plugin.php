@@ -16,11 +16,15 @@ use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Behaviors\BlogHubBackendUserModel;
 use RatMD\BlogHub\Behaviors\BlogHubPostModel;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use RatMD\BlogHub\Models\Meta;
 use RatMD\BlogHub\Models\Settings;
 =======
 use RatMD\BlogHub\Models\MetaSettings;
 >>>>>>> bd5ef37 ([DEV])
+=======
+use RatMD\BlogHub\Models\MetaSettings;
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 use RatMD\BlogHub\Models\Visitor;
 use Symfony\Component\Yaml\Yaml;
 use System\Classes\PluginBase;
@@ -34,12 +38,18 @@ class Plugin extends PluginBase
      * @var array
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     public $require = ['RainLab.Blog'];
 =======
     public $require = [
         'RainLab.Blog'
     ];
 >>>>>>> bd5ef37 ([DEV])
+=======
+    public $require = [
+        'RainLab.Blog'
+    ];
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 
     /**
      * Returns information about this plugin.
@@ -66,19 +76,28 @@ class Plugin extends PluginBase
     {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Extend allowed sorting options
 =======
         // Extend available sorting options
 >>>>>>> bd5ef37 ([DEV])
+=======
+        // Extend available sorting options
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         Post::$allowedSortingOptions['ratmd_bloghub_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_asc';
         Post::$allowedSortingOptions['ratmd_bloghub_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_views_desc';
         Post::$allowedSortingOptions['ratmd_bloghub_unique_views asc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_asc';
         Post::$allowedSortingOptions['ratmd_bloghub_unique_views desc'] = 'ratmd.bloghub::lang.sorting.bloghub_unique_views_desc';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         Post::$allowedSortingOptions['ratmd_bloghub_comments_count asc'] = 'ratmd.bloghub::lang.sorting.bloghub_comments_count_asc';
         Post::$allowedSortingOptions['ratmd_bloghub_comments_count desc'] = 'ratmd.bloghub::lang.sorting.bloghub_comments_count_desc';
 >>>>>>> bd5ef37 ([DEV])
+=======
+        Post::$allowedSortingOptions['ratmd_bloghub_comments_count asc'] = 'ratmd.bloghub::lang.sorting.bloghub_comments_count_asc';
+        Post::$allowedSortingOptions['ratmd_bloghub_comments_count desc'] = 'ratmd.bloghub::lang.sorting.bloghub_comments_count_desc';
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     }
 
     /**
@@ -88,6 +107,7 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         Event::listen('backend.menu.extendItems', function($manager) {
@@ -102,6 +122,8 @@ class Plugin extends PluginBase
 
 =======
 >>>>>>> c5bd13e ([TASK] WiP)
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         // Add side menuts to RainLab.Blog
         Event::listen('backend.menu.extendItems', function($manager) {
             $manager->addSideMenuItems('RainLab.Blog', 'blog', [
@@ -125,7 +147,10 @@ class Plugin extends PluginBase
                     'permissions'   => [
                         'ratmd.bloghub.comments'
                     ]
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
                 ]
             ]);
         });
@@ -310,11 +335,14 @@ class Plugin extends PluginBase
     {
         return [
 <<<<<<< HEAD
+<<<<<<< HEAD
             'RatMD\BlogHub\Components\Authors'  => 'bloghubAuthorArchive',
             'RatMD\BlogHub\Components\Dates'    => 'bloghubDateArchive',
             'RatMD\BlogHub\Components\Tag'      => 'bloghubTagArchive',
             'RatMD\BlogHub\Components\Tags'     => 'bloghubTags',
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
             \RatMD\BlogHub\Components\Base::class => 'bloghubBase',
             \RatMD\BlogHub\Components\PostsByAuthor::class => 'bloghubPostsByAuthor',
             \RatMD\BlogHub\Components\PostsByCommentCount::class => 'bloghubPostsByCommentCount',
@@ -323,16 +351,22 @@ class Plugin extends PluginBase
             \RatMD\BlogHub\Components\CommentList::class => 'bloghubCommentList',
             \RatMD\BlogHub\Components\CommentSection::class => 'bloghubCommentSection',
 <<<<<<< HEAD
+<<<<<<< HEAD
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags'
 >>>>>>> bd5ef37 ([DEV])
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags',
 
             // Deprecated Components
             \RatMD\BlogHub\Components\DeprecatedAuthors::class => 'bloghubAuthorArchive',
             \RatMD\BlogHub\Components\DeprecatedDates::class => 'bloghubDateArchive',
             \RatMD\BlogHub\Components\DeprecatedTag::class => 'bloghubTagArchive',
+<<<<<<< HEAD
 >>>>>>> 2625a82 ([TASK] WiP \2)
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         ];
     }
 
@@ -344,8 +378,11 @@ class Plugin extends PluginBase
     public function registerPermissions()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return []; // We're using RainLab.Blog's provided permissions
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         return [
             'ratmd.bloghub.comments' => [
                 'tab'   => 'rainlab.blog::lang.blog.tab',
@@ -374,7 +411,10 @@ class Plugin extends PluginBase
                 'label' => 'ratmd.bloghub::lang.permissions.promote_tags'
             ]
         ];
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     }
 
     /**
@@ -396,6 +436,7 @@ class Plugin extends PluginBase
     {
         return [
 <<<<<<< HEAD
+<<<<<<< HEAD
             'bloghub' => [
                 'label'         => 'ratmd.bloghub::lang.settings.label',
                 'description'   => 'ratmd.bloghub::lang.settings.description',
@@ -403,6 +444,8 @@ class Plugin extends PluginBase
                 'icon'          => 'icon-list-ul',
                 'class'         => 'RatMD\BlogHub\Models\Settings',
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
             'ratmd_bloghub_config' => [
                 'label'         => 'ratmd.bloghub::lang.settings.config.label',
                 'description'   => 'ratmd.bloghub::lang.settings.config.description',
@@ -419,7 +462,10 @@ class Plugin extends PluginBase
                 'category'      => 'rainlab.blog::lang.blog.menu_label',
                 'icon'          => 'icon-list-ul',
                 'class'         => 'RatMD\BlogHub\Models\MetaSettings',
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
                 'order'         => 500,
                 'keywords'      => 'blog post meta data',
                 'permissions'   => ['rainlab.blog.manage_settings']
@@ -435,6 +481,7 @@ class Plugin extends PluginBase
     public function registerReportWidgets()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         // Work in Progress
         return [
@@ -446,6 +493,8 @@ class Plugin extends PluginBase
             //    ]
             //]
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         return [
             \RatMD\BlogHub\ReportWidgets\CommentsList::class => [
                 'label' => 'ratmd.bloghub::lang.widgets.comments_list.label',
@@ -469,6 +518,7 @@ class Plugin extends PluginBase
                     'rainlab.blog.access_other_posts'
                 ]
             ],
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
         ];
     }
@@ -796,4 +846,9 @@ class Plugin extends PluginBase
     
 =======
 >>>>>>> ac3af62 ([TASK] WiP \5)
+=======
+        ];
+    }
+
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 }

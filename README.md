@@ -33,9 +33,14 @@ Copyright
 ---------
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Copyright © 2022 rat.md.<br/>
 =======
 Copyright © 2022 rat.md.
 
 >>>>>>> bd5ef37 ([DEV])
+=======
+Copyright © 2022 rat.md.
+
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 Published under the MIT-License.

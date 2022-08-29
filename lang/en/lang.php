@@ -3,12 +3,15 @@
 return [
     'plugin' => [
 <<<<<<< HEAD
+<<<<<<< HEAD
         'name' => 'RatMD BlogHub',
         'description' => 'Extends RainLab\'s Blog extension with custom meta details, additional archives and more.',
     ],
 
     'model' => [
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'name' => 'BlogHub by rat.md',
         'description' => 'Extends RainLab\'s Blog extension with comments, meta data, tags, archives and much more.',
     ],
@@ -204,7 +207,10 @@ return [
             'published_format_minutes' => 'minutes',
         ],
 
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'tags' => [
             'label' => 'Tags',
             'manage' => 'Manage Tags',
@@ -225,9 +231,13 @@ return [
             'postsNumber' => 'No of Posts'
         ],
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> bd5ef37 ([DEV])
+=======
+
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'users' => [
             'displayName' => 'Display Name',
             'displayNameComment' => 'A custom version of your name, supporting themes may show them on your posts.',
@@ -236,6 +246,7 @@ return [
             'aboutMe' => 'About Me',
             'aboutMeDescription' => 'A small description about yourself, supporting themes may show them on your posts.'
         ],
+<<<<<<< HEAD
 <<<<<<< HEAD
         'post' => [
             'reading_time' => 'Reading Time: :min min :sec seconds',
@@ -251,11 +262,15 @@ return [
 =======
 
 >>>>>>> bd5ef37 ([DEV])
+=======
+
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'visitors' => [
             'views' => 'Views / Unique'
         ]
     ],
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     'components' => [
         'authors_title' => 'Posts by Author',
@@ -275,6 +290,8 @@ return [
         'tags_page' => 'Tag page',
         'tags_page_description' => 'Name of the tag page file for the tag links. This property is used by the default component partial.',
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     'permissions' => [
         'access_comments' => 'Manage the blog comments',
         'access_comments_comment' => 'Allows access to the comments submenu for all posts.',
@@ -284,13 +301,17 @@ return [
         'access_tags' => 'Manage the blog tags',
         'access_tags_comment' => 'Allows to access the tags submenu and to set the post tags itself for all posts.',
         'promote_tags' => 'Allows to promote tags',
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     ],
 
     'sorting' => [
         'bloghub_views_asc' => 'Views (ascending)',
         'bloghub_views_desc' => 'Views (descending)',
         'bloghub_unique_views_asc' => 'Unique Views (ascending)',
+<<<<<<< HEAD
 <<<<<<< HEAD
         'bloghub_unique_views_desc' => 'Unique Views (descending)'
     ],
@@ -338,6 +359,8 @@ return [
             'richeditor' => 'Rich WYSIWYG Editor',
             'taglist' => 'Tag List',
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'bloghub_unique_views_desc' => 'Unique Views (descending)',
         'bloghub_comments_count_asc' => 'Number of Comments (ascending)',
         'bloghub_comments_count_desc' => 'Number of Comments (descending)',
@@ -487,7 +510,10 @@ return [
         ],
         'posts_statistics' => [
             'label' => 'BlogHub - Posts Statistics'
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         ]
     ]
 ];

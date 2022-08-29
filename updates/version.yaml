@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 1.0.0: 
   - Initial Release of RatMD.BlogHub
   - create_meta_table.php
@@ -22,6 +23,8 @@
 1.2.5:
   - Fix MySQL installation issue
 =======
+=======
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 v1.0.0:
   - Initial Release of RatMD.BlogHub
   - create_meta_table.php
@@ -50,7 +53,11 @@ v1.3.0:
   - create_comments_table.php
   - migrate_settings_table.php
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> bd5ef37 ([DEV])
 =======
   - migrate_visitors_table.php
 >>>>>>> c5bd13e ([TASK] WiP)
+=======
+  - migrate_visitors_table.php
+>>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
