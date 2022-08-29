@@ -13,11 +13,11 @@ Features
 --------
 The following list just provides a slight overview, visit the documentation for more details.
 
-- Moderatable **Blog Comments**, with like, dislike, favorite, ajax and more)
+- Moderatable **Blog Comments**, with like, dislike, favorite, ajax and more
 - **Custom** global and theme-reated Blog **Meta Fields**
-- Promotable **Blog Tags**, with title, description and color)
+- Promotable **Blog Tags**, with title, description and color
 - **View** and **Visitor Counter**, for each single post
-- Additional **Template Components** (to create author, date, tag archives and more)
+- Additional **Template Components**, to create author, date, tag archives and more
 - **Extended Post Model**, with many additional values and properties
 - **Extended User Model**, also with many additional values and properties
 - **Dashboard Widgets**, for your comments, posts and statistics
