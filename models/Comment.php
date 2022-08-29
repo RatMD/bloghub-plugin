@@ -2,6 +2,7 @@
 
 namespace RatMD\BlogHub\Models;
 
+use Lang;
 use Markdown;
 use Model;
 use RatMD\BlogHub\Models\Visitor;
@@ -118,6 +119,21 @@ class Comment extends Model
             'type' => 'author_table'
         ]
     ];
+
+    /**
+     * Get Status Options
+     *
+     * @return array
+     */
+    public function getStatusOptions()
+    {
+        return [
+            'pending' => Lang::get('ratmd.bloghub::lang.model.comments.statusPending'),
+            'approved' => Lang::get('ratmd.bloghub::lang.model.comments.statusApproved'),
+            'rejected' => Lang::get('ratmd.bloghub::lang.model.comments.statusRejected'),
+            'spam' => Lang::get('ratmd.bloghub::lang.model.comments.statusSpam'),
+        ];
+    }
 
     /**
      * Before Save Event Listener

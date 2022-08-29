@@ -1,12 +1,12 @@
 BlogHub - OctoberCMS Plugin
 ===========================
 
-**BlogHub** extends [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog) OctoberCMS with 
-many necessary and helpful features such as Moderatable Comments, Promotable Tags, Custom Meta 
-Fields, additional Archives, asic Statistics, Views counter and more.
+**BlogHub** extends the [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog) OctoberCMS plugin 
+with many necessary and helpful features such as Moderatable Comments, Promotable Tags, Custom Meta 
+Fields, additional Archives, basic Statistics, Views counter and more.
 
 This extension is especially designed for our own OctoberCMS templates, but can also be used by any 
-OctoberCMS user and developer, of course.
+OctoberCMS user and developer, of course. Check out the documentation for all details.
 
 
 Features
@@ -23,6 +23,18 @@ The following list just provides a slight overview, visit the documentation for 
 - **Dashboard Widgets**, for your comments, posts and statistics
 
 
+Important Notes
+---------------
+1. The RatMD.BlogHub extension adds the possibility to use author archive pages. It is highly 
+recommended using the "Author Slug" field for each backend user so that the login name - which would 
+be used instead - is not disclosed. You can also disable the use of the login name with the 
+`[bloghubBase]` component, as described in the documentation.
+
+2. The Blog comments currently requires to add the `{% framework %}` October-specific TWIG tag to 
+your template layouts, when not already included. We're working on an AJAX-less / -optional 
+solution for a future update.
+
+
 Requirements
 -------------
 - OctoberCMS v2/v3 (tested with latest version only)
@@ -36,7 +48,6 @@ Requirements
 
 Copyright
 ---------
-
 Copyright © 2022 rat.md.
 
 Published under the MIT-License.

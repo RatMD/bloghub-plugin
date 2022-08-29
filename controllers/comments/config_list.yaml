@@ -5,6 +5,9 @@
 # Model List Column configuration
 list: $/ratmd/bloghub/models/comment/columns.yaml
 
+# Displays the list filter
+filter: $/ratmd/bloghub/models/comment/scopes.yaml
+
 # Model Class name
 modelClass: RatMD\BlogHub\Models\Comment
 
@@ -31,7 +34,7 @@ showSorting: true
 
 # Default sorting column
 defaultSort:
-    column: slug
+    column: created_at
     direction: desc
 
 # Display checkboxes next to each record
