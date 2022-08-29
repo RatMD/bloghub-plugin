@@ -1,32 +1,36 @@
 BlogHub - OctoberCMS Plugin
 ===========================
 
-**BlogHub** extends the [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog) OctoberCMS 
-extension with some additional data and details. This extension is especially designed for our own 
-OctoberCMS templates, but can also be used by any OctoberCMS user and developer, of course.
+**BlogHub** extends [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog) OctoberCMS with 
+many necessary and helpful features such as Moderatable Comments, Promotable Tags, Custom Meta 
+Fields, additional Archives, asic Statistics, Views counter and more.
+
+This extension is especially designed for our own OctoberCMS templates, but can also be used by any 
+OctoberCMS user and developer, of course.
 
 
 Features
 --------
+The following list just provides a slight overview, visit the documentation for more details.
 
-- Extended Backend Users ('Display Name', 'Author Slug' and 'About Me')
-- Counts (Unique) Views, excluding logged-in backend users
-- Implements Custom Meta Data (template-based via `theme.yaml`)
-- Implements Global Custom Meta Data (configurable via backend)
-- Adds Blog Tags with Promote flag, Description and Color
-- Supports Author related archive via component (`bloghubAuthorArchive`)
-- Supports Date related archive via component (`bloghubDateArchive`), supports year, month and day
-- Supports Tag related archive via component (`bloghubTagArchive`)
-- Supports Tags list via component (`bloghubTags`)
-- Enhances Post and User models with additional methods and properties. 
+- Moderatable **Blog Comments**, with like, dislike, favorite, ajax and more)
+- **Custom** global and theme-reated Blog **Meta Fields**
+- Promotable **Blog Tags**, with title, description and color)
+- **View** and **Visitor Counter**, for each single post
+- Additional **Template Components** (to create author, date, tag archives and more)
+- **Extended Post Model**, with many additional values and properties
+- **Extended User Model**, also with many additional values and properties
+- **Dashboard Widgets**, for your comments, posts and statistics
 
 
 Requirements
 -------------
-
+- OctoberCMS v2/v3 (tested with latest version only)
 - PHP 7.4+ / 8.0+
-- OctoberCMS v2 / v3
-- Plugin: [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog)
+- [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog)
+- **Supports:** [RainLab.User](https://octobercms.com/plugin/rainlab-user) (optional)
+- **Supports:** [RainLab.Pages](https://octobercms.com/plugin/rainlab-pages) (optional)
+- **Supports:** [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate) (optional)
 
 
 Copyright

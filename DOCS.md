@@ -10,9 +10,10 @@ Welcome on the BlogHub documentation page.
 5. Blog Tags
 6. Template Components
 9. Additional Menus
-10. Extended Post Model
-11. Extended User Model
-12. Dashboard Widgets
+10. Additional Permissions
+11. Extended Post Model
+12. Extended User Model
+13. Dashboard Widgets
 
 ## Requirements
 - OctoberCMS v2/v3 (tested with latest version only)
@@ -58,6 +59,13 @@ However, the following list shows all available features as in Version 1.3.0:
 	- Extends the sorting options of `blogPosts`
 - Additional Menus
 	- *coming soon*
+- Additional Permissions
+	- `ratmd.bloghub.comments`
+	- `ratmd.bloghub.comments.access_comments_settings`
+	- `ratmd.bloghub.comments.moderate_comments`
+	- `ratmd.bloghub.comments.delete_coments`
+	- `ratmd.bloghub.tags`
+	- `ratmd.bloghub.tags.promoted`
 - Extended Post Model
 	- `post.bloghub.detail_meta_title` - Generated Meta title
 	- `post.bloghub.detail_meta_description` - Generated Meta description
@@ -385,6 +393,27 @@ This component adds the following page variables.
 
 ## Additional Menus
 
+
+## Additional Permissions
+The **BlogHub** OctoberCMS plugin adds the following permissions.
+
+### `ratmd.bloghub.comments`
+Allows to access the `Comments` side menu on the RainLab.Blog main menu. The `Comments` menu contains access to the comments moderation. However, this permission is NOT required to access the BlogHub and BlogHub / Comments settings page, which requires the default RainLab permission: `rainlab.blog.manage_settings`.
+
+### `ratmd.bloghub.comments.access_comments_settings`
+This permissions allows to get access to the post-related comment configuration tab. This tab contains the options to change the visibility of the whole comment section as well as to change the comment mode for the respective post only.
+
+### `ratmd.bloghub.comments.moderate_comments`
+This permission allows to moderate comments on the backend as well as on the frontend page. The respective user can approve, reject or mark pending comments as spam. While the forntend does only allow to approve and reject pending comments, the backend also supports to change the comment status of any comment.
+
+### `ratmd.bloghub.comments.delete_coments`
+This permission allows to delete comments of any state and is an extension to the `moderate_comments` permission above.
+
+### `ratmd.bloghub.tags`
+This permission allows to access the `Tags` side menu on the RainLab.Blog main menu as well as the tags relation field on the single post backend page. The `Tags` menu contains the management environment for all available tags.
+
+### `ratmd.bloghub.tags.promoted`
+This permission allows to set the `Promote` flag on the single tags using the additional `Tags` menu under `Blog`. Since Promoted Tags are may shown different - depending on the theme - this flag has received his own permission additionally to the `tags` one as shown above.
 
 ## Extended Post Model
 The **BlogHub** OctoberCMS plugin extends RainLab's Blog Post class model with the following additional properties and methods.
