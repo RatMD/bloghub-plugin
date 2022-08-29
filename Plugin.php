@@ -101,11 +101,15 @@ class Plugin extends PluginBase
 
         // Collect (Unique) Views
         Event::listen('cms.page.end', function (Controller $ctrl) {
-            $post = $ctrl->getPageObject()->vars['post'] ?? null;
+            if (empty($post = $ctrl->getPageObject()->vars['post'] ?? null)) {
+                return;
+            }
+
             $guest = BackendAuth::getUser() === null;
             $visitor = Visitor::currentUser();
             if (!$visitor->hasSeen($post)) {
                 if ($guest) {
+                    dd($post->ratmd_bloghub_unique_views);
                     $post->ratmd_bloghub_unique_views = is_numeric($post->ratmd_bloghub_unique_views)? $post->ratmd_bloghub_unique_views+1: 1;
                 }
                 $visitor->markAsSeen($post);
@@ -113,7 +117,17 @@ class Plugin extends PluginBase
 
             if ($guest) {
                 $post->ratmd_bloghub_views = is_numeric($post->ratmd_bloghub_views)? $post->ratmd_bloghub_views+1: 1;
+
+                if (!empty($post->url)) {
+                    $url = $post->url;
+                    unset($post->url);
+                }
+
                 $post->save();
+
+                if (isset($url)) {
+                    $post->url = $url;
+                }
             }
         });
 
