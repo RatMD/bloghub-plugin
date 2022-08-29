@@ -18,3 +18,5 @@
   - Minor Changes
 1.2.4:
   - Fix database migration.
+1.2.5:
+  - Fix MySQL installation issue
