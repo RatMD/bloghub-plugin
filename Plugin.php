@@ -8,11 +8,9 @@ use Exception;
 use Backend\Controllers\Users as BackendUsers;
 use Backend\Facades\BackendAuth;
 use Backend\Models\User as BackendUser;
-use Backend\Widgets\Form;
 use Backend\Widgets\Lists;
 use Cms\Classes\Controller;
 use Cms\Classes\Theme;
-use Illuminate\Contracts\Database\Query\Builder;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Behaviors\BlogHubBackendUserModel;
@@ -135,32 +133,131 @@ class Plugin extends PluginBase
         // Collect (Unique) Views
         Event::listen('cms.page.end', function (Controller $ctrl) {
             $post = $ctrl->getPageObject()->vars['post'] ?? null;
-            if ($post && $post instanceof Post && BackendAuth::getUser() === null) {
-                $visitor = Visitor::currentUser();
-                if (!$visitor->hasSeen($post)) {
+            $guest = BackendAuth::getUser() === null;
+            $visitor = Visitor::currentUser();
+            if (!$visitor->hasSeen($post)) {
+                if ($guest) {
                     $post->ratmd_bloghub_unique_views = is_numeric($post->ratmd_bloghub_unique_views)? $post->ratmd_bloghub_unique_views+1: 1;
-                    $visitor->markAsSeen($post);
                 }
+                $visitor->markAsSeen($post);
+            }
 
+            if ($guest) {
                 $post->ratmd_bloghub_views = is_numeric($post->ratmd_bloghub_views)? $post->ratmd_bloghub_views+1: 1;
                 $post->save();
             }
         });
 
-        // Extend Post Model
-        Post::extend(fn (Post $model) => $this->extendPostModel($model));
-        Post::extend(function (Post $model) {
-            $model->addDynamicMethod('scopeFilterTags', function ($query, $tags) {
-                return $query->whereHas('ratmd_bloghub_tags', function($q) use ($tags) {
-                    $q->withoutGlobalScope(NestedTreeScope::class)->whereIn('id', $tags);
-                });
-            });
-        });
+        // Implment custom Models
         Post::extend(fn (Post $model) => $model->implementClassWith(BlogHubPostModel::class));
+        BackendUser::extend(fn (BackendUser $model) => $model->implementClassWith(BlogHubBackendUserModel::class));
 
-        // Extend Posts Controller
-        Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsForm($form, $model, $context));
-        Posts::extendListColumns(fn (Lists $list, $model) => $this->extendPostsList($list, $model));
+        // Extend Form Fields on Posts Controller
+        Posts::extendFormFields(function ($form, $model, $context) {
+            if (!$model instanceof Post) {
+                return;
+            }
+
+            // Add Comments Field
+            $form->addSecondaryTabFields([
+                'ratmd_bloghub_comment_visible' => [
+                    'tab'           => 'ratmd.bloghub::lang.model.comments.label',
+                    'type'          => 'switch',
+                    'label'         => 'ratmd.bloghub::lang.model.comments.post_visibility.label',
+                    'comment'       => 'ratmd.bloghub::lang.model.comments.post_visibility.comment',
+                    'span'          => 'left',
+                    'permissions'   => ['ratmd.bloghub.comments.access_comments_settings']
+                ],
+                'ratmd_bloghub_comment_mode' => [
+                    'tab'           => 'ratmd.bloghub::lang.model.comments.label',
+                    'type'          => 'dropdown',
+                    'label'         => 'ratmd.bloghub::lang.model.comments.post_mode.label',
+                    'comment'       => 'ratmd.bloghub::lang.model.comments.post_mode.comment',
+                    'showSearch'    => false,
+                    'span'          => 'left',
+                    'options'       => [
+                        'open' => 'ratmd.bloghub::lang.model.comments.post_mode.open',
+                        'restricted' => 'ratmd.bloghub::lang.model.comments.post_mode.restricted',
+                        'private' => 'ratmd.bloghub::lang.model.comments.post_mode.private',
+                        'closed' => 'ratmd.bloghub::lang.model.comments.post_mode.closed',
+                    ],
+                    'permissions'   => ['ratmd.bloghub.comments.access_comments_settings']
+                ],
+            ]);
+
+            // Build Meta Map
+            $meta = $model->ratmd_bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
+
+            // Add Tags Field
+            $form->addSecondaryTabFields([
+                'ratmd_bloghub_tags' => [
+                    'label'         => 'ratmd.bloghub::lang.model.tags.label',
+                    'mode'          => 'relation',
+                    'tab'           => 'rainlab.blog::lang.post.tab_categories',
+                    'type'          => 'taglist',
+                    'nameFrom'      => 'slug',
+                    'permissions'   => ['ratmd.bloghub.tags']
+                ]
+            ]);
+
+            // Custom Meta Data
+            $config = [];
+            $settings = MetaSettings::get('meta_data', []);
+            if (is_array($settings)) {
+                foreach (MetaSettings::get('meta_data', []) AS $item) {
+                    try {
+                        $temp = Yaml::parse($item['config']);
+                    } catch (Exception $e) {
+                        $temp = null;
+                    }
+                    if (empty($temp)) {
+                        continue;
+                    }
+
+                    $config[$item['name']] = $temp;
+                    $config[$item['name']]['type'] = $item['type'];
+
+                    // Add Label if missing
+                    if (empty($config[$item['name']]['label'])) {
+                        $config[$item['name']]['label'] = $item['name'];
+                    }
+                }
+            }
+            $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
+
+            // Add Custom Meta Fields
+            if (!empty($config)) {
+                foreach ($config AS $key => $value) {
+                    if (empty($value['tab'])) {
+                        $value['tab'] = 'ratmd.bloghub::lang.settings.defaultTab';
+                    }
+                    $form->addSecondaryTabFields([
+                        "ratmd_bloghub_meta_temp[$key]" => array_merge($value, [
+                            'value' => $meta[$key] ?? '',
+                            'default' => $meta[$key] ?? ''
+                        ])
+                    ]);
+                }
+            }
+        });
+
+        // Extend List Columns on Posts Controller
+        Posts::extendListColumns(function (Lists $list, $model) {
+            if (!$model instanceof Post) {
+                return;
+            }
+    
+            $list->addColumns([
+                'ratmd_bloghub_views' => [
+                    'label' => 'ratmd.bloghub::lang.model.visitors.views',
+                    'type' => 'number',
+                    'select' => 'concat(ratmd_bloghub_views, " / ", ratmd_bloghub_unique_views)',
+                    'align' => 'left'
+                ]
+            ]);
+        });
+
+        // Add Posts Filter Scope
         Posts::extendListFilterScopes(function ($filter) {
             $filter->addScopes([
                 'ratmd_bloghub_tags' => [
@@ -171,12 +268,37 @@ class Plugin extends PluginBase
                 ]
             ]);
         });
-
-        // Extend Backend User Model
-        BackendUser::extend(fn (BackendUser $model) => $model->implementClassWith(BlogHubBackendUserModel::class));
         
         // Extend Backend Users Controller
-        BackendUsers::extendFormFields(fn ($form, $model, $context) => $this->extendBackendUsersController($form, $model, $context));
+        BackendUsers::extendFormFields(function ($form, $model, $context) {
+            if (!$model instanceof BackendUser) {
+                return;
+            }
+    
+            // Add Display Name
+            $form->addTabFields([
+                'ratmd_bloghub_display_name' => [
+                    'label'         => 'ratmd.bloghub::lang.model.users.displayName',
+                    'description'   => 'ratmd.bloghub::lang.model.users.displayNameDescription',
+                    'tab'           => 'backend::lang.user.account',
+                    'type'          => 'text',
+                    'span'          => 'left'
+                ],
+                'ratmd_bloghub_author_slug' => [
+                    'label'         => 'ratmd.bloghub::lang.model.users.authorSlug',
+                    'description'   => 'ratmd.bloghub::lang.model.users.authorSlugDescription',
+                    'tab'           => 'backend::lang.user.account',
+                    'type'          => 'text',
+                    'span'          => 'right'
+                ],
+                'ratmd_bloghub_about_me' => [
+                    'label'         => 'ratmd.bloghub::lang.model.users.aboutMe',
+                    'description'   => 'ratmd.bloghub::lang.model.users.aboutMeDescription',
+                    'tab'           => 'backend::lang.user.account',
+                    'type'          => 'textarea',
+                ]
+            ]);
+        });
     }
 
     /**
@@ -206,7 +328,7 @@ class Plugin extends PluginBase
 =======
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags',
 
-            // Deprecated Methods
+            // Deprecated Components
             \RatMD\BlogHub\Components\DeprecatedAuthors::class => 'bloghubAuthorArchive',
             \RatMD\BlogHub\Components\DeprecatedDates::class => 'bloghubDateArchive',
             \RatMD\BlogHub\Components\DeprecatedTag::class => 'bloghubTagArchive',
@@ -350,74 +472,8 @@ class Plugin extends PluginBase
 >>>>>>> bd5ef37 ([DEV])
         ];
     }
-    
-    /**
-     * Extend the Post Model
-     *
-     * @param Post $model
-     * @return void
-     */
-    protected function extendPostModel(Post $model)
-    {
 
-        // Dynamic Method - Create a [name] => [value] meta data map
-        $model->addDynamicMethod('ratmd_bloghub_meta_data', function () use ($model) {
-            return $model->ratmd_bloghub_meta->mapWithKeys(function ($item, $key) {
-                return [$item['name'] => $item['value']];
-            })->all();
-        });
-
-        // Dynamic Method - Receive Similar Posts from current Model
-        $model->addDynamicMethod(
-            'bloghub_similar_posts', 
-            fn ($limit = 3, $exclude = null) => $this->getSimilarPosts($model, $limit, $exclude)
-        );
-
-        // Dynamic Method - Receive Random Posts from current Model
-        $model->addDynamicMethod(
-            'bloghub_random_posts', 
-            fn ($limit = 3, $exclude = null) => $this->getRandomPosts($model, $limit, $exclude)
-        );
-
-        // Dynamic Method - Get Next Post in the same category
-        $model->addDynamicMethod(
-            'bloghub_next_post_in_category', 
-            fn () => $this->getNextPostInCategory($model)
-        );
-
-        // Dynamic Method - Get Previous Post in the same category
-        $model->addDynamicMethod(
-            'bloghub_prev_post_in_category', 
-            fn () => $this->getPrevPostInCategory($model)
-        );
-
-        // Dynamic Method - Get Next Post
-        $model->addDynamicMethod(
-            'bloghub_next_post', 
-            fn() => $this->getNextPost($model)
-        );
-
-        // Dynamic Method - Get Previous Post
-        $model->addDynamicMethod(
-            'bloghub_prev_post', 
-            fn() => $this->getPrevPost($model)
-        );
-    }
-
-    /**
-     * Extends Posts Controller
-     *
-     * @param Form $form
-     * @param mixed $model
-     * @param mixed $context
-     * @return void
-     */
-    protected function extendPostsForm(Form $form, $model, $context)
-    {
-        if (!$model instanceof Post) {
-            return;
-        }
-
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
         // Add Comments Field
@@ -738,4 +794,6 @@ class Plugin extends PluginBase
         return $model->previousPost();
     }
     
+=======
+>>>>>>> ac3af62 ([TASK] WiP \5)
 }

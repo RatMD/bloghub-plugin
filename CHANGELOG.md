@@ -42,12 +42,20 @@ Version 1.3.0 - Stable
 - Update: The new `BlogHubPostModel` behaviour has been finished.
 - Update: Estimated reading time is now part of the new `BlogHubPostModel` behaviour
 - Update: Published * ago date/time view is now part of the new `BlogHubPostModel` behaviour.
+<<<<<<< HEAD
 >>>>>>> 042632c ([TASK] WiP\3)
+=======
+- Update: Backend Users are now Visitors as well (but do NOT increase the views / unique_views counter).
+>>>>>>> ac3af62 ([TASK] WiP \5)
 - Deprecated: `[bloghubAuthorArchive]` has been marked as deprecated, please use `[bloghubPostsByAuthor]` instead.
 - Deprecated: `[bloghubDateArchive]` has been marked as deprecated, please use `[bloghubPostsByDate]` instead.
 - Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.
 - Bugfix: Replace missing default component partials with working ones.
+<<<<<<< HEAD
 >>>>>>> 2625a82 ([TASK] WiP \2)
+=======
+- Bugfix: PHP typings.
+>>>>>>> ac3af62 ([TASK] WiP \5)
 
 Version 1.2.4 - Stable
 ----------------------

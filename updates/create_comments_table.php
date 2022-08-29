@@ -26,7 +26,7 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->integer('post_id')->unsigned();
             $table->string('status', 32)->default('pending');
-            $table->string('title', 128)->nullable();
+            $table->string('title', 128)->default('');
             $table->text('content');
             $table->text('content_html');
             $table->boolean('favorite')->unsigned()->default(false);

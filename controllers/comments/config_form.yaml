@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: ratmd.bloghub::lang.model.comments.recordName
+
+# Model Form Field configuration
+form: $/ratmd/bloghub/models/comment/fields.yaml
+
+# Model Class name
+modelClass: RatMD\BlogHub\Models\Comment
+
+# Default redirect location
+defaultRedirect: ratmd/bloghub/comments
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: ratmd/bloghub/comments/update/:id
+    redirectClose: ratmd/bloghub/comments
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: ratmd/bloghub/comments
+    redirectClose: ratmd/bloghub/comments
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

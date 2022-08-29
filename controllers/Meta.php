@@ -7,6 +7,12 @@ use Backend\Classes\Controller;
 
 class Meta extends Controller
 {
+    
+    /**
+     * Implemented Interfaces
+     *
+     * @var array
+     */
     public $implement = [
         \Backend\Behaviors\FormController::class,
         \Backend\Behaviors\ListController::class
