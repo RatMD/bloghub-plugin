@@ -2,16 +2,6 @@
 
 return [
     'plugin' => [
-<<<<<<< HEAD
-<<<<<<< HEAD
-        'name' => 'RatMD BlogHub',
-        'description' => 'Extends RainLab\'s Blog extension with custom meta details, additional archives and more.',
-    ],
-
-    'model' => [
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'name' => 'BlogHub by rat.md',
         'description' => 'Extends RainLab\'s Blog extension with comments, meta data, tags, archives and much more.',
     ],
@@ -207,10 +197,6 @@ return [
             'published_format_minutes' => 'minutes',
         ],
 
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'tags' => [
             'label' => 'Tags',
             'manage' => 'Manage Tags',
@@ -230,14 +216,7 @@ return [
             'postsEmpty' => 'No posts available.',
             'postsNumber' => 'No of Posts'
         ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> bd5ef37 ([DEV])
-=======
-
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'users' => [
             'displayName' => 'Display Name',
             'displayNameComment' => 'A custom version of your name, supporting themes may show them on your posts.',
@@ -246,52 +225,12 @@ return [
             'aboutMe' => 'About Me',
             'aboutMeDescription' => 'A small description about yourself, supporting themes may show them on your posts.'
         ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-        'post' => [
-            'reading_time' => 'Reading Time: :min min :sec seconds',
-            'reading_time_sec' => 'Reading Time: :sec seconds',
-            'published_seconds_ago' => 'Published a few seconds ago.',
-            'published_ago' => 'Published :amount :format ago.',
-            'published_format_years' => 'years',
-            'published_format_months' => 'months',
-            'published_format_days' => 'days',
-            'published_format_hours' => 'hours',
-            'published_format_minutes' => 'minutes',
-        ],
-=======
 
->>>>>>> bd5ef37 ([DEV])
-=======
-
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'visitors' => [
             'views' => 'Views / Unique'
         ]
     ],
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    'components' => [
-        'authors_title' => 'Posts by Author',
-        'authors_description' => 'Displays a list of posts by author.',
-        'author_filter' => 'Author filter',
-        'author_filter_description' => 'Enter a author login name or URL parameter to filter the posts by.',
-        'dates_title' => 'Posts by Date',
-        'dates_description' => 'Displays a list of posts by date.',
-        'date_filter' => 'Date filter',
-        'date_filter_description' => 'Enter a specific date or URL parameter to filter the posts by.',
-        'tag_title' => 'Posts by Tag',
-        'tag_description' => 'Displays a list of posts by tag.',
-        'tag_filter' => 'Tag filter',
-        'tag_filter_description' => 'Enter a tag slug or URL parameter to filter the posts by.',
-        'tags_title' => 'Tags List',
-        'tags_description' => 'Displays a list of blog tags on the page.',
-        'tags_page' => 'Tag page',
-        'tags_page_description' => 'Name of the tag page file for the tag links. This property is used by the default component partial.',
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     'permissions' => [
         'access_comments' => 'Manage the blog comments',
         'access_comments_comment' => 'Allows access to the comments submenu for all posts.',
@@ -301,66 +240,12 @@ return [
         'access_tags' => 'Manage the blog tags',
         'access_tags_comment' => 'Allows to access the tags submenu and to set the post tags itself for all posts.',
         'promote_tags' => 'Allows to promote tags',
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     ],
 
     'sorting' => [
         'bloghub_views_asc' => 'Views (ascending)',
         'bloghub_views_desc' => 'Views (descending)',
         'bloghub_unique_views_asc' => 'Unique Views (ascending)',
-<<<<<<< HEAD
-<<<<<<< HEAD
-        'bloghub_unique_views_desc' => 'Unique Views (descending)'
-    ],
-
-    'settings' => [
-        'defaultTab' => 'Meta Data',
-        'label' => 'Custom Meta Data',
-        'description' => 'Manage the global custom meta data for your posts.',
-        'prompt' => 'Add a new Meta Field',
-
-        'hint' => [
-            'label' => 'Make sure your Custom Meta Names are unique',
-            'comment' => 'The custom meta data configured here will be overriden by the meta data configured in the theme.yaml template file. Thus, keep your keys unique!'
-        ],
-        'name' => [
-            'label' => 'Custom Meta Name',
-            'comment' => 'The custom meta name as available on the frontend.'
-        ],
-        'type' => [
-            'label' => 'Custom Meta Type',
-            'comment' => 'The custom meta field type as available on the backend.'
-        ],
-        'config' => [
-            'label' => 'Custom Meta Configuration',
-            'comment' => 'Pass your field definition configuration here, as documented on the <a href="https://docs.octobercms.com/3.x/element/form/widget-taglist.html" target="_blank">OctoberCMS Docs</a>.'
-        ],
-        'types' => [
-            'text' => 'Text Field',
-            'number' => 'Number Field',
-            'password' => 'Password Field',
-            'email' => 'E-Mail Field',
-            'textarea' => 'Textarea Field',
-            'dropdown' => 'Dropdown Selector',
-            'radio' => 'Radio Field',
-            'balloon' => 'Balloon Selector',
-            'checkbox' => 'Checkbox Field',
-            'checkboxlist' => 'Checkbox List',
-            'switch' => 'Switch Button',
-            'codeeditor' => 'Code Editor',
-            'colorpicker' => 'Color Picker',
-            'datepicker' => 'Date/Time Picker',
-            'fileupload' => 'File Upload Field',
-            'markdown' => 'Markdown Editor',
-            'mediafinder' => 'Media Finder',
-            'richeditor' => 'Rich WYSIWYG Editor',
-            'taglist' => 'Tag List',
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         'bloghub_unique_views_desc' => 'Unique Views (descending)',
         'bloghub_comments_count_asc' => 'Number of Comments (ascending)',
         'bloghub_comments_count_desc' => 'Number of Comments (descending)',
@@ -510,10 +395,6 @@ return [
         ],
         'posts_statistics' => [
             'label' => 'BlogHub - Posts Statistics'
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         ]
     ]
 ];

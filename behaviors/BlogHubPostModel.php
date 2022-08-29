@@ -5,14 +5,7 @@ namespace RatMD\BlogHub\Behaviors;
 use Cms\Classes\Controller;
 use October\Rain\Extension\ExtensionBase;
 use RainLab\Blog\Models\Post;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 use RatMD\BlogHub\Classes\BlogHubPost;
->>>>>>> bd5ef37 ([DEV])
-=======
-use RatMD\BlogHub\Classes\BlogHubPost;
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 use RatMD\BlogHub\Models\Meta;
 
 class BlogHubPostModel extends ExtensionBase
@@ -26,11 +19,6 @@ class BlogHubPostModel extends ExtensionBase
     protected Post $model;
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
      * BlogHub Post Model DataSet
      *
      * @var ?BlogHubPost
@@ -38,10 +26,6 @@ class BlogHubPostModel extends ExtensionBase
     protected ?BlogHubPost $bloghubSet;
 
     /**
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
      * Constructor
      *
      * @param Post $model
@@ -50,20 +34,6 @@ class BlogHubPostModel extends ExtensionBase
     {
         $this->model = $model;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // Add Tag Relationship
-        $this->model->belongsToMany['ratmd_bloghub_tags'] = [
-            'RatMD\BlogHub\Models\Tag',
-            'table' => 'ratmd_bloghub_tags_posts',
-            'order' => 'slug'
-        ];
-
-        // Add Custom Meta Relationship
-        $this->model->morphMany['ratmd_bloghub_meta'] = [
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         // Add Blog Comments
         $model->hasMany['ratmd_bloghub_comments'] = [
             'RatMD\BlogHub\Models\Comment',
@@ -80,28 +50,11 @@ class BlogHubPostModel extends ExtensionBase
 
         // Add Blog Meta
         $model->morphMany['ratmd_bloghub_meta'] = [
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
             'RatMD\BlogHub\Models\Meta',
             'table' => 'ratmd_bloghub_meta',
             'name' => 'metable',
         ];
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // Add Temporary Form JSONable
-        $this->model->addJsonable('ratmd_bloghub_meta_temp');
-        
-        // Handle Backend Form Submits
-        $model->bindEvent('model.beforeSave', fn() => $this->beforeSave());
-
-        // Bind URLs (@todo find a better solution)
-        $model->bindEvent('model.afterFetch', fn() => $this->afterFetch());
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
         // Add Blog Tags
         $model->belongsToMany['ratmd_bloghub_tags'] = [
             'RatMD\BlogHub\Models\Tag',
@@ -190,10 +143,6 @@ class BlogHubPostModel extends ExtensionBase
             $this->bloghubSet = new BlogHubPost($this->model);
         }
         return $this->bloghubSet;
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
     }
 
     /**

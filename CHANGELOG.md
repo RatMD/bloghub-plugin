@@ -1,14 +1,6 @@
 BlogHub - Changelog
 ===================
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Version 1.2.5 - Stable
-----------------------
-- Fix: MySQL installation issue.
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 Version 1.3.0 - Stable
 ----------------------
 - Add: Blog Comments table, model and functions.
@@ -35,41 +27,17 @@ Version 1.3.0 - Stable
 - Update: The new date archive component supports now week archives as well.
 - Update: `[bloghubTags]` supports more arguments and can display a tag cloud.
 - Update: Support multiple-tags query combinations using + (all) and , (either).
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> bd5ef37 ([DEV])
-=======
-=======
-=======
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 - Update: The visitors table to collect likes and dislikes for the new comment system.
 - Update: Rename `ratmd_bloghub_settings` settings model to `ratmd_bloghub_meta_settings`.
 - Update: The new `BlogHubPostModel` behaviour has been finished.
 - Update: Estimated reading time is now part of the new `BlogHubPostModel` behaviour
 - Update: Published * ago date/time view is now part of the new `BlogHubPostModel` behaviour.
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 042632c ([TASK] WiP\3)
-=======
 - Update: Backend Users are now Visitors as well (but do NOT increase the views / unique_views counter).
->>>>>>> ac3af62 ([TASK] WiP \5)
-=======
-- Update: Backend Users are now Visitors as well (but do NOT increase the views / unique_views counter).
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 - Deprecated: `[bloghubAuthorArchive]` has been marked as deprecated, please use `[bloghubPostsByAuthor]` instead.
 - Deprecated: `[bloghubDateArchive]` has been marked as deprecated, please use `[bloghubPostsByDate]` instead.
 - Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.
 - Bugfix: Replace missing default component partials with working ones.
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 2625a82 ([TASK] WiP \2)
-=======
 - Bugfix: PHP typings.
->>>>>>> ac3af62 ([TASK] WiP \5)
-=======
-- Bugfix: PHP typings.
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
 
 Version 1.2.5 - Stable
 ----------------------
@@ -122,12 +90,4 @@ Version 1.1.0 - Stable
 
 Version 1.0.0 - Stable
 ----------------------
-<<<<<<< HEAD
-<<<<<<< HEAD
 - Initial Release
-=======
-- Initial Release
->>>>>>> bd5ef37 ([DEV])
-=======
-- Initial Release
->>>>>>> cf1e26566d17acfbb97d62620c9f54cfeb237bfa
