@@ -39,6 +39,10 @@ Version 1.3.0 - Stable
 - Bugfix: Replace missing default component partials with working ones.
 - Bugfix: PHP typings.
 
+Version 1.2.5 - Stable
+----------------------
+- Fix: MySQL installation issue.
+
 Version 1.2.4 - Stable
 ----------------------
 - Fix: Database Table Migration for OctoberCMS v3.
