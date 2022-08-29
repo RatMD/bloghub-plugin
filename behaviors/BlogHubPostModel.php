@@ -72,7 +72,7 @@ class BlogHubPostModel extends ExtensionBase
     /**
      * Get main BlogHub Space
      *
-     * @return array
+     * @return BlogHubPost
      */
     public function getBloghubAttribute()
     {
@@ -140,66 +140,6 @@ class BlogHubPostModel extends ExtensionBase
                 $tags->each(fn ($tag) => $tag->setUrl($viewBag['bloghubTagPage'], $ctrl));
             }
         }
-    }
-
-    /**
-     * Calculate ReadTime attribute.
-     *
-     * @return mixed
-     */
-    public function getReadTimeAttribute()
-    {
-        $content = strip_tags($this->model->content_html);
-        $count = str_word_count($content);
-
-        $amount = $count / 200;
-        $minutes = intval($amount);
-        $seconds = intval(($minutes > 0? $amount - $minutes: $amount) * 0.60 * 100); 
-
-        if ($minutes === 0) {
-            return trans('ratmd.bloghub::lang.model.post.reading_time_sec', [
-                'sec' => $seconds
-            ]);
-        } else {
-            return trans('ratmd.bloghub::lang.model.post.reading_time', [
-                'min' => $minutes,
-                'sec' => $seconds
-            ]);
-        }
-    }
-
-    /**
-     * Get "published x x ago" string
-     *
-     * @return void
-     */
-    public function getPublishedAgoAttribute()
-    {
-        $seconds = (time() - strtotime($this->model->attributes['published_at']));
-
-        if ($seconds >= 31536000) {
-            $amount = intval($seconds / 31536000);
-            $format = 'years';
-        } elseif ($seconds >= 2419200) {
-            $amount = intval($seconds / 2419200);
-            $format = 'months';
-        } elseif ($seconds >= 86400) {
-            $amount = intval($seconds / 86400);
-            $format = 'days';
-        } elseif ($seconds >= 3600) {
-            $amount = intval($seconds / 3600);
-            $format = 'hours';
-        } elseif ($seconds >= 60) {
-            $amount = intval($seconds / 60);
-            $format = 'minutes';
-        } else {
-            return trans('ratmd.bloghub::lang.model.post.published_seconds_ago');
-        }
-
-        return trans('ratmd.bloghub::lang.model.post.published_ago', [
-            'amount' => $amount,
-            'format' => trans('ratmd.bloghub::lang.model.post.published_format_' . $format)
-        ]);
     }
 
 }

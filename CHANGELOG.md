@@ -11,6 +11,9 @@ Version 1.3.0 - Stable
 - Add: New dashboard widget 'Posts List'.
 - Add: New dashboard widget 'Posts Statistics'.
 - Add: Comments count sorting option to Post Model.
+- Add: Move Backend user Extension to the `BlogHubBackendUserModel` behaviour.
+- Add: Custom `BlogHubPost` model, which is implemented in RainLabs Post model.
+- Add: Custom `BlogHubBackendUser` model, which is implemented in Octobers User model.
 - Add: New `[bloghubBase]` component to configure the base options on the layout level.
 - Add: New `[bloghubCommentList]` component to show comment list outside of post page.
 - Add: New `[bloghubCommentSection]` component to show comment list with form on post page.

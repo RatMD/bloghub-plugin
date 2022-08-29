@@ -15,6 +15,7 @@ use Cms\Classes\Theme;
 use Illuminate\Contracts\Database\Query\Builder;
 use RainLab\Blog\Controllers\Posts;
 use RainLab\Blog\Models\Post;
+use RatMD\BlogHub\Behaviors\BlogHubBackendUserModel;
 use RatMD\BlogHub\Behaviors\BlogHubPostModel;
 use RatMD\BlogHub\Models\MetaSettings;
 use RatMD\BlogHub\Models\Visitor;
@@ -124,7 +125,7 @@ class Plugin extends PluginBase
                 });
             });
         });
-        Post::extend(fn(Post $model) => $model->implementClassWith(BlogHubPostModel::class));
+        Post::extend(fn (Post $model) => $model->implementClassWith(BlogHubPostModel::class));
 
         // Extend Posts Controller
         Posts::extendFormFields(fn ($form, $model, $context) => $this->extendPostsForm($form, $model, $context));
@@ -141,8 +142,8 @@ class Plugin extends PluginBase
         });
 
         // Extend Backend User Model
-        BackendUser::extend(fn (BackendUser $model) => $this->extendBackendUserModel($model));
-
+        BackendUser::extend(fn (BackendUser $model) => $model->implementClassWith(BlogHubBackendUserModel::class));
+        
         // Extend Backend Users Controller
         BackendUsers::extendFormFields(fn ($form, $model, $context) => $this->extendBackendUsersController($form, $model, $context));
     }
@@ -450,31 +451,6 @@ class Plugin extends PluginBase
                 'align' => 'left'
             ]
         ]);
-    }
-
-    /**
-     * Extend the BackendUser Model
-     *
-     * @param BackendUser $model
-     * @return void
-     */
-    protected function extendBackendUserModel(BackendUser $model)
-    {
-        $model->addDynamicMethod('bloghub_display', function () use ($model) {
-            if (!empty($model->ratmd_bloghub_display_name)) {
-                return $model->ratmd_bloghub_display_name;
-            }
-            
-            $name = '';
-            if ($model->first_name) {
-                $name = $model->first_name;
-            }
-            if ($model->last_name) {
-                $name = ($model->last_name? ' ': '') . $model->first_name;
-            }
-            return empty($name)? ucfirst($model->login): $name;
-        });
-        $model->addDynamicMethod('bloghub_slug', fn() => $model->ratmd_bloghub_author_slug ?? $model->login);
     }
 
     /**
