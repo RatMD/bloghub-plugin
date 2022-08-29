@@ -57,6 +57,10 @@ Version 1.3.0 - Stable
 - Bugfix: PHP typings.
 >>>>>>> ac3af62 ([TASK] WiP \5)
 
+Version 1.2.5 - Stable
+----------------------
+- Fix: MySQL installation issue.
+
 Version 1.2.4 - Stable
 ----------------------
 - Fix: Database Table Migration for OctoberCMS v3.
