@@ -28,10 +28,14 @@ class CreateVisitorsTable extends Migration
             $table->increments('id');
             $table->string('user', 64);
 <<<<<<< HEAD
+<<<<<<< HEAD
             $table->json('posts')->nullable();
 =======
             $table->json('posts')->default('[]');
 >>>>>>> bd5ef37 ([DEV])
+=======
+            $table->json('posts')->nullable();
+>>>>>>> b5ca129 ([FIX] MySQL installation issue)
 
             $table->timestamps();
         });

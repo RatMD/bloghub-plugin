@@ -42,6 +42,8 @@ v1.2.3:
   - Minor Changes
 v1.2.4:
   - Fix database migration.
+v1.2.5:
+  - Fix MySQL installation issue
 v1.3.0:
   - Add Blog Comments table and function.
   - Add Blog Comments column to 'rainlab_blog_posts'.
