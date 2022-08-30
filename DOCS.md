@@ -55,7 +55,7 @@ However, the following list shows all available features as in Version 1.3.0:
 	- `[bloghubPostsByTag]` - List posts by tag
 	- `[bloghubCommentList]` - List comments
 	- `[bloghubCommentSection]` - Comment Section (List and Form) for single posts
-	- `[bloghubTags]` - List or Cloud of tags 
+	- `[bloghubTags]` - List of Tags
 	- Extends the sorting options of `blogPosts`
 - Additional Menus
 	- *coming soon*

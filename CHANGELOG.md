@@ -25,7 +25,6 @@ Version 1.3.0 - Stable
 - Update: Add missing translation strings (for both english and german).
 - Update: Set RatMD.BlogHub as owner on side menu items.
 - Update: The new date archive component supports now week archives as well.
-- Update: `[bloghubTags]` supports more arguments and can display a tag cloud.
 - Update: Support multiple-tags query combinations using + (all) and , (either).
 - Update: The visitors table to collect likes and dislikes for the new comment system.
 - Update: Rename `ratmd_bloghub_settings` settings model to `ratmd_bloghub_meta_settings`.
@@ -33,6 +32,7 @@ Version 1.3.0 - Stable
 - Update: Estimated reading time is now part of the new `BlogHubPostModel` behaviour
 - Update: Published * ago date/time view is now part of the new `BlogHubPostModel` behaviour.
 - Update: Backend Users are now Visitors as well (but do NOT increase the views / unique_views counter).
+- Update: New default Bootstrap 5 partials for all components.
 - Deprecated: `[bloghubAuthorArchive]` has been marked as deprecated, please use `[bloghubPostsByAuthor]` instead.
 - Deprecated: `[bloghubDateArchive]` has been marked as deprecated, please use `[bloghubPostsByDate]` instead.
 - Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.

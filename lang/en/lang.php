@@ -37,6 +37,17 @@ return [
             'label' => 'Posts by Comments',
             'comment' => 'Displays a list of posts by the comments counter.'
         ],
+        'comments_list' => [
+            'label' => 'Comments List',
+            'comment' => 'Displays a list of comments on the page.',
+            'exclude_posts' => 'Exclude Posts',
+            'exclude_posts_description' => 'Exclude specific post ids or post slugs (comma-separated list).',
+            'amount' => 'Comment Amount',
+            'amount_description' => 'The amount of comments to be passed to the page.',
+            'amount_validation' => 'Invalid format of the the amount value.',
+            'only_favorites' => 'Show Favorites only',
+            'only_favorites_description' => 'Shows only comments which has been marked as favorites by the authors.',
+        ],
         'comments_section' => [
             'label' => 'Comments Section',
             'comment' => 'Display a comments section with comment form on the single post CMS page.',
@@ -74,8 +85,17 @@ return [
             'filter_comment' => 'Enter a tag slug or URL parameter to filter the posts by.',
         ],
         'tags' => [
-            'label' => 'Tags List / Cloud',
-            'comment' => 'Displays a list or cloud of (promoted) blog tags.'
+            'label' => 'Tags List',
+            'comment' => 'Displays a list of (promoted) blog tags.',
+            'tags_page' => 'Tag Archive Page',
+            'tags_page_comment' => 'Name of the CMS Page used for the tag archive.',
+            'only_promoted' => 'Promoted only',
+            'only_promoted_comment' => 'Display only promoted tags',
+            'amount' => 'Tag Amount',
+            'amount_description' => 'The amount of tags to be passed to the list.',
+            'amount_validation' => 'Invalid format of the the amount value.',
+            'view' => 'Tag View',
+            'view_comment' => 'Change the View of the Tag list'
         ],
         'deprecated' => [
             'authors_label' => '[OLD] Posts by Author',
@@ -85,22 +105,6 @@ return [
             'tags_label' => '[OLD] Posts by Tag',
             'tags_comment' => '[DEPRECATED] - Please use "Posts by Tags" above.',
         ],
-
-
-
-
-
-        'comments_list' => [
-            'label' => 'Comments List',
-            'comment' => 'Displays a list of comments on the page.',
-            'exclude_posts' => 'Exclude Posts',
-            'exclude_posts_description' => 'Exclude specific post ids or post slugs (comma-separated list).',
-            'amount' => 'Comment Amount',
-            'amount_description' => 'The amount of comments to be passed to the page.',
-            'amount_validation' => 'Invalid format of the the amount value.',
-            'only_favorites' => 'Show Favorites only',
-            'only_favorites_description' => 'Shows only comments which has been marked as favorites by the authors.',
-        ]
     ],
 
     'frontend' => [
