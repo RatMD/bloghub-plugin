@@ -23,22 +23,22 @@
                     type="button" 
                     data-request="onChangeStatus" 
                     data-request-data="comment_id: '<?= $comment->id ?>', status: 'spam'" 
-                    data-request-success="oc.flashMsg({ type: 'success', 'message': data.status });Object.entries(data.counts).map(([t,c]) => document.querySelector(`[data-counter='${t}']`).innerText=c)"
-                    data-request-error="oc.flashMsg({ type: 'error', 'message': data.result })"
+                    data-request-success="(typeof oc === 'undefined'? $.oc : c)['flashMsg']({ type: 'success', 'message': data.status });Object.entries(data.counts).map(([t,c]) => document.querySelector(`[data-counter='${t}']`).innerText=c)"
+                    data-request-error="(typeof oc === 'undefined'? $.oc : c)['flashMsg']({ type: 'error', 'message': data.result })"
                     class="btn btn-sm btn-danger"><?= Lang::get('ratmd.bloghub::lang.frontend.comments.spam') ?></button>
                 <button 
                     type="button" 
                     data-request="onChangeStatus" 
                     data-request-data="comment_id: '<?= $comment->id ?>', status: 'reject'" 
-                    data-request-success="oc.flashMsg({ type: 'success', 'message': data.status });Object.entries(data.counts).map(([t,c]) => document.querySelector(`[data-counter='${t}']`).innerText=c)"
-                    data-request-error="oc.flashMsg({ type: 'error', 'message': data.result })"
+                    data-request-success="(typeof oc === 'undefined'? $.oc : c)['flashMsg']({ type: 'success', 'message': data.status });Object.entries(data.counts).map(([t,c]) => document.querySelector(`[data-counter='${t}']`).innerText=c)"
+                    data-request-error="(typeof oc === 'undefined'? $.oc : c)['flashMsg']({ type: 'error', 'message': data.result })"
                     class="btn btn-sm btn-secondary"><?= Lang::get('ratmd.bloghub::lang.frontend.comments.reject') ?></button>
                 <button 
                     type="button" 
                     data-request="onChangeStatus" 
                     data-request-data="comment_id: '<?= $comment->id ?>', status: 'approve'" 
-                    data-request-success="oc.flashMsg({ type: 'success', 'message': data.status });Object.entries(data.counts).map(([t,c]) => document.querySelector(`[data-counter='${t}']`).innerText=c)"
-                    data-request-error="oc.flashMsg({ type: 'error', 'message': data.result })"
+                    data-request-success="(typeof oc === 'undefined'? $.oc : c)['flashMsg']({ type: 'success', 'message': data.status });Object.entries(data.counts).map(([t,c]) => document.querySelector(`[data-counter='${t}']`).innerText=c)"
+                    data-request-error="(typeof oc === 'undefined'? $.oc : c)['flashMsg']({ type: 'error', 'message': data.result })"
                     class="btn btn-sm btn-primary ms-3"><?= Lang::get('ratmd.bloghub::lang.frontend.comments.approve') ?></button>
             <?php endif; ?>
         </div>

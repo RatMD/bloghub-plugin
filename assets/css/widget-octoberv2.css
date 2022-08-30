@@ -1,0 +1,166 @@
+
+.bloghub-report-widget .position-relative {
+    position: relative !important;
+}
+.bloghub-report-widget .position-absolute {
+    position: absolute !important;
+}
+.bloghub-report-widget .fs-5 {
+    font-size: 1.5rem !important;
+}
+.bloghub-report-widget .top-0 {
+    top: 0 !important;
+}
+.bloghub-report-widget .start-100 {
+    left: 100% !important;
+}
+.bloghub-report-widget .flex-fill {
+    ^flex: 1 1 auto !important;
+}
+.bloghub-report-widget .rounded-pill {
+    border-radius: 50rem !important;
+}
+.bloghub-report-widget .align-items-center {
+    align-items: center !important;
+}
+.bloghub-report-widget .align-self-center {
+    align-self: center !important;
+}
+.bloghub-report-widget .rounded {
+    border-radius: .3rem !important;
+}
+.bloghub-report-widget .border {
+    border: 1px solid #d7e1ea !important;
+}
+.bloghub-report-widget .border-start {
+    border-left: 1px solid #d7e1ea!important;
+}
+.bloghub-report-widget .text-dark {
+    color: rgb(33, 37, 41) !important;
+}
+.bloghub-report-widget .bg-light {
+    background-color: rgb(240, 244, 248) !important;
+}
+.bloghub-report-widget .bg-success {
+    background-color: rgb(134, 203, 67) !important;
+}
+.bloghub-report-widget .bg-warning {
+    background-color: rgb(230, 126, 34) !important;
+}
+.bloghub-report-widget .bg-secondary {
+    background-color: rgb(114, 128, 157) !important;
+}
+.bloghub-report-widget .bg-transparent {
+    background-color: transparent !important;
+}
+.bloghub-report-widget .translate-middle {
+    transform: translate(-50%,-50%) !important;
+}
+.bloghub-report-widget .list-inline,
+.bloghub-report-widget .list-unstyled {
+    list-style: none;
+    padding-left: 0;
+}
+.bloghub-report-widget .list-inline-item {
+    display: inline-block;
+}
+.bloghub-report-widget .btn.disabled,
+.bloghub-report-widget .btn:disabled {
+    opacity: .65;
+    pointer-events: none;
+}
+.bloghub-report-widget .btn-link.disabled,
+.bloghub-report-widget .btn-link:disabled {
+    color: #72809d;
+}
+.bloghub-report-widget .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0;
+    margin-left: -10.5px;
+    margin-right: -10.5px;
+}
+.bloghub-report-widget .row > * {
+    margin-top: 1rem;
+    padding-left: calc(2.5rem * .5);
+    padding-right: calc(2.5rem * .5);
+    max-width: 100%;
+}
+.bloghub-report-widget .col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+.bloghub-report-widget .col-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+@media (min-width: 992px) {
+    .bloghub-report-widget .col-lg-6 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+.bloghub-report-widget .badge {
+    border-radius: 0.3rem;
+    color: #fff;
+    display: inline-block;
+    font-size: .75em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.35em 0.65em;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+.bloghub-report-widget .list-group {
+    border-radius: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+.bloghub-report-widget .list-group-item-action {
+    color: #506880;
+    text-align: inherit;
+    width: 100%;
+}
+.bloghub-report-widget .list-group-item {
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    color: #212529;
+    display: block;
+    padding: 0.5rem 1rem;
+    position: relative;
+}
+.bloghub-report-widget .list-group-item:last-child {
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+.bloghub-report-widget .list-group-item:first-child {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+.bloghub-report-widget .nav {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+.bloghub-report-widget .nav .nav-link {
+    color: #3498db;
+    display: block;
+    padding: 0.5rem 1rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+.bloghub-report-widget .card {
+    word-wrap: break-word;
+    background-clip: border-box;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+}
