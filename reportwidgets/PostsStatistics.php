@@ -152,7 +152,7 @@ class PostsStatistics extends ReportWidgetBase
      */
     public function render()
     {
-        $range = $this->property('dateRange', '14 days');
+        $range = $this->property('defaultDateRange', '14 days');
         if (!array_key_exists($range, $this->getDefaultdateRangeOptions())) {
             $range = '14 days';
         }
