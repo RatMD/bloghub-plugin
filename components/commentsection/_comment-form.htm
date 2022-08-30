@@ -1,0 +1,177 @@
+<div class="comment-form">
+    {% if not currentUserCanComment %}
+        <div class="alert alert-info">
+            {% if commentsMode == 'open' %}
+                {{ 'ratmd.bloghub::lang.frontend.comments.disabled_open' | trans }}
+            {% elseif commentsMode == 'restricted' %}
+                {{ 'ratmd.bloghub::lang.frontend.comments.disabled_restricted' | trans }}
+            {% elseif commentsMode == 'private' %}
+                {{ 'ratmd.bloghub::lang.frontend.comments.disabled_private' | trans }}
+            {% elseif commentsMode == 'closed' %}
+                {{ 'ratmd.bloghub::lang.frontend.comments.disabled_closed' | trans }}
+            {% endif %}
+        </div>
+    {% else %}
+        {{ form_open({ 'data-bloghub-handler': 'onComment' }) }}
+            <div class="row g-3">
+                {% if not isLoggedIn %}
+                    {% if showCommentFormHoneypot %}
+                        {% set username_id = __SELF__.id ~ '_' ~ honeypotUser %}
+                        {% set username_name = honeypotUser %}
+                        {% set email_id = __SELF__.id ~ '_' ~ honeypotEmail %}
+                        {% set email_name = honeypotEmail %}
+                    {% else %}
+                        {% set username_id = __SELF__.id ~ '_username' %}
+                        {% set username_name = 'comment_user' %}
+                        {% set email_id = __SELF__.id ~ '_email' %}
+                        {% set email_name = 'comment_email' %}
+                    {% endif %}
+
+                    <div class="col-12 col-md-6">
+                        <label for="{{ username_id }}" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}</label>
+                        <input 
+                            id="{{ username_id }}" 
+                            type="text" 
+                            name="{{ username_name }}" 
+                            value="" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}" 
+                            class="form-control" 
+                            required />
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="{{ email_id }}" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.email' | trans }}</label>
+                        <input 
+                            id="{{ email_id }}" 
+                            type="email" 
+                            name="{{ email_name }}" 
+                            value="" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.email' | trans }}" 
+                            class="form-control" 
+                            required />
+                    </div>
+                {% else %}
+                    <div class="col-12 col-md-6">
+                        <label for="{{ __SELF__.id }}_username" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}</label>
+                        <input 
+                            id="{{ __SELF__.id }}_username" 
+                            type="text" 
+                            name="comment_name" 
+                            value="{{ currentUser.bloghub_display | default(currentUser.username) }}" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}" 
+                            class="form-control" 
+                            readonly />
+                    </div>
+                {% endif %}
+
+                {% if showCommentFormTitle %}
+                    <div class="col-12">
+                        <label for="{{ __SELF__.id }}_title" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.title' | trans }}</label>
+                        <input 
+                            id="{{ __SELF__.id }}_title" 
+                            name="comment_title" 
+                            class="form-control" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.title' | trans }}" />
+                    </div>
+                {% endif %}
+
+                <div class="col-12">
+                    <label for="{{ __SELF__.id }}_comment" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.comment' | trans }}</label>
+                    <textarea 
+                        id="{{ __SELF__.id }}_comment" 
+                        name="comment_comment" 
+                        class="form-control" 
+                        placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.comment' | trans }}" 
+                        rows="5"
+                        required></textarea>
+                    {% if allowCommentFormMarkdown %}
+                        <p><small>{{ 'ratmd.bloghub::lang.frontend.comments.comment_markdown_hint' | trans }}</small></p>
+                    {% endif %}
+                </div>
+
+                {% if showCommentFormTos %}
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input id="{{ __SELF__.id }}_termsOfUse" type="checkbox" name="comment_tos" value="1" class="form-check-input" required />
+                            <label for="{{ __SELF__.id }}_termsOfUse" class="form-check-label">
+                                {{ commentFormTosLabel | raw }}
+                            </label>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if showCommentFormCaptcha %}
+                    <div class="col-12 d-flex">
+                        <div class="flex-auto">
+                            <img id="{{ __SELF__.id }}_captchaImage" src="{{ captchaImage }}" style="width: 113px;" class="comment-form-captcha" />
+                        </div>
+                        <div class="flex-fill ps-5">
+                            <div class="input-group">
+                                <input 
+                                    id="{{ __SELF__.id }}_captcha" 
+                                    name="comment_captcha" 
+                                    class="form-control form-control-sm" 
+                                    placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.captcha_placeholder' | trans }}" 
+                                    autocomplete="off"
+                                    required />
+                                <button 
+                                    type="button" 
+                                    class="btn btn-sm btn-secondary"
+                                    data-bloghub-handler="onReloadCaptcha" 
+                                    data-bloghub-id="{{ __SELF__.id }}"
+                                >{{ 'ratmd.bloghub::lang.frontend.comments.captcha_reload' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if showCommentFormHoneypot %}
+                    <div class="col-12 p-0 m-0" style="height: 0;">
+                        <label for="{{ __SELF__.id }}_username" class="form-label"></label>
+                        <input 
+                            id="{{ __SELF__.id }}_username"
+                            type="text" 
+                            name="comment_user" 
+                            autocomplete="off"
+                            value="" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}" 
+                            class="form-control from-control-bloghub-special-assignment" />
+
+                        <label for="{{ __SELF__.id }}_email" class="form-label"></label>
+                        <input 
+                            id="{{ __SELF__.id }}_email"
+                            type="email" 
+                            name="comment_email" 
+                            autocomplete="off"
+                            value="" 
+                            placeholder="{{ 'ratmd.bloghub::lang.frontend.comments.email' | trans }}" 
+                            class="form-control from-control-bloghub-special-assignment" />
+                    </div>
+                {% endif %}
+                
+                <div class="col-12 text-right text-end">
+                    {% if showCommentFormHoneypot %}
+                        <input type="hidden" name="comment_honey" value="{{ honeypotTime }}" />
+                    {% endif %}
+                    <input type="hidden" name="comment_time" value="{{ validationTime }}" />
+                    <input type="hidden" name="comment_validation" value="{{ validationHash }}" />
+                    <input type="hidden" name="comment_form_id" value="{{ __SELF__.id }}" />
+                    
+                    <button 
+                        id="{{ __SELF__.id }}_cancel" 
+                        type="button" 
+                        class="btn btn-secondary me-2" 
+                        data-bloghub-handler="onCancelReply" 
+                        style="display:none;">{{ 'ratmd.bloghub::lang.frontend.comments.cancel_reply' | trans }}</button>
+                    <button 
+                        id="{{ __SELF__.id }}_submit" 
+                        type="submit" 
+                        class="btn btn-primary"
+                        data-bloghub-handler="onComment"
+                    >{{ 'ratmd.bloghub::lang.frontend.comments.submit_comment' | trans }}</button>
+                </div>
+            </div>
+        {{ form_close() }}
+    {% endif %}
+</div>
+

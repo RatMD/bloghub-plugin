@@ -1,0 +1,53 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    status:
+        type: selectable
+        label: ratmd.bloghub::lang.model.comments.statusColumn
+        options:
+            pending: 
+                - ratmd.bloghub::lang.model.comments.statusPending
+                - '#536061'
+            approved: 
+                - ratmd.bloghub::lang.model.comments.statusApproved
+                - '#86cb43'
+            rejected: 
+                - ratmd.bloghub::lang.model.comments.statusRejected
+                - '#e67e22'
+            spam: 
+                - ratmd.bloghub::lang.model.comments.statusSpam
+                - '#ff3e1d'
+        sortable: true
+        width: 200px
+    
+    comment:
+        type: summary
+        label: ratmd.bloghub::lang.model.comments.title
+        select: concat(title, ' ', content)
+        sortable: true
+        searchable: true
+    
+    favorite:
+        type: switch
+        label: ratmd.bloghub::lang.model.comments.favoriteColumn
+        sortable: true
+        default: false
+        width: 80px
+    
+    likes: 
+        type: number
+        label: ratmd.bloghub::lang.model.comments.likes
+        width: 80px
+    
+    dislikes: 
+        type: number
+        label: ratmd.bloghub::lang.model.comments.dislikes
+        width: 80px
+
+    created_at:
+        type: datetime
+        label: rainlab.blog::lang.post.created
+        sortable: true
+        invisible: true

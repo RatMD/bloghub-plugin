@@ -1,0 +1,62 @@
+<div class="report-widget">
+    <h3><?= Lang::get('ratmd.bloghub::lang.components.post.posts_list') ?></h3>
+
+    <div class="bloghub-report-widget widget-postslist">
+        <div class="row">
+            <div class="col-12 d-flex align-items-center">
+                <div class="fs-5">
+                    <span class="text-muted"><?= Lang::get('ratmd.bloghub::lang.components.post.total') ?>:</span> <b><?= $counts['total'] ?></b>
+                </div>
+                <div class="ms-auto">
+                    <div class="badge bg-success"><?= Lang::get('ratmd.bloghub::lang.components.post.published') ?>: <?= $counts['published'] ?></div>
+                </div>
+                <div class="ms-2">
+                    <div class="badge bg-warning"><?= Lang::get('ratmd.bloghub::lang.components.post.scheduled') ?>: <?= $counts['scheduled'] ?></div>
+                </div>
+                <div class="ms-2">
+                    <div class="badge bg-secondary"><?= Lang::get('ratmd.bloghub::lang.components.post.draft') ?>: <?= $counts['draft'] ?></div>
+                </div>
+            </div>
+
+            <div class="col-12 mt-4">
+                <ul class="list-unstyled list-inline">
+                    <li class="list-inline-item me-0">
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $order === 'by_published'? 'disabled': '' ?>"
+                            data-order="by_published"
+                            data-request="onChangePostList"
+                            data-request-data="order: 'by_published'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.order == data.order? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.by_published') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $order === 'by_views'? 'disabled': '' ?>"
+                            data-order="by_views"
+                            data-request="onChangePostList"
+                            data-request-data="order: 'by_views'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.order == data.order? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.by_views') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $order === 'by_visitors'? 'disabled': '' ?>"
+                            data-order="by_visitors"
+                            data-request="onChangePostList"
+                            data-request-data="order: 'by_visitors'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.order == data.order? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.by_visitors') ?>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="postsList" class="col-12 row g-3">
+                <?= $postsPartial ?>
+            </div>
+        </div>
+    </div>
+</div>

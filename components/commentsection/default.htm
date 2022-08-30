@@ -1,0 +1,16 @@
+
+{% if showComments %}
+    <div id="comments" data-bloghub-comments>
+        {% if commentsFormPosition == 'below' %}
+            {% partial '@_comment-list' %}
+        {% endif %}
+
+        {% if showCommentsForm %}
+            {% partial '@_comment-form' %}
+        {% endif %}
+        
+        {% if commentsFormPosition == 'above' %}
+            {% partial '@_comment-list' %}
+        {% endif %}
+    </div>
+{% endif %}

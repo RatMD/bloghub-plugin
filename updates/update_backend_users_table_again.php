@@ -28,7 +28,15 @@ class UpdateBackendUsersTableAgain extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('backend_users', ['ratmd_bloghub_about_me']);
+        if (method_exists(Schema::class, 'dropColumns')) {
+            Schema::dropColumns('backend_users', ['ratmd_bloghub_about_me']);
+        } else {
+            Schema::table('backend_users', function (Blueprint $table) {
+                if (Schema::hasColumn('backend_users', 'ratmd_bloghub_about_me')) {
+                    $table->dropColumn('ratmd_bloghub_about_me');
+                }
+            });
+        }
     }
 
 }

@@ -1,10 +1,15 @@
-{% if __SELF__.categories|length > 0 %}
-    <ul class="category-list">
-        {% partial __SELF__ ~ "::items"
-            categories = __SELF__.categories
-            currentCategorySlug = __SELF__.currentCategorySlug
-        %}
+{% if __SELF__.tags|length > 0 %}
+    <ul class="tag-list">
+        {% for tag in tags %}
+            {% set postCount = tag.post_count %}
+            <li>
+                <a href="{{ tag.url }}">{{ tag.title | default(tag.slug | title) }}</a> 
+                {% if postCount %}
+                    <span class="badge">{{ postCount }}</span>
+                {% endif %}
+            </li>
+        {% endfor %}
     </ul>
 {% else %}
-    <p>No categories were found.</p>
+    <p>No tags were found.</p>
 {% endif %}

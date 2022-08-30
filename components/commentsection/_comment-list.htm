@@ -1,0 +1,31 @@
+<div class="comment-list">
+    {% macro renderRecursive(context, items, parent = null, level = 1) %}
+        {% for comment in items %}
+            {% if level == 1 %}
+                {% set paddingLeft = 0 %}
+            {% else %}
+                {% set paddingLeft = 42 %}
+            {% endif %}
+
+            {% if comment.status == 'pending' %}
+                <div id="comment-{{ comment.id }}" class="comment-item comment-level-{{ level }} my-2" style="padding-left: {{ paddingLeft }}px">
+                    {% partial '@_single' comment=comment %}
+                </div>
+            {% else %}
+                <div id="comment-{{ comment.id }}" class="comment-item comment-level-{{ level }} my-2" style="padding-left: {{ paddingLeft }}px">
+                    {% partial '@_single' comment=comment %}
+
+                    {% if context.showCommentsHierarchical and comment.children %}
+                        {{ _self.renderRecursive(context, comment.children, comment, level + 1) }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endmacro %}
+
+    {{ _self.renderRecursive(_context, comments) }}
+
+    {% if comments.lastPage > 1 %}
+        {% partial '@_pagination' pagination=comments %}
+    {% endif %}
+</div>

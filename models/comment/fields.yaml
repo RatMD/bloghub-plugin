@@ -1,0 +1,46 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    
+    favorite:
+        type: switch
+        label: ratmd.bloghub::lang.model.comments.favorite
+        comment: ratmd.bloghub::lang.model.comments.favoriteComment
+    
+    title: 
+        type: text
+        label: ratmd.bloghub::lang.model.comments.title
+        comment: ratmd.bloghub::lang.model.comments.titleComment
+        span: left
+
+    status:
+        type: dropdown
+        label: ratmd.bloghub::lang.model.comments.status
+        comment: ratmd.bloghub::lang.model.comments.statusComment
+        showSearch: false
+        options:
+            pending: ratmd.bloghub::lang.model.comments.statusPending
+            approved: ratmd.bloghub::lang.model.comments.statusApproved
+            rejected: ratmd.bloghub::lang.model.comments.statusRejected
+            spam: ratmd.bloghub::lang.model.comments.statusSpam
+        span: right
+
+    content:
+        type: textarea
+        label: ratmd.bloghub::lang.model.comments.content
+        comment: ratmd.bloghub::lang.model.comments.contentComment
+    
+    author:
+        type: text
+        label: ratmd.bloghub::lang.model.comments.author
+        comment: ratmd.bloghub::lang.model.comments.authorComment
+        span: left
+    
+    author_email:
+        type: text
+        label: ratmd.bloghub::lang.model.comments.authorEmail
+        comment: ratmd.bloghub::lang.model.comments.authorEmailComment
+        span: right
+    

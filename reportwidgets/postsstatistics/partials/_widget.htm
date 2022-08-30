@@ -1,0 +1,81 @@
+<div class="report-widget" style="min-height: 335px">
+    <h3><?= Lang::get('ratmd.bloghub::lang.model.post.statistics') ?></h3>
+
+    <div class="bloghub-report-widget widget-postsstatistics">
+        <div class="row">
+            <div class="col-12">
+                <ul class="list-unstyled list-inline mb-4">
+                    <li class="list-inline-item me-0">
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $range === '7 days'? 'disabled': '' ?>"
+                            data-range="7 days"
+                            data-request="onChangeRange"
+                            data-request-data="range: '7 days'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.range == data.range? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.7days') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $range === '14 days'? 'disabled': '' ?>"
+                            data-range="14 days"
+                            data-request="onChangeRange"
+                            data-request-data="range: '14 days'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.range == data.range? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.14days') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $range === '31 days'? 'disabled': '' ?>"
+                            data-range="31 days"
+                            data-request="onChangeRange"
+                            data-request-data="range: '31 days'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.range == data.range? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.31days') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $range === '3 motnhs'? 'disabled': '' ?>"
+                            data-range="3 months"
+                            data-request="onChangeRange"
+                            data-request-data="range: '3 months'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.range == data.range? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.3months') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $range === '6 months'? 'disabled': '' ?>"
+                            data-range="6 months"
+                            data-request="onChangeRange"
+                            data-request-data="range: '6 months'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.range == data.range? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.6months') ?>
+                        </button>
+                        &bullet;
+                        <button 
+                            type="button"
+                            class="btn btn-link btn-sm <?= $range === '12 months'? 'disabled': '' ?>"
+                            data-range="12 months"
+                            data-request="onChangeRange"
+                            data-request-data="range: '12 months'"
+                            data-request-success="[].map.call(this.parentElement.querySelectorAll('button'), (e) => e.classList[e.dataset.range == data.range? 'add': 'remove']('disabled'))">
+                            <?= Lang::get('ratmd.bloghub::lang.components.post.12months') ?>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="publishedStatistics" class="col-6">
+                <?= $publishedStatistics ?>
+            </div>
+
+            <div id="generalStatistics" class="col-6">
+                <?= $generalStatistics ?>
+            </div>
+        </div>
+    </div>
+</div>

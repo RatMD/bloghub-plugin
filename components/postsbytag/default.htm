@@ -1,0 +1,29 @@
+{% set posts = __SELF__.posts %}
+
+<ul class="post-list list-unstyled">
+    {% for post in posts %}
+        <li class="d-flex flex-column">
+            <h3>
+                <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+            </h3>
+
+            <p class="info m-0 p-0 text-muted">
+                Posted
+                {% if post.categories | length %} in {% endif %}
+                {% for category in post.categories %}
+                    <a href="{{ category.url }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                on 
+                <time datetime="{{ post.published_at }}">{{ post.published_at | date('M d, Y') }}</time>
+            </p>
+
+            <p class="excerpt">{{ post.summary|raw }}</p>
+        </li>
+    {% else %}
+        <li class="no-data">{{ __SELF__.noPostsMessage }}</li>
+    {% endfor %}
+</ul>
+
+{% if posts.lastPage > 1 %}
+    {% partial '@pagination' pagination=posts %}
+{% endif %}

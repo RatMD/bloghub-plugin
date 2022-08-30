@@ -1,0 +1,51 @@
+tabs:
+    fields:
+        _hint:
+            tab: rainlab.blog::lang.blog.tab_general
+            type: hint
+            mode: info
+            label: ratmd.bloghub::lang.settings.meta.hint.label
+            comment: ratmd.bloghub::lang.settings.meta.hint.comment
+        meta_data:
+            tab: rainlab.blog::lang.blog.tab_general
+            type: repeater
+            prompt: ratmd.bloghub::lang.settings.meta.prompt
+            titleFrom: name
+            displayMode: builder
+            form:
+                fields:
+                    name:
+                        type: text
+                        label: ratmd.bloghub::lang.settings.meta.name.label
+                        comment: ratmd.bloghub::lang.settings.meta.name.comment
+                        span: left
+                    type:
+                        type: dropdown
+                        label: ratmd.bloghub::lang.settings.meta.type.label
+                        comment: ratmd.bloghub::lang.settings.meta.type.comment
+                        options: 
+                            text: ratmd.bloghub::lang.settings.meta.types.text
+                            number: ratmd.bloghub::lang.settings.meta.types.number
+                            password: ratmd.bloghub::lang.settings.meta.types.password
+                            email: ratmd.bloghub::lang.settings.meta.types.email
+                            textarea: ratmd.bloghub::lang.settings.meta.types.textarea
+                            dropdown: ratmd.bloghub::lang.settings.meta.types.dropdown
+                            radio: ratmd.bloghub::lang.settings.meta.types.radio
+                            balloon-selector: ratmd.bloghub::lang.settings.meta.types.balloon
+                            checkbox: ratmd.bloghub::lang.settings.meta.types.checkbox
+                            checkboxlist: ratmd.bloghub::lang.settings.meta.types.checkboxlist
+                            switch: ratmd.bloghub::lang.settings.meta.types.switch
+                            codeeditor: ratmd.bloghub::lang.settings.meta.types.codeeditor
+                            colorpicker: ratmd.bloghub::lang.settings.meta.types.colorpicker
+                            datepicker: ratmd.bloghub::lang.settings.meta.types.datepicker
+                            markdown: ratmd.bloghub::lang.settings.meta.types.markdown
+                            mediafinder: ratmd.bloghub::lang.settings.meta.types.mediafinder
+                            richeditor: ratmd.bloghub::lang.settings.meta.types.richeditor
+                            taglist: ratmd.bloghub::lang.settings.meta.types.taglist
+                        span: right
+                    config:
+                        type: codeeditor
+                        label: ratmd.bloghub::lang.settings.meta.config.label
+                        comment: ratmd.bloghub::lang.settings.meta.config.comment
+                        commentHtml: true
+                        language: yaml

@@ -1,0 +1,23 @@
+<nav class="mt-2 mb-4 d-flex justify-content-center">
+    <ul class="pagination">
+        {% for link in pagination.toArray.links %}
+            <li class="page-item">
+                {% if link.url %}
+                    <a href="{{ link.url }}" class="page-link{% if link.active %} current active{% endif %}">
+                {% else %}
+                    <span class="page-link disabled">
+                {% endif %}
+
+                {% if link.label == 'pagination.previous' %}
+                    {{ 'ratmd.bloghub::lang.frontend.comments.previous' | trans }}
+                {% elseif link.label == 'pagination.next' %}
+                    {{ 'ratmd.bloghub::lang.frontend.comments.next' | trans }}
+                {% else %}
+                    {{ link.label }}
+                {% endif %}
+
+                {% if link.url %}</a>{% else %}</span>{% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

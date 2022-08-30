@@ -1,0 +1,13 @@
+<h4 class="fs-6 mb-3"><?= Lang::get('ratmd.bloghub::lang.components.post.published_posts') ?></h4>
+<div
+    class="control-chart wrap-legend"
+    data-control="chart-bar"
+    data-height="200"
+    data-full-width="1"
+>
+    <ul>
+        <?php foreach ($statistics AS $label => $count): ?>
+            <li><?= $label ?> <span><?= $count ?></span></li>
+        <?php endforeach; ?>
+    </ul>
+</div>

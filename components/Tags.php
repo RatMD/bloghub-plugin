@@ -28,8 +28,8 @@ class Tags extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'          => 'ratmd.bloghub::lang.components.tags_title',
-            'description'   => 'ratmd.bloghub::lang.components.tags_description'
+            'name'          => 'ratmd.bloghub::lang.components.tags.label',
+            'description'   => 'ratmd.bloghub::lang.components.tags.comment'
         ];
     }
 
@@ -42,12 +42,26 @@ class Tags extends ComponentBase
     {
         return [
             'tagPage' => [
-                'title'       => 'ratmd.bloghub::lang.components.tags_page',
-                'description' => 'ratmd.bloghub::lang.components.tags_page_description',
-                'type'        => 'dropdown',
-                'default'     => 'blog/tag',
-                'group'       => 'rainlab.blog::lang.settings.group_links',
+                'title'             => 'ratmd.bloghub::lang.components.tags.tags_page',
+                'description'       => 'ratmd.bloghub::lang.components.tags.tags_page_comment',
+                'type'              => 'dropdown',
+                'default'           => 'blog/tag',
+                'group'             => 'rainlab.blog::lang.settings.group_links',
             ],
+            'onlyPromoted' => [
+                'title'             => 'ratmd.bloghub::lang.components.tags.only_promoted',
+                'description'       => 'ratmd.bloghub::lang.components.tags.only_promoted_comment',
+                'type'              => 'checkbox',
+                'default'           => '0'
+            ],
+            'amount' => [
+                'title'             => 'ratmd.bloghub::lang.components.tags.amount',
+                'description'       => 'ratmd.bloghub::lang.components.tags.amount_comment',
+                'type'              => 'string',
+                'validationPattern' => '^[0-9]+$',
+                'validationMessage' => 'ratmd.bloghub::lang.components.tags.amount_validation',
+                'default'           => '5',
+            ]
         ];
     }
 
@@ -69,7 +83,7 @@ class Tags extends ComponentBase
     public function onRun()
     {
         $this->tagPage = $this->page['tagPage'] = $this->property('tagPage');
-        $this->tags = $this->page['tags'] = $this->loadTags();
+        $this->tags = $this->page['tags'] = $this->listTags();
     }
 
     /**
@@ -77,16 +91,20 @@ class Tags extends ComponentBase
      * 
      * @return mixed
      */
-    protected function loadTags()
+    protected function listTags()
     {
-        $tags = TagModel::withCount(['posts_count'])
+        $query = TagModel::withCount(['posts_count'])
             ->where('posts_count_count', '>', 0)
-            ->orderBy('posts_count_count', 'desc')
-            ->limit(5)
-            ->get();
-        
-        $tags->each(fn ($tag) => $tag->setUrl($this->tagPage, $this->controller));
-        return $tags;
+            ->orderBy('posts_count_count', 'desc');
+
+        if ($this->property('onlyPromoted') === '1') {
+            $query->where('promote', '1');
+        }
+
+        $amount = intval($this->property('amount'));
+        $query->limit(5);
+
+        return $query->get()->each(fn ($tag) => $tag->setUrl($this->tagPage, $this->controller));
     }
 
 }

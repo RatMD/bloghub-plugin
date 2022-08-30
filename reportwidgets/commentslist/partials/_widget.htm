@@ -1,0 +1,70 @@
+<div class="report-widget" style="min-height: 335px">
+    <h3><?= Lang::get('ratmd.bloghub::lang.model.comments.label') ?></h3>
+
+    <div class="bloghub-report-widget widget-commentslist">
+        <ul class="nav">
+            <li class="nav-item me-2">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'pending' ? 'active' : '' ?>"
+                    data-tab="pending"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'pending'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusPending') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="pending">
+                        <?= $counts['pending'] ?>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item mx-2">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'approved' ? 'active' : '' ?>"
+                    data-tab="approved"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'approved'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusApproved') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="approved">
+                        <?= $counts['approved'] ?>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item mx-2">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'rejected' ? 'active' : '' ?>"
+                    data-tab="rejected"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'rejected'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusRejected') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="rejected">
+                        <?= $counts['rejected'] ?>
+                    </span>
+                </button>
+            </li>
+            <li class="nav-item mx-2">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'spam' ? 'active' : '' ?>"
+                    data-tab="spam"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'spam'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusSpam') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="spam">
+                        <?= $counts['spam'] ?>
+                    </span>
+                </button>
+            </li>
+        </ul>
+
+        <div class="comments-list d-flex flex-wrap mt-3">
+            <div id="commentPartial" class="comment-panel border rounded p-3 d-flex flex-column" style="height:188px">
+                <?= $commentPartial ?>
+            </div>
+
+            <div id="listPartial" class="comment-next ps-3">
+                <?= $listPartial ?>
+            </div>
+        </div>
+    </div>
+</div>
