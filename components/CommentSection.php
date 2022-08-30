@@ -11,7 +11,6 @@ use Session;
 use Backend\Facades\BackendAuth;
 use Cms\Classes\ComponentBase;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Markdown;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\BlogHubSettings;
 use RatMD\BlogHub\Models\Comment;
@@ -228,18 +227,19 @@ class CommentSection extends ComponentBase
         }
         
         // Pin Favorites
-        if ($this->property('pinFavorites') !== '0' && $this->property('pinFavorites') !== false) {
-            $query->orderBy('favorite DESC');
+        if ($this->property('pinFavorites') === '1') {
+            $query->orderByDesc('favorite');
         }
-        $query->orderByRaw($order);
+        $orders = explode(' ', $order);
+        $query->orderBy($orders[0], strtoupper($orders[1]) === 'DESC'? 'DESC': 'ASC');
 
         // Hide on Dislike
-        if (($value = $this->property('hideOnDislike'))) {
+        if (($value = $this->property('hideOnDislikes')) !== '0') {
             if (strpos($value, ':') === 0 && is_numeric(substr($value, 1))) {
                 $val = substr($value, 1);
-                $query->whereRaw("dislike / like >= $val");
+                $query->whereRaw("(dislikes == 0 OR dislikes / likes < $val)");
             } else {
-                $query->where('dislike', '<', $value);
+                $query->where('dislikes', '<', $value);
             }
         }
 

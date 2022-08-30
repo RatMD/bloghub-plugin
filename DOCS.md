@@ -356,7 +356,7 @@ hideOnDislikes = 0
 This component adds the following page variables.
 
 ### [bloghubCommentSection]
-_descrption_
+The `[bloghubCommentSection]` component is used to show the comment list and a comment form on the single post CMS page. It is not supported to be used outside, even if it is possible by setting the respective arguments below. However, this has not been tested and may does not work as intended.
 
 #### Component Arguments
 This component provides the following arguments.
@@ -367,14 +367,150 @@ postSlug =
 commentsPerPage = 10
 pageNumber = 
 sortOrder = 'published_at desc'
+commentHierarchy = 1
 commentsAnchor = 'comments'
 pinFavorites = 0
-disableForm = 0
 hideOnDislikes = 0
+formPosition = 'above'
+disableForm = 0
 ```
+
+##### Argument: `postSlug`
+Allows to pass a strict post slug or a URL parameter which is used to distinguish the current post slug from. When this value is empty (which is the default) the component will try to auto-detect the respective post slug using the `blogPost` argument and similar relations.
+
+##### Argument: `commentsPerPage`
+Allows to declare the number of comments to be shown per page. The default value is set to 10.
+
+##### Argument: `pageNumber`
+Allows to pass a strict page number or a URL parameter, which is used to distinguish the current page number from. When this value is empty (default), it will use and apply the `cpage` URL GET parameter as page nu,ber.
+
+##### Argument: `sortOrder`
+Allows to change the sort order direction of the respective comments list. You can choose from the following values:
+
+- `created_at DESC` - Shows the newest comments on top (default)
+- `created_at ASC` - Shows the oldest comments on top
+- `likes DESC` - Shows the most-liked comments on top
+- `likes ASC` - Shows the most-liked comments on bottom
+- `dislikes DESC` - Shows the most-disliked comments on top
+- `dislikes ASC` - Shows the most-disliked comments on bottom
+
+##### Argument: `commntHierarchy`
+Changes the way how the comment list is shown: A hierarchically list will display all replies below their parent comments - This option may highly increase the height of your size, because the `commentsPerPage` argument does NOT recognize the amount of children within the nested tree. Using the flat option (by disabling the `commntHierarchy` option) will display each comment in a single nested list using a "reply to" quotation above the comment content to show the relation of the respective reply.
+
+##### Argument: `pinFavorites`
+The post author is able to favourite comments, if not disabled via the BlogHub settings page. This option allows to pin favorite comments on top of the comments list and thus can be seen by everyone directly.
+
+##### Argument: `hideOnDislikes`
+The `hideOnDislike` argument allows you to hide comments with the declared amount of dislikes or with a relative amount of dislikes compared to the likes, the default value `false` will disable this function completely. 
+
+Example: Hide all comments with 10 dislikes or more:
+
+```ini
+[bloghubComments]
+hideOnDislike = 10
+```
+
+Example: Hide all comments when the dislike counter is double as high as the like one:
+
+```ini
+[bloghubComments]
+hideOnDislike = :2
+```
+
+Other example: `:4` (the dislike counter must be four times higher then the like counter to hide the respective comment).
+
+##### Argument: `formPosition`
+Change the position of the comment form. You can either set the comment form `above` the comment list or `below`. The default value is set to `above`.
+
+##### Argument: `disableForm`
+This argument allows you to disable the comment form, regardless of the configuration set on the single post itself. This is useful for alternative post views, where it should not be possible to comment itself, but to still see the list of comments.
 
 #### Page Variables
 This component adds the following page variables.
+
+##### Variable: `showComments`
+A boolean state if the comment section / component should be displayed or not.
+
+##### Variable: `showCommentsForm`
+A boolean state if the comment form should be displaced or not.
+
+##### Variable: `showCommentsHierarchical`
+A boolean state pointing to the `commntHierarchy` component argument.
+
+##### Variable: `comments`
+The main comments collection to be used on the comments list.
+
+##### Variable: `commentsFormPosition`
+The comment form position (above or below) as declared in the component argument.
+
+##### Variable: `commentsMode`
+The comments mode, declared on the single post configuration and further evaluated on different options and states.
+
+##### Variable: `currentUser`
+The current user model or null if the current user is not logged in.
+
+##### Variable: `currentUserIsGuest`
+A boolean state if the current user is not logged in.
+
+##### Variable: `currentUserIsFrontend`
+A boolean state if the current user is a frontend user of the RainLab.User plugin.
+
+##### Variable: `currentUserIsBackend`
+A boolean state if the current user is a backend OctoberCMS user.
+
+##### Variable: `isLoggedIn`
+A boolean state if the current user is logged in (either on the frontend or backend authentication method).
+
+##### Variable: `currentUserCanLike`
+A boolean state if the current user can like comments, depending on the used configuration.
+
+##### Variable: `currentUserCanDislike`
+A boolean state if the current user can dislike comments, depending on the used configuration.
+
+##### Variable: `currentUserCanFavorite`
+A boolean state if the current user can favourite comments, depending on the used configuration and if the current user is the post author itself.
+
+##### Variable: `currentUserCanComment`
+A boolean state if the current user can write comments or replies, depending on the used configuration.
+
+##### Variable: `currentUserCanModerate`
+A boolean state if the current user can moderate pending comments, depending on the used configuration and if the current user is a backend OctoberCMS user.
+
+##### Variable: `showCommentFormTitle`
+A boolean state if the comment title form field should be visisble or not, depending on the used configuration.
+
+##### Variable: `allowCommentFormMarkdown`
+A boolean state if the comment content supports markdown or not, depending on the used configuration.
+
+##### Variable: `showCommentFormTos`
+A boolean state if the Terms of Service checkbox should be visible or not, depending on the used configuration.
+
+##### Variable: `commentFormTosLabel`
+The HTML label used for the Terms of Service checkbox, if enabled and visible.
+
+##### Variable: `showCommentFormCaptcha`
+A boolean state if the GREGWAR Captcha should be shown or not, depending on the used configuration and the current user.
+
+##### Variable: `captchaImage`
+The base64 encoded GREGWAR Captcha image, used when the cpatcha form field is enabled and shown to the current user.
+
+##### Variable: `showCommentFormHoneypot`
+A boolean state if the honeypot fields should be shown or not, depending on the used configurations. Wen enabled, the honeyport fields are also added to the form for frontend and bachend users.
+
+##### Variable: `honeypotUser`
+The honeypot username form field name, when the honeypot fields are enabled.
+
+##### Variable: `honeypotEmail`
+The honeypot email form field name, when the honeypot fields are enabled.
+
+##### Variable: `honeypotTime`
+The honeypot check-time valuem when the honeypot fields are enabled.
+
+##### Variable: `validationTime`
+A general form validation time, used together with the form validation hash to secure the comment form.
+
+##### Variable: `validationHash`
+A general form validation hash, used together with the form validation time to secure the comment form.
 
 ### [bloghubTags]
 _descrption_

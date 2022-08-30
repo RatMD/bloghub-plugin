@@ -1,8 +1,12 @@
-
 <div class="comment-list">
     {% macro renderRecursive(context, items, parent = null, level = 1) %}
         {% for comment in items %}
-            {% set paddingLeft = (level - 1) * 42 %}
+            {% if level == 1 %}
+                {% set paddingLeft = 0 %}
+            {% else %}
+                {% set paddingLeft = 42 %}
+            {% endif %}
+
             {% if comment.status == 'pending' %}
                 <div id="comment-{{ comment.id }}" class="comment-item comment-level-{{ level }} my-2" style="padding-left: {{ paddingLeft }}px">
                     {% partial '@_single' comment=comment %}
