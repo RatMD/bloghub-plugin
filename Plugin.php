@@ -235,7 +235,7 @@ class Plugin extends PluginBase
                 'ratmd_bloghub_views' => [
                     'label' => 'ratmd.bloghub::lang.model.visitors.views',
                     'type' => 'number',
-                    'select' => 'concat(ratmd_bloghub_views, " / ", ratmd_bloghub_unique_views)',
+                    'select' => 'concat(rainlab_blog_posts.ratmd_bloghub_views, " / ", rainlab_blog_posts.ratmd_bloghub_unique_views)',
                     'align' => 'left'
                 ]
             ]);
