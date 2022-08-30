@@ -337,7 +337,7 @@ The single tag class model, when only one tag has been used for the generated ar
 The tag class models as array, when more then one tag has been used for the generated archive page. Keep in mind, that multiple-tag archive pages are only available, when the `tagAllowMultiple` option of the `[bloghubBase]` component has been set to true.
 
 ### [bloghubCommentList]
-_descrption_
+The `[bloghubCommentList]` displays a configurable list of comments.
 
 #### Component Arguments
 This component provides the following arguments.
@@ -352,8 +352,52 @@ onlyFavorites = 0
 hideOnDislikes = 0
 ```
 
+##### Argument: `postPage`
+The desired post page, used for the post URLs.
+
+##### Argument: `excludePosts`
+Allows to exclude one or more posts using their IDs or slugs (in a comma-separated way).
+
+##### Argument: `amount`
+The desired amount of comments to show.
+
+##### Argument: `sortOrder`
+Allows to change the sort order direction of the respective comments list. You can choose from the following values:
+
+- `created_at DESC` - Shows the newest comments on top (default)
+- `created_at ASC` - Shows the oldest comments on top
+- `likes DESC` - Shows the most-liked comments on top
+- `likes ASC` - Shows the most-liked comments on bottom
+- `dislikes DESC` - Shows the most-disliked comments on top
+- `dislikes ASC` - Shows the most-disliked comments on bottom
+
+##### Argument: `onlyFavorites`
+The post author is able to favourite comments, if not disabled via the BlogHub settings page. This option allows to only show favorite comments in the comments list.
+
+##### Argument: `hideOnDislikes`
+The `hideOnDislike` argument allows you to hide comments with the declared amount of dislikes or with a relative amount of dislikes compared to the likes, the default value `false` will disable this function completely. 
+
+Example: Hide all comments with 10 dislikes or more:
+
+```ini
+[bloghubComments]
+hideOnDislike = 10
+```
+
+Example: Hide all comments when the dislike counter is double as high as the like one:
+
+```ini
+[bloghubComments]
+hideOnDislike = :2
+```
+
+Other example: `:4` (the dislike counter must be four times higher then the like counter to hide the respective comment).
+
 #### Page Variables
 This component adds the following page variables.
+
+##### Variable: `comments`
+The main collection with the configured amount of comments.
 
 ### [bloghubCommentSection]
 The `[bloghubCommentSection]` component is used to show the comment list and a comment form on the single post CMS page. It is not supported to be used outside, even if it is possible by setting the respective arguments below. However, this has not been tested and may does not work as intended.

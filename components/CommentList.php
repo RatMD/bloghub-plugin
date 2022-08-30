@@ -5,9 +5,18 @@ namespace RatMD\BlogHub\Components;
 use Lang;
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Page;
+use RainLab\Blog\Models\Post;
+use RatMD\BlogHub\Models\Comment;
 
 class CommentList extends ComponentBase
 {
+
+    /**
+     * Comments Collection
+     *
+     * @var mixed
+     */
+    protected $comments = [];
 
     /**
      * Declare Component Details
@@ -90,8 +99,8 @@ class CommentList extends ComponentBase
     public function getSortOrderOptions()
     {
         return [
-            'published_at DESC' => Lang::get('ratmd.bloghub::lang.sorting.published_at_desc'),
-            'published_at ASC'  => Lang::get('ratmd.bloghub::lang.sorting.published_at_asc'),
+            'created_at DESC'   => Lang::get('ratmd.bloghub::lang.sorting.created_at_desc'),
+            'created_at ASC'    => Lang::get('ratmd.bloghub::lang.sorting.created_at_asc'),
             'likes DESC'        => Lang::get('ratmd.bloghub::lang.sorting.likes_desc'),
             'likes ASC'         => Lang::get('ratmd.bloghub::lang.sorting.likes_asc'),
             'dislikes DESC'     => Lang::get('ratmd.bloghub::lang.sorting.dislikes_desc'),
@@ -106,7 +115,81 @@ class CommentList extends ComponentBase
      */
     public function onRun()
     {
+        $this->comments = $this->page['comments'] = $this->listComments();
+    }
 
+    /**
+     * Get Post Ids
+     *
+     * @return array
+     */
+    protected function getPostIds()
+    {
+
+        $ids = array_map('trim', explode(',', $this->property('excludePosts')));
+
+        foreach ($ids AS &$id) {
+            if (is_numeric($id)) {
+                $id = intval($id);
+            } else {
+                if(($post = Post::where('slug', $id)->first()) !== null) {
+                    $id = intval($post->id);
+                } else {
+                    $id = null;
+                }
+            }
+        }
+
+        return array_filter($ids);
+    }
+
+    /**
+     * List Comments
+     *
+     * @return void
+     */
+    protected function listComments()
+    {
+        $query = Comment::with('post')->where('status', 'approved');
+
+        // Show only Favourites
+        if ($this->property('onlyFavorites') === '1') {
+            $query->where('favorite', '1');
+        }
+        
+        // Hide on Dislike
+        if (($value = $this->property('hideOnDislikes')) !== '0') {
+            if (strpos($value, ':') === 0 && is_numeric(substr($value, 1))) {
+                $val = substr($value, 1);
+                $query->whereRaw("(dislikes == 0 OR dislikes / likes < $val)");
+            } else {
+                $query->where('dislikes', '<', $value);
+            }
+        }
+
+        // Exclude Posts
+        $post_ids = $this->getPostIds();
+        if (!empty($post_ids)) {
+            $query->whereNotIn('post_id', $post_ids);
+        }
+
+        // Configure Sort Order
+        $order = $this->property('sortOrder');
+        if (!array_key_exists($order, $this->getSortOrderOptions())) {
+            $order = 'created_at DESC';
+        }
+        $orders = explode(' ', $order);
+        $query->orderBy($orders[0], strtoupper($orders[1]) === 'DESC'? 'DESC': 'ASC');
+
+        // Configure Amount
+        $limit = intval($this->property('amount'));
+        $query->limit($limit);
+
+        $postPage = empty($this->property('postPage')) ? 'blog/post' : $this->property('postPage');
+        $ctrl = $this->controller;
+        return $query->get()->each(function ($item) use ($postPage, $ctrl) {
+            $item->post->setUrl($postPage, $ctrl);
+        });
     }
 
 }

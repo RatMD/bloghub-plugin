@@ -1,0 +1,11 @@
+<ul class="comment-list">
+    {% for comment in comments %}
+        <li>
+            <h3>{{ comment.display_name }} commented on <a href="{{ comment.post.url }}">{{ comment.post.title }}</a></h3>
+            <p class="info">
+                <time datetime="{{ comment.created_at }}">{{ comment.created_at | date('M d, Y') }}</time>
+            </p>
+            <p class="excerpt">{{ comment.content | raw }}</p>
+        </li>
+    {% endfor %}
+</ul>
