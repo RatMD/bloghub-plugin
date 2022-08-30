@@ -38,6 +38,7 @@ Version 1.3.0 - Stable
 - Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.
 - Bugfix: Replace missing default component partials with working ones.
 - Bugfix: PHP typings.
+- Bugfix: Smaller bugfixes & code cleanup tasks.
 
 Version 1.2.5 - Stable
 ----------------------
