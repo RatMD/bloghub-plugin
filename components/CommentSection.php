@@ -16,6 +16,7 @@ use RatMD\BlogHub\Models\BlogHubSettings;
 use RatMD\BlogHub\Models\Comment;
 use RatMD\BlogHub\Models\Visitor;
 use System\Classes\PluginManager;
+use System\Classes\UpdateManager;
 
 class CommentSection extends ComponentBase
 {
@@ -359,7 +360,11 @@ class CommentSection extends ComponentBase
 
             $this->page['comments'] = $this->getComments();
 
-            $this->addJs('/plugins/ratmd/bloghub/assets/js/comments.js');
+            if (version_compare(UpdateManager::instance()->getCurrentVersion(), '3.0.0', '<')) {
+                $this->addJs('/plugins/ratmd/bloghub/assets/js/comments-legacy.js');
+            } else {
+                $this->addJs('/plugins/ratmd/bloghub/assets/js/comments.js');
+            }
             $this->addCss('/plugins/ratmd/bloghub/assets/css/comments.css');
         }
     }
