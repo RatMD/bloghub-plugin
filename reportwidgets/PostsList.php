@@ -3,7 +3,10 @@
 namespace RatMD\BlogHub\ReportWidgets;
 
 use Backend\Classes\ReportWidgetBase;
-use Illuminate\Support\Facades\DB;
+use Cms\Classes\Controller;
+use Cms\Classes\Page;
+use Cms\Classes\Theme;
+use Lang;
 use RainLab\Blog\Models\Post;
 
 class PostsList extends ReportWidgetBase
@@ -26,48 +29,43 @@ class PostsList extends ReportWidgetBase
     public function defineProperties()
     {
         return [
-
+            'postPage' => [
+                'title'         => 'rainlab.blog::lang.settings.posts_post',
+                'description'   => 'rainlab.blog::lang.settings.posts_post_description',
+                'type'          => 'dropdown',
+                'default'       => 'blog/post',
+            ],
+            'defaultOrder' => [
+                'title'         => 'ratmd.bloghub::lang.components.post.default_order',
+                'description'   => 'ratmd.bloghub::lang.components.post.default_order_comment',
+                'type'          => 'dropdown',
+                'default'       => 'blog/post',
+            ]
         ];
     }
 
     /**
-     * Renders the widget's primary contents.
-     * 
-     * @return string HTML markup supplied by this widget.
+     * Get Post Page Dropdown Options
+     *
+     * @return mixed
      */
-    public function render()
+    public function getPostPageOptions()
     {
-        $posts = Post::orderBy('ratmd_bloghub_views', 'DESC')
-            ->limit(5)
-            ->get()
-            ->all();
+        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
+    }
 
-
-        $pastDay = date('Y-m-d', time()-7*24*60*60) . ' 00:00:00';
-        $counts = Post::where('published_at', '>=', $pastDay)->get();
-
-        /*
-            options:
-                last 7 days
-                last 7 weeks
-                last 7 months
-
-         */
-
-        $pastTime = strtotime($pastDay);
-        $result = [];
-        for ($i = 0; $i < 7; $i++) {
-            $timestamp = $pastTime + ($i * 24 * 60 * 60);
-
-            $start = date('Y-m-d', $timestamp) . ' 00:00:00';
-            $end = date('Y-m-d', $timestamp + (24 * 60 * 60)) . ' 00:00:00';
-            $result[date('d. M.', $timestamp)] = $counts->whereBetween('published_at', [$start, $end])->count();
-        }
-        
-        return $this->makePartial('widget', [
-            'posts' => $posts,
-            'stats' => $result
-        ]);
+    /**
+     * Get Post Page Dropdown Options
+     *
+     * @return mixed
+     */
+    public function getDefaultOrderOptions()
+    {
+        return [
+            'by_published' => Lang::get('ratmd.bloghub::lang.components.post.by_published'),
+            'by_views' => Lang::get('ratmd.bloghub::lang.components.post.by_views'),
+            'by_visitors' => Lang::get('ratmd.bloghub::lang.components.post.by_visitors')
+        ];
     }
 
     /**
@@ -78,6 +76,91 @@ class PostsList extends ReportWidgetBase
      */
     protected function loadAssets()
     {
+    }
+
+    /**
+     * Get Posts
+     *
+     * @param string $order
+     * @return mixed
+     */
+    protected function getPosts($order)
+    {
+        $query = Post::limit(10);
+        if ($order === 'by_published') {
+            $posts = $query
+                ->where('published', '1')
+                ->orderBy('published_at', 'DESC')
+                ->get();
+        } else if ($order === 'by_views') {
+            $posts = $query
+                ->where('published', '1')
+                ->orderBy('ratmd_bloghub_views', 'DESC')
+                ->orderBy('published_at', 'DESC')
+                ->get();
+        } else if ($order === 'by_visitors') {
+            $posts = $query
+                ->where('published', '1')
+                ->orderBy('ratmd_bloghub_unique_views', 'DESC')
+                ->orderBy('published_at', 'DESC')
+                ->get();
+        } else {
+            $posts = $query->get();
+        }
+
+        if (!empty($postPage = $this->property('postPage'))) {
+            $posts->each(fn ($item) => $item->setUrl($postPage, new Controller(Theme::getActiveTheme())));
+        }
+        return $posts;
+    }
+
+    /**
+     * Renders the widget's primary contents.
+     * 
+     * @return string HTML markup supplied by this widget.
+     */
+    public function render()
+    {
+        $order = $this->property('defaultOrder', 'by_published');
+        if (!array_key_exists($order, $this->getDefaultOrderOptions())) {
+            $order = 'by_published';
+        }
+        
+        $posts = $this->getPosts($order);
+        return $this->makePartial('widget', [
+            'order' => $order,
+            'posts' => $posts,
+            'postsPartial' => $this->makePartial('posts', [
+                'posts' => $posts
+            ]),
+            'counts' => [
+                'total' => Post::count(),
+                'published' => Post::where('published', 1)->where('published_at', '<=', date('Y-m-d H:i:s'))->count(),
+                'scheduled' => Post::where('published', 1)->where('published_at', '>', date('Y-m-d H:i:s'))->count(),
+                'draft' => Post::where('published', 0)->count(),
+            ]
+        ]);
+    }
+
+    /**
+     * AJAX Handler - Change Posts List
+     *
+     * @return void
+     */
+    public function onChangePostList()
+    {
+        $order = input('order');
+        if (!array_key_exists($order, $this->getDefaultOrderOptions())) {
+            $order = 'by_published';
+        }
+
+        $posts = $this->getPosts($order);
+        return [
+            'order' => $order,
+            '#postsList' => $this->makePartial('posts', [
+                'posts' => $posts
+            ])
+        ];
     }
 
 }
