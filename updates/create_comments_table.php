@@ -58,7 +58,21 @@ class CreateCommentsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('ratmd_bloghub_comments');
-        Schema::dropColumns('rainlab_blog_posts', ['ratmd_bloghub_comment_mode', 'ratmd_bloghub_comment_visible']);
+
+        if (method_exists(Schema::class, 'dropColumns')) {
+            Schema::dropColumns('rainlab_blog_posts', ['ratmd_bloghub_comment_mode', 'ratmd_bloghub_comment_visible']);
+        } else {
+            Schema::table('rainlab_blog_posts', function (Blueprint $table) {
+                if (Schema::hasColumn('rainlab_blog_posts', 'ratmd_bloghub_comment_mode')) {
+                    $table->dropColumn('ratmd_bloghub_comment_mode');
+                }
+            });
+            Schema::table('rainlab_blog_posts', function (Blueprint $table) {
+                if (Schema::hasColumn('rainlab_blog_posts', 'ratmd_bloghub_comment_visible')) {
+                    $table->dropColumn('ratmd_bloghub_comment_visible');
+                }
+            });
+        }
     }
 
 }

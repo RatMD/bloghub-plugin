@@ -29,7 +29,20 @@ class UpdateBackendUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('backend_users', ['ratmd_bloghub_display_name', 'ratmd_bloghub_author_slug']);
+        if (method_exists(Schema::class, 'dropColumns')) {
+            Schema::dropColumns('backend_users', ['ratmd_bloghub_display_name', 'ratmd_bloghub_author_slug']);
+        } else {
+            Schema::table('backend_users', function (Blueprint $table) {
+                if (Schema::hasColumn('backend_users', 'ratmd_bloghub_display_name')) {
+                    $table->dropColumn('ratmd_bloghub_display_name');
+                }
+            });
+            Schema::table('backend_users', function (Blueprint $table) {
+                if (Schema::hasColumn('backend_users', 'ratmd_bloghub_author_slug')) {
+                    $table->dropColumn('ratmd_bloghub_author_slug');
+                }
+            });
+        }
     }
 
 }

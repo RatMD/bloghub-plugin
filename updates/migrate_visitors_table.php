@@ -28,7 +28,20 @@ class MigrateVisitorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('ratmd_bloghub_visitors', ['likes', 'dislikes']);
+        if (method_exists(Schema::class, 'dropColumns')) {
+            Schema::dropColumns('ratmd_bloghub_visitors', ['likes', 'dislikes']);
+        } else {
+            Schema::table('ratmd_bloghub_visitors', function (Blueprint $table) {
+                if (Schema::hasColumn('ratmd_bloghub_visitors', 'likes')) {
+                    $table->dropColumn('likes');
+                }
+            });
+            Schema::table('ratmd_bloghub_visitors', function (Blueprint $table) {
+                if (Schema::hasColumn('ratmd_bloghub_visitors', 'dislikes')) {
+                    $table->dropColumn('dislikes');
+                }
+            });
+        }
     }
 
 }

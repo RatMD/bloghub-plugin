@@ -33,7 +33,20 @@ class CreateViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropColumns('rainlab_blog_posts', ['ratmd_bloghub_views', 'ratmd_bloghub_unique_views']);
+        if (method_exists(Schema::class, 'dropColumns')) {
+            Schema::dropColumns('rainlab_blog_posts', ['ratmd_bloghub_views', 'ratmd_bloghub_unique_views']);
+        } else {
+            Schema::table('rainlab_blog_posts', function (Blueprint $table) {
+                if (Schema::hasColumn('rainlab_blog_posts', 'ratmd_bloghub_views')) {
+                    $table->dropColumn('ratmd_bloghub_views');
+                }
+            });
+            Schema::table('rainlab_blog_posts', function (Blueprint $table) {
+                if (Schema::hasColumn('rainlab_blog_posts', 'ratmd_bloghub_unique_views')) {
+                    $table->dropColumn('ratmd_bloghub_unique_views');
+                }
+            });
+        }
     }
 
 }
