@@ -55,7 +55,7 @@ However, the following list shows all available features as in Version 1.3.0:
 	- `[bloghubPostsByTag]` - List posts by tag
 	- `[bloghubCommentList]` - List comments
 	- `[bloghubCommentSection]` - Comment Section (List and Form) for single posts
-	- `[bloghubTags]` - List of Tags
+	- `[bloghubTags]` - List or Cloud of tags 
 	- Extends the sorting options of `blogPosts`
 - Additional Menus
 	- *coming soon*
@@ -732,3 +732,45 @@ Returns the number of published posts of the current user.
 
 ## Dashboard Widgets
 
+### Comments List
+The Comments List dashboard widget shows the last 6 comments (including the possibility to approve, reject and mark pending comments as spam), including the overall counters.
+
+#### Options
+The dashboard widget provides the following options:
+
+##### Option: `postPage`
+The `postPage` option allows to set the single post CMS page as used to link in post title, which is shown on the respective comment.
+
+##### Option: `defaultTab`
+The `defaultTab` option allows to change the default open tab to `Pending`, `Approved`, `Rejected` or `Mark as Spam`. The default value is `Pending`.
+
+### Posts List
+The Posts List dashboard widget shows the last published posts, including some small details such as the view counter, category and author.
+
+#### Options
+The dashboard widget provides the following options:
+
+##### Option: `postPage`
+The `postPage` option allows to set the single post CMS page as used to link in post title, which is shown on the respective comment.
+
+##### Option: `amount`
+The `amount` option allows to change the number of posts to be shown within this widget,
+
+##### Option: `excludeCategories`
+The `excludeCategories` option allows to exclude posts from one or more categories. You can pass one or more comma-separated category ids or slugs.
+
+### Posts Statistics
+The Posts Statistics dashboard widget shows some summarized information as graphs about your blog posts. This way you can quickly view the number of published posts in a specific date range, the number of views, unique views, likes and dislikes.
+
+The following date ranges are supported:
+- Last 7 days
+- Last 14 days
+- Last month
+- Last 3 months
+- Last 6 months
+
+#### Options
+The dashboard widget provides the following options:
+
+##### Option: `defaultDateRange`
+The `defaultDateRange` option allows to change the default date range used to generate the graphs. The default value is `Last 7 days`.

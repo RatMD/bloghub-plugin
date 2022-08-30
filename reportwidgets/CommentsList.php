@@ -5,6 +5,7 @@ namespace RatMD\BlogHub\ReportWidgets;
 use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\DB;
 use RainLab\Blog\Models\Post;
+use RatMD\BlogHub\Models\Comment;
 
 class CommentsList extends ReportWidgetBase
 {
@@ -37,36 +38,24 @@ class CommentsList extends ReportWidgetBase
      */
     public function render()
     {
-        $posts = Post::orderBy('ratmd_bloghub_views', 'DESC')
-            ->limit(5)
-            ->get()
-            ->all();
+        $comments = Comment::where('status', 'pending')->orderBy('created_at', 'DESC')->limit(6)->get();
 
-
-        $pastDay = date('Y-m-d', time()-7*24*60*60) . ' 00:00:00';
-        $counts = Post::where('published_at', '>=', $pastDay)->get();
-
-        /*
-            options:
-                last 7 days
-                last 7 weeks
-                last 7 months
-
-         */
-
-        $pastTime = strtotime($pastDay);
-        $result = [];
-        for ($i = 0; $i < 7; $i++) {
-            $timestamp = $pastTime + ($i * 24 * 60 * 60);
-
-            $start = date('Y-m-d', $timestamp) . ' 00:00:00';
-            $end = date('Y-m-d', $timestamp + (24 * 60 * 60)) . ' 00:00:00';
-            $result[date('d. M.', $timestamp)] = $counts->whereBetween('published_at', [$start, $end])->count();
+        if ($comments->count() === 0) {
+            $comment = null;
+        } else {
+            $comment = $comments->shift();
         }
-        
+
         return $this->makePartial('widget', [
-            'posts' => $posts,
-            'stats' => $result
+            'status' => 'pending',
+            'comment' => $comment,
+            'list' => $comments,
+            'counts' => [
+                'pending' => Comment::where('status', 'pending')->count(),
+                'approved' => Comment::where('status', 'approved')->count(),
+                'rejected' => Comment::where('status', 'rejected')->count(),
+                'spam' => Comment::where('status', 'spam')->count(),
+            ]
         ]);
     }
 
@@ -78,6 +67,20 @@ class CommentsList extends ReportWidgetBase
      */
     protected function loadAssets()
     {
+        $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-commentslist.css');
+    }
+
+    public function onLoadComment()
+    {
+
+    }
+
+    public function onChangeStatus()
+    {
+        return [
+            'status' => input('status'),
+            'comment_id' => input('comment')
+        ];
     }
 
 }

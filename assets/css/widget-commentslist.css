@@ -1,0 +1,36 @@
+
+.bloghub-report-widget.widget-commentslist .nav-item .nav-link {
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+.bloghub-report-widget.widget-commentslist .nav-item.current .nav-link {
+    color: #e67e22;
+    border-color: #e67e22;
+}
+
+.item.width-1 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-2 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-3 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-4 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-5 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-6 .bloghub-report-widget.widget-commentslist .comment-panel {
+    width: 100%;
+}
+
+.item.width-7 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-8 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-9 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-10 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-11 .bloghub-report-widget.widget-commentslist .comment-panel,
+.item.width-12 .bloghub-report-widget.widget-commentslist .comment-panel {
+    width: calc(100% / 3 * 2);
+}
+
+.item.width-7 .bloghub-report-widget.widget-commentslist .comment-next,
+.item.width-8 .bloghub-report-widget.widget-commentslist .comment-next,
+.item.width-9 .bloghub-report-widget.widget-commentslist .comment-next,
+.item.width-10 .bloghub-report-widget.widget-commentslist .comment-next,
+.item.width-11 .bloghub-report-widget.widget-commentslist .comment-next,
+.item.width-12 .bloghub-report-widget.widget-commentslist .comment-next {
+    width: calc(100% / 3);
+}
