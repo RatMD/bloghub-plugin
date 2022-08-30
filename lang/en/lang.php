@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name' => 'BlogHub by rat.md',
-        'description' => 'Extends RainLab\'s Blog extension with comments, meta data, tags, archives and much more.',
+        'description' => 'Extends RainLab.Blog with Comments, Tags, Custom Meta Fields, Archives, Statistics, Views and more.',
     ],
 
     'components' => [
@@ -244,7 +244,6 @@ return [
             'no_comment' => 'No comment available', 
             'no_further_comments' => 'No further comments available', 
         ],
-        
         'post' => [
             'read_time' => 'Read Time: :min minutes :sec seconds',
             'read_time_sec' => 'Read Time: :sec seconds',
@@ -257,7 +256,6 @@ return [
             'published_format_minutes' => 'minutes',
             'statistics' => 'Post Statistics',
         ],
-
         'tags' => [
             'label' => 'Tags',
             'manage' => 'Manage Tags',
@@ -277,7 +275,6 @@ return [
             'postsEmpty' => 'No posts available.',
             'postsNumber' => 'No of Posts'
         ],
-
         'users' => [
             'displayName' => 'Display Name',
             'displayNameComment' => 'A custom version of your name, supporting themes may show them on your posts.',
@@ -286,7 +283,6 @@ return [
             'aboutMe' => 'About Me',
             'aboutMeDescription' => 'A small description about yourself, supporting themes may show them on your posts.'
         ],
-
         'visitors' => [
             'views' => 'Views / Unique'
         ]
