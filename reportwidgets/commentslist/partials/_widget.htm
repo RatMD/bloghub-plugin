@@ -1,100 +1,69 @@
 <div class="report-widget" style="min-height: 335px">
-    <h3>Comments List</h3>
+    <h3><?= Lang::get('ratmd.bloghub::lang.model.comments.label') ?></h3>
 
     <div class="bloghub-report-widget widget-commentslist">
         <ul class="nav">
-            <li class="nav-item me-2 current">
-                <a href="#" class="nav-link position-relative active">
-                    Pending
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <li class="nav-item me-2">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'pending' ? 'active' : '' ?>"
+                    data-tab="pending"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'pending'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusPending') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="pending">
                         <?= $counts['pending'] ?>
                     </span>
-                </a>
+                </button>
             </li>
             <li class="nav-item mx-2">
-                <a href="#" class="nav-link position-relative">
-                    Approved
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'approved' ? 'active' : '' ?>"
+                    data-tab="approved"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'approved'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusApproved') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="approved">
                         <?= $counts['approved'] ?>
                     </span>
-                </a>
+                </button>
             </li>
             <li class="nav-item mx-2">
-                <a href="#" class="nav-link position-relative">
-                    Rejected
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'rejected' ? 'active' : '' ?>"
+                    data-tab="rejected"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'rejected'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusRejected') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="rejected">
                         <?= $counts['rejected'] ?>
                     </span>
-                </a>
+                </button>
             </li>
             <li class="nav-item mx-2">
-                <a href="#" class="nav-link position-relative">
-                    Marked as Spam
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark">
+                <button 
+                    class="nav-link position-relative bg-transparent <?= $status === 'spam' ? 'active' : '' ?>"
+                    data-tab="spam"
+                    data-request="onChangeTab"
+                    data-request-data="tab: 'spam'"
+                    data-request-success="[].map.call(this.closest('ul').querySelectorAll('[data-tab]'), e => e.classList[e.dataset.tab == data.tab? 'add': 'remove']('active'))">
+                    <?= Lang::get('ratmd.bloghub::lang.model.comments.statusSpam') ?>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark" data-counter="spam">
                         <?= $counts['spam'] ?>
                     </span>
-                </a>
+                </button>
             </li>
         </ul>
 
         <div class="comments-list d-flex flex-wrap mt-3">
-            <div class="comment-panel border rounded p-4 d-flex flex-column" style="height:200px">
-                <?php if ($comment): ?>
-                    <div class="comment-header">
-                        <span><?= $comment->parent ? 'Reply by': 'Comment by' ?></span>
-                        <b><?= $comment->display_name() ?></b>
-                        <span>on</span>
-                        <b><?= $comment->post->title ?></b>
-                    </div>
-                    <div class="comment-article overflow-auto mt-2 mb-auto" style="max-height: 80px">
-                        <?= $comment->content; ?>
-                    </div>
-                    <div class="comment-footer text-end mt-4">
-                        <button 
-                            type="button" 
-                            data-request="onChangeStatus" 
-                            data-request-data="comment_id: '<?= $comment->id ?>', status: 'span'" 
-                            class="btn btn-sm btn-danger">Mark as Spam</button>
-                        <button 
-                            type="button" 
-                            data-request="onChangeStatus" 
-                            data-request-data="comment_id: '<?= $comment->id ?>', status: 'reject'" 
-                            class="btn btn-sm btn-secondary">Reject</button>
-                        <button 
-                            type="button" 
-                            data-request="onChangeStatus" 
-                            data-request-data="comment_id: '<?= $comment->id ?>', status: 'approve'" 
-                            class="btn btn-sm btn-primary ms-3">Approve</button>
-                    </div>
-                <?php else: ?>
-                    <div class="align-self-center">
-                        No comments available.
-                    </div>
-                <?php endif; ?>
+            <div id="commentPartial" class="comment-panel border rounded p-3 d-flex flex-column" style="height:188px">
+                <?= $commentPartial ?>
             </div>
 
-            <div class="comment-next ps-3">
-                <?php if ($list->count() > 0): ?>
-                    <div class="list-group">
-                        <?php foreach($list AS $comment): ?>
-                            <button type="button" data-request="onLoadComment" data-request-data="comment_id: '<?= $comment->id ?>'" class="list-group-item list-group-item-action d-flex align-items-center">
-                                <div class="flex-auto border-left me-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5zM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-fill">
-                                    By <b><?= $comment->display_name(); ?></b>
-                                    on <?= date('M j, Y', $comment->created_at->getTimestamp()) ?>
-                                </div>
-                            </button>
-                        <?php endforeach ?>
-                    </div>
-                <?php else: ?>
-                    <div class="align-self-center">
-                        No further comments available.
-                    </div>
-                <?php endif; ?>
+            <div id="listPartial" class="comment-next ps-3">
+                <?= $listPartial ?>
             </div>
         </div>
     </div>

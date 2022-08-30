@@ -47,6 +47,8 @@ return [
             'amount_validation' => 'Invalid format of the the amount value.',
             'only_favorites' => 'Show Favorites only',
             'only_favorites_description' => 'Shows only comments which has been marked as favorites by the authors.',
+            'default_tab' => 'Default Tab',
+            'default_tab_comment' => 'The default tab shown in the widget.'
         ],
         'comments_section' => [
             'label' => 'Comments Section',
@@ -77,6 +79,20 @@ return [
             'comment' => 'Displays a list of posts by date.',
             'filter' => 'Date filter',
             'filter_comment' => 'Enter a specific date or URL parameter to filter the posts by.',
+        ],
+        'post' => [
+            'date_range' => 'Default date Range',
+            'date_range_comment' => 'Change the default date range used for the graphs.',
+            '7days' => 'Last 7 days',
+            '14days' => 'Last 14 days',
+            '31days' => 'Last 31 days',
+            '3months' => 'Last 3 months',
+            '6months' => 'Last 6 months',
+            '12months' => 'Last 12 months',
+            'views_visitors' => 'Views / Visitors',
+            'views' => 'Views',
+            'visitors' => ' Visitors',
+            'published_posts' => 'Published Posts',
         ],
         'tag' => [
             'label' => 'Posts by Tags',
@@ -124,6 +140,8 @@ return [
             'approve_title' => 'Approve this comment',
             'reject' => 'Reject',
             'reject_title' => 'Reject this comment',
+            'spam' => 'Mark as Spam',
+            'spam_title' => 'Mark this comment as spam',
             'like' => 'Like',
             'like_title' => 'Like this Comment',
             'dislike' => 'Dislike',
@@ -142,6 +160,10 @@ return [
             'previous' => 'Previous',
             'next' => 'Next',
             'replyto' => 'Reply to :name',
+            'comment_by' => 'Comment by',
+            'reply_by' => 'Reply by',
+            'by' => 'By',
+            'on' => 'on',
         ],
         'errors' => [
             'unknown_post' => 'The passed post id or slug is unknown or invalid.',
@@ -156,11 +178,17 @@ return [
             'parent_not_found' => 'The parent comment on which you tried to reply does not exist or has been deleted.',
             'parent_invalid' => 'The parent comment on which you tried to reply is invalid or has been moved.',
             'not_allowed_to' => 'You are not allowed to call this action.',
+            'moderate_permission' => 'You are not allowed to moderate comments.',
+            'invalid_sttus' => 'The passed comment status is invalid.',
+            'unknown_comment' => 'The passed comment does not exist (anymore).',
             'disabled_method' => 'This function has been disabled by the website administrator.',
             'no_permissions_for' => 'You don\'t have the permission to call this action.',
             'missing_comment_id' => 'The comment id is missing or invalid.',
             'invalid_comment_id' => 'The passed comment id does not exist.',
             'unknown_error' => 'An unknown error occured, please try again later.'
+        ],
+        'success' => [
+            'update_status' => 'The comment status could be successfully updated.'
         ]
     ],
 
@@ -202,7 +230,9 @@ return [
                 'closed' => 'Closed (Noone can comment)'
             ],
             'seconds_ago' => 'A few seconds ago',
-            'x_ago' => ':amount :format ago'
+            'x_ago' => ':amount :format ago',
+            'no_comment' => 'No comment available', 
+            'no_further_comments' => 'No further comments available', 
         ],
         
         'post' => [
@@ -215,6 +245,7 @@ return [
             'published_format_days' => 'days',
             'published_format_hours' => 'hours',
             'published_format_minutes' => 'minutes',
+            'statistics' => 'Post Statistics',
         ],
 
         'tags' => [

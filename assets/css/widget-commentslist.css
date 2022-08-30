@@ -1,11 +1,25 @@
 
 .bloghub-report-widget.widget-commentslist .nav-item .nav-link {
-    border: 1px solid transparent;
-    border-radius: 3px;
+    color: #35425B;
+    font-weight: 600;
+    border-width: 0 0 2px 0;
+    border-style: solid;
+    border-color: transparent;
+    transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease;
 }
-.bloghub-report-widget.widget-commentslist .nav-item.current .nav-link {
+
+.bloghub-report-widget.widget-commentslist .nav-item .nav-link:hover {
+    border-color: #7e8c8d;
+}
+
+.bloghub-report-widget.widget-commentslist .nav-item .nav-link.active {
     color: #e67e22;
-    border-color: #e67e22;
+    border-bottom-color: #e67e22;
+}
+
+.bloghub-report-widget.widget-commentslist .nav-item .nav-link.active .badge {
+    color: white !important;
+    background-color: #e67e22 !important;
 }
 
 .item.width-1 .bloghub-report-widget.widget-commentslist .comment-panel,
