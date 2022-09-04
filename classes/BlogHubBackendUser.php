@@ -4,9 +4,10 @@ namespace RatMD\BlogHub\Classes;
 
 use Backend\Models\User;
 use Cms\Classes\Controller;
+use October\Contracts\Twig\CallsAnyMethod;
 use RainLab\Blog\Models\Post;
 
-class BlogHubBackendUser
+class BlogHubBackendUser implements CallsAnyMethod
 {
 
     /**

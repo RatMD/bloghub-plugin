@@ -1,6 +1,10 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.1 - Stable
+----------------------
+- Fix: Add CallsAynMEthod interface to BlogHubPost and BlogHubBackendUser.
+
 Version 1.3.0 - Stable
 ----------------------
 - Add: Blog Comments table, model and functions.
@@ -36,10 +40,10 @@ Version 1.3.0 - Stable
 - Deprecated: `[bloghubAuthorArchive]` has been marked as deprecated, please use `[bloghubPostsByAuthor]` instead.
 - Deprecated: `[bloghubDateArchive]` has been marked as deprecated, please use `[bloghubPostsByDate]` instead.
 - Deprecated: `[bloghubTagArchive]` has been marked as deprecated, please use `[bloghubPostsByTag]` instead.
-- Bugfix: Replace missing default component partials with working ones.
-- Bugfix: Down Migration did not work on OctoberCMS v2 (dropColumns method does not exist).
-- Bugfix: PHP typings.
-- Bugfix: Smaller bugfixes & code cleanup tasks.
+- Fix: Replace missing default component partials with working ones.
+- Fix: Down Migration did not work on OctoberCMS v2 (dropColumns method does not exist).
+- Fix: PHP typings.
+- Fix: Smaller bugfixes & code cleanup tasks.
 
 Version 1.2.5 - Stable
 ----------------------

@@ -4,11 +4,11 @@ namespace RatMD\BlogHub\Classes;
 
 use Cms\Classes\Controller;
 use Illuminate\Support\Collection;
-use October\Rain\Argon\Argon;
+use October\Contracts\Twig\CallsAnyMethod;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Models\Visitor;
 
-class BlogHubPost
+class BlogHubPost implements CallsAnyMethod
 {
 
     /**
