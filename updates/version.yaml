@@ -89,3 +89,6 @@ v1.3.0:
   - create_comments_table.php
   - migrate_settings_table.php
   - migrate_visitors_table.php
+v1.3.1:
+  - "Bugfix"
+  - "Fix: Add CallsAynMEthod interface to BlogHubPost and BlogHubBackendUser."
