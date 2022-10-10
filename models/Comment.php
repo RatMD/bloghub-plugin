@@ -5,6 +5,7 @@ namespace RatMD\BlogHub\Models;
 use Lang;
 use Markdown;
 use Model;
+use October\Rain\Argon\Argon;
 use RatMD\BlogHub\Models\Visitor;
 
 /**
@@ -239,7 +240,7 @@ class Comment extends Model
         $seconds = (time() - $this->created_at->getTimestamp());
 
         if ($seconds >= 2419200) {
-            return date('F, j. Y - H:i', $this->getTimestamp());
+            return date('F, j. Y - H:i', $this->created_at->getTimestamp());
         } elseif ($seconds >= 86400) {
             $amount = intval($seconds / 86400);
             $format = 'days';

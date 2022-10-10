@@ -18,8 +18,9 @@
         <header class="text-muted">
             <b>{{ comment.display_name }}</b>
             &nbsp;&bullet;&nbsp;
-            <time class="text-muted" datetime="{{ comment.published_at }}">{{ comment.published_ago }}</time>
-            {% if comment.status == 'pending' %}
+            {% if comment.status == 'approved' %}
+                <time class="text-muted" datetime="{{ comment.published_at }}">{{ comment.published_ago }}</time>
+            {% elseif comment.status == 'pending' %}
                 &nbsp;&bullet;&nbsp;
                 <span class="text-danger">{{ 'ratmd.bloghub::lang.frontend.comments.awaiting_moderation' | trans }}</span>
             {% endif %}
