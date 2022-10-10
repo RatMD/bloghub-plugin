@@ -92,3 +92,6 @@ v1.3.0:
 v1.3.1:
   - "Bugfix"
   - "Fix: Add CallsAynMEthod interface to BlogHubPost and BlogHubBackendUser."
+v1.3.2:
+  - "Bugfix"
+  - "Fix: Right method used on wrong object in Comment model class."

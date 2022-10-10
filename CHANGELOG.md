@@ -1,9 +1,13 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.2 - Stable
+----------------------
+- Fix: Right method used on wrong object in Comment model class.
+
 Version 1.3.1 - Stable
 ----------------------
-- Fix: Add CallsAynMEthod interface to BlogHubPost and BlogHubBackendUser.
+- Fix: Add CallsAnyMethod interface to BlogHubPost and BlogHubBackendUser.
 
 Version 1.3.0 - Stable
 ----------------------
