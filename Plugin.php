@@ -171,6 +171,7 @@ class Plugin extends PluginBase
 
             // Build Meta Map
             $meta = $model->ratmd_bloghub_meta->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']])->all();
+            $model->ratmd_bloghub_meta_temp = $meta;
 
             // Add Tags Field
             $form->addSecondaryTabFields([
