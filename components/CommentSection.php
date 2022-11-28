@@ -288,12 +288,13 @@ class CommentSection extends ComponentBase
     protected function getFrontendUser()
     {
         if (PluginManager::instance()->hasPlugin('RainLab.User')) {
-            return null;
-        }
+            $rainLabAuth = \RainLab\User\Classes\AuthManager::instance();
 
-        $rainLabAuth = \RainLab\User\Classes\AuthManager::instance();
-        if ($rainLabAuth->check()) {
-            return $rainLabAuth->getUser();
+            if ($rainLabAuth->check()) {
+                return $rainLabAuth->getUser();
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
