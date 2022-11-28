@@ -52,9 +52,9 @@
                     </div>
                 {% else %}
                     <div class="col-12 col-md-6">
-                        <label for="{{ __SELF__.id }}_username" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}</label>
+                        <label for="{{ __SELF__.id }}_user" class="form-label">{{ 'ratmd.bloghub::lang.frontend.comments.username' | trans }}</label>
                         <input 
-                            id="{{ __SELF__.id }}_username" 
+                            id="{{ __SELF__.id }}_user" 
                             type="text" 
                             name="comment_name" 
                             value="{{ currentUser.bloghub_display | default(currentUser.username) }}" 
