@@ -434,7 +434,7 @@ class CommentSection extends ComponentBase
         // Comment Form Fields variables
         $this->page['showCommentFormTitle'] = $this->config('form_comment_title') === '1';
         $this->page['allowCommentFormMarkdown'] = $this->config('form_comment_markdown') === '1';
-        $this->page['showCommentFormTos'] = $this->config('form_tos_checkbox') === '0';
+        $this->page['showCommentFormTos'] = $this->config('form_tos_checkbox') === '1';
         if ($this->page['showCommentFormTos'] && $this->config('form_tos_hide_on_user') === '1' && $this->page['isLoggedIn']) {
             $this->page['showCommentFormTos'] = false;
         } else {

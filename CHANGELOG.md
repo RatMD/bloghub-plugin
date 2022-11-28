@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.3 - Stable
+----------------------
+- Fix: Issue #6 - Wrong columns type on ratmd_bloghub_comments table
+- Fix: Issue #7 - Terms of use not shown due to wrong condition
+
 Version 1.3.2 - Stable
 ----------------------
 - Fix: Right method used on wrong object in Comment model class.

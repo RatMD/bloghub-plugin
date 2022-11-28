@@ -95,3 +95,8 @@ v1.3.1:
 v1.3.2:
   - "Bugfix"
   - "Fix: Right method used on wrong object in Comment model class."
+v1.3.3:
+  - "Bugfix"
+  - "Fix: Issue #6 - Wrong columns type on ratmd_bloghub_comments table"
+  - "Fix: Issue #7 - Terms of use not shown due to wrong condition"
+  - alter_table_comments_change_author_table.php
