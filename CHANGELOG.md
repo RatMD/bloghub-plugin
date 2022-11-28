@@ -3,10 +3,10 @@ BlogHub - Changelog
 
 Version 1.3.3 - Stable
 ----------------------
-- Fix: Issue #5 - 2 comment fields share the same ID when the user is logged in + honeypot
-- Fix: Issue #6 - Wrong columns type on ratmd_bloghub_comments table
-- Fix: Issue #7 - Terms of use not shown due to wrong condition
-- Fix: Issue #8 - Wrong condition on CommectionSection->getFrontendUser method
+- Fix: [Issue #5](https://github.com/RatMD/bloghub-plugin/issues/5) - 2 comment fields share the same ID when the user is logged in + honeypot
+- Fix: [Issue #6](https://github.com/RatMD/bloghub-plugin/issues/6) - Wrong columns type on ratmd_bloghub_comments table
+- Fix: [Issue #7](https://github.com/RatMD/bloghub-plugin/issues/7) - Terms of use not shown due to wrong condition
+- Fix: [Issue #8](https://github.com/RatMD/bloghub-plugin/issues/8) - Wrong condition on CommectionSection->getFrontendUser method
 
 Version 1.3.2 - Stable
 ----------------------
