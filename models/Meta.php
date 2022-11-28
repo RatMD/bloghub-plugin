@@ -53,7 +53,7 @@ class Meta extends Model
     ];
 
     /**
-     * BelongsToMany Relationships
+     * MorphTo Relationships
      *
      * @var array
      */

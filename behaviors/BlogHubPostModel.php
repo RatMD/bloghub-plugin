@@ -161,6 +161,7 @@ class BlogHubPostModel extends ExtensionBase
         // Find Meta or Create a new one
         $existing = $this->model->ratmd_bloghub_meta;
 
+        $data = [];
         foreach ($metaset AS $name => &$value) {
             $meta = $existing->where('name', '=', $name);
             if ($meta->count() === 1) {
@@ -169,7 +170,12 @@ class BlogHubPostModel extends ExtensionBase
                 $meta = new Meta(['name' => $name]);
             }
 
+            $data[] = [
+                'name' => $name,
+                'value' => $value
+            ];
             $meta->value = $value;
+
             $value = $meta;
         }
 
@@ -177,7 +183,10 @@ class BlogHubPostModel extends ExtensionBase
         if ($this->model->exists) {
             $this->model->ratmd_bloghub_meta()->saveMany($metaset);
         } else {
-            $this->model->ratmd_bloghub_meta = $metaset;
+            $model = $this->model;
+            array_walk($metaset, function($meta) use ($model) {
+                $model->ratmd_bloghub_meta()->add($meta);
+            });
         }
     }
 

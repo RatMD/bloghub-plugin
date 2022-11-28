@@ -5,7 +5,6 @@ namespace RatMD\BlogHub\Models;
 use Lang;
 use Markdown;
 use Model;
-use October\Rain\Argon\Argon;
 use RatMD\BlogHub\Models\Visitor;
 
 /**

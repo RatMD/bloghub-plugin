@@ -97,8 +97,10 @@ v1.3.2:
   - "Fix: Right method used on wrong object in Comment model class."
 v1.3.3:
   - "Bugfix"
+  - "Fix: Issue #4 - Meta values aren't stored on new posts"
   - "Fix: Issue #5 - 2 comment fields share the same ID when the user is logged in + honeypot"
   - "Fix: Issue #6 - Wrong columns type on ratmd_bloghub_comments table"
   - "Fix: Issue #7 - Terms of use not shown due to wrong condition"
   - "Fix: Issue #8 - Wrong condition on CommectionSection->getFrontendUser method"
   - alter_table_comments_change_author_table.php
+  - alter_table_meta_change_metable_id.php
