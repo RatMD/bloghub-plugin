@@ -6,7 +6,7 @@ scopes:
     status:
         type: group
         label: Status
-        conditions: status in (:value)
+        conditions: status in (:filtered)
         options:
             pending: ratmd.bloghub::lang.model.comments.statusPending
             approved: ratmd.bloghub::lang.model.comments.statusApproved

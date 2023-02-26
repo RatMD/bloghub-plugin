@@ -1,7 +1,7 @@
 <?php if ($comment): ?>
     <div class="comment-header">
         <span><?= $comment->parent ? Lang::get('ratmd.bloghub::lang.frontend.comments.reply_by'): Lang::get('ratmd.bloghub::lang.frontend.comments.comment_by') ?></span>
-        <b><?= $comment->display_name() ?></b>
+        <b><?= $comment->display_name ?></b>
         <span><?= Lang::get('ratmd.bloghub::lang.frontend.comments.on') ?></span>
         <?php if ($comment->post->url): ?>
             <a href="<?= $comment->post->url ?>" target="_blank"><b><?= $comment->post->title ?></b></a>
