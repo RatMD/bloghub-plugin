@@ -7,6 +7,8 @@ Version 1.3.4 - Stable
 - Update: Use translation string, instead of hardcoded 'Guest' on Comment :: display_name.
 - Update: Implement `comment_content` as replacement for `render_content`.
 - Fix: SQL Error: Unknown column 'slug' in 'order clause', [as reported here](https://octobercms.com/theme/support/ratmd-newshub/shows-error-after-enabled-comment-counter-in-the-theme-customize).
+- Fix: Prepared SQL statement error, [as reported here](https://octobercms.com/theme/support/ratmd-newshub/several-errors-view-counter-doesnt-work-comments-counter-gives-error).
+- Fix: View / Visitor counter does not work on October v2 installations, [as reported here](https://octobercms.com/theme/support/ratmd-newshub/several-errors-view-counter-doesnt-work-comments-counter-gives-error).
 
 
 Version 1.3.3 - Stable

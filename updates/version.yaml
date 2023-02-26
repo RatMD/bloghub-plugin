@@ -111,3 +111,5 @@ v1.3.4:
   - "Update: Use translation string, instead of hardcoded 'Guest' on Comment :: display_name."
   - "Update: Implement `comment_content` as replacement for `render_content`."
   - "Fix: SQL Error: Unknown column 'slug' in 'order clause'."
+  - "Fix: Prepared SQL statement error."
+  - "Fix: View / Visitor counter does not work on October v2 installations."

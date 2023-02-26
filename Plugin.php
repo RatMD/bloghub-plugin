@@ -103,7 +103,15 @@ class Plugin extends PluginBase
 
         // Collect (Unique) Views
         Event::listen('cms.page.end', function (Controller $ctrl) {
-            if (empty($post = $ctrl->getPageObject()->vars['post'] ?? null)) {
+            $pageObject = $ctrl->getPageObject();
+            if (property_exists($pageObject, 'vars')) {
+                $post = $pageObject->vars['post'] ?? null;
+            } else if (property_exists($pageObject, 'controller')) {
+                $post = $pageObject->controller->vars['post'] ?? null;
+            } else {
+                $post = null;
+            }
+            if (empty($post)) {
                 return;
             }
 
