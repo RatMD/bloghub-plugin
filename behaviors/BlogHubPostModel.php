@@ -6,7 +6,9 @@ use Cms\Classes\Controller;
 use October\Rain\Extension\ExtensionBase;
 use RainLab\Blog\Models\Post;
 use RatMD\BlogHub\Classes\BlogHubPost;
+use RatMD\BlogHub\Models\Comment;
 use RatMD\BlogHub\Models\Meta;
+use RatMD\BlogHub\Models\Tag;
 
 class BlogHubPostModel extends ExtensionBase
 {
@@ -36,28 +38,24 @@ class BlogHubPostModel extends ExtensionBase
 
         // Add Blog Comments
         $model->hasMany['ratmd_bloghub_comments'] = [
-            'RatMD\BlogHub\Models\Comment',
-            'table' => 'ratmd_bloghub_comments',
-            'order' => 'slug'
+            Comment::class
         ];
 
-        $model->belongsToMany['ratmd_bloghub_comments_count'] = [
-            'RatMD\BlogHub\Models\Comment',
-            'table' => 'ratmd_bloghub_comments',
-            'order' => 'slug',
+        $model->hasMany['ratmd_bloghub_comments_count'] = [
+            Comment::class,
             'count' => true
         ];
 
         // Add Blog Meta
         $model->morphMany['ratmd_bloghub_meta'] = [
-            'RatMD\BlogHub\Models\Meta',
+            Meta::class,
             'table' => 'ratmd_bloghub_meta',
             'name' => 'metable',
         ];
 
         // Add Blog Tags
         $model->belongsToMany['ratmd_bloghub_tags'] = [
-            'RatMD\BlogHub\Models\Tag',
+            Tag::class,
             'table' => 'ratmd_bloghub_tags_posts',
             'order' => 'slug'
         ];

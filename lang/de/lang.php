@@ -240,6 +240,7 @@ return [
                 'private' => 'Privat (Nur Backend-Nutzer können kommentieren)',
                 'closed' => 'Geschlossen (Niemand kann kommentieren)'
             ],
+            'guest' => 'Gast',
             'seconds_ago' => 'Vor ein paar Sekunden',
             'x_ago' => 'Vor :amount :format',
             'no_comment' => 'Kein Kommentar verfügbar', 

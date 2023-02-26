@@ -239,6 +239,7 @@ return [
                 'private' => 'Private (Only logged-in backend users can comment)',
                 'closed' => 'Closed (Noone can comment)'
             ],
+            'guest' => 'Guest',
             'seconds_ago' => 'A few seconds ago',
             'x_ago' => ':amount :format ago',
             'no_comment' => 'No comment available', 

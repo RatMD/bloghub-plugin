@@ -105,3 +105,9 @@ v1.3.3:
   - "Fix: Meta values aren't shown on OctoberCMS v2"
   - alter_table_comments_change_author_table.php
   - alter_table_meta_change_metable_id.php
+v1.3.4:
+  - "Bugfix & Minor Changes"
+  - "Update: Use Laravels `[s|g]et[Attribute]Attribute` getters and setters on Comment model."
+  - "Update: Use translation string, instead of hardcoded 'Guest' on Comment :: display_name."
+  - "Update: Implement `comment_content` as replacement for `render_content`."
+  - "Fix: SQL Error: Unknown column 'slug' in 'order clause'."

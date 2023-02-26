@@ -1,6 +1,14 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.4 - Stable
+----------------------
+- Update: Use Laravels `[s|g]et[Attribute]Attribute` getters and setters on Comment model.
+- Update: Use translation string, instead of hardcoded 'Guest' on Comment :: display_name.
+- Update: Implement `comment_content` as replacement for `render_content`.
+- Fix: SQL Error: Unknown column 'slug' in 'order clause', [as reported here](https://octobercms.com/theme/support/ratmd-newshub/shows-error-after-enabled-comment-counter-in-the-theme-customize).
+
+
 Version 1.3.3 - Stable
 ----------------------
 - Fix: [Issue #4](https://github.com/RatMD/bloghub-plugin/issues/4) - Meta values aren't stored on new posts
@@ -10,13 +18,16 @@ Version 1.3.3 - Stable
 - Fix: [Issue #8](https://github.com/RatMD/bloghub-plugin/issues/8) - Wrong condition on CommectionSection->getFrontendUser method
 - Fix: Meta values aren't shown on OctoberCMS v2.
 
+
 Version 1.3.2 - Stable
 ----------------------
 - Fix: Right method used on wrong object in Comment model class.
 
+
 Version 1.3.1 - Stable
 ----------------------
 - Fix: Add CallsAnyMethod interface to BlogHubPost and BlogHubBackendUser.
+
 
 Version 1.3.0 - Stable
 ----------------------
@@ -58,13 +69,16 @@ Version 1.3.0 - Stable
 - Fix: PHP typings.
 - Fix: Smaller bugfixes & code cleanup tasks.
 
+
 Version 1.2.5 - Stable
 ----------------------
 - Fix: MySQL installation issue.
 
+
 Version 1.2.4 - Stable
 ----------------------
 - Fix: Database Table Migration for OctoberCMS v3.
+
 
 Version 1.2.3 - Stable
 ----------------------
@@ -72,6 +86,7 @@ Version 1.2.3 - Stable
 - Add: Estimated reading time (Work in Progress).
 - Add: Published * ago date/time view (Work in Progress).
 - Fix: Table / Coulmn names for OctoberCMS Marketplace.
+
 
 Version 1.2.2 - Stable
 ----------------------
@@ -81,9 +96,11 @@ Version 1.2.2 - Stable
 - Update: Locale strings and language files.
 - Remove: Meta controller and definitions.
 
+
 Version 1.2.1 - Stable
 ----------------------
 - Add: 'About Me' field for backend users.
+
 
 Version 1.2.0 - Stable
 ----------------------
@@ -98,6 +115,7 @@ Version 1.2.0 - Stable
 - Update: Return 404 when no tag is found ([bloghubTagArchive] Component).
 - Update: Use `author_slug` instead of login (when `author_slug` is not empty).
 
+
 Version 1.1.0 - Stable
 ----------------------
 - Add: View / Unique View table and counter system. 
@@ -106,6 +124,7 @@ Version 1.1.0 - Stable
 - Add: `Visitor` model.
 - Add: `views` and `unique_views` sorting options to the Post model.
 - Update: Move Post list by tag slug component from `Tags` to `Tag`.
+
 
 Version 1.0.0 - Stable
 ----------------------

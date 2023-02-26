@@ -17,8 +17,8 @@
     <div class="comment-right flex-fill px-4 py-1">
         <header class="text-muted">
             <b>{{ comment.display_name }}</b>
-            &nbsp;&bullet;&nbsp;
             {% if comment.status == 'approved' %}
+                &nbsp;&bullet;&nbsp;
                 <time class="text-muted" datetime="{{ comment.published_at }}">{{ comment.published_ago }}</time>
             {% elseif comment.status == 'pending' %}
                 &nbsp;&bullet;&nbsp;
@@ -31,7 +31,7 @@
                 {{ _self.renderParent(comment.parent) }}
             {% endif %}
             
-            {{ comment.render_content | raw }}
+            {{ comment.comment_content | raw }}
         </article>
 
         {% if not skip_footer %}

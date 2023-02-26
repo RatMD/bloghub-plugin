@@ -1,4 +1,4 @@
-<?php declarE(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RatMD\BlogHub\Models;
 
@@ -128,15 +128,15 @@ class Comment extends Model
     public function getStatusOptions()
     {
         return [
-            'pending' => Lang::get('ratmd.bloghub::lang.model.comments.statusPending'),
-            'approved' => Lang::get('ratmd.bloghub::lang.model.comments.statusApproved'),
-            'rejected' => Lang::get('ratmd.bloghub::lang.model.comments.statusRejected'),
-            'spam' => Lang::get('ratmd.bloghub::lang.model.comments.statusSpam'),
+            'pending'   => Lang::get('ratmd.bloghub::lang.model.comments.statusPending'),
+            'approved'  => Lang::get('ratmd.bloghub::lang.model.comments.statusApproved'),
+            'rejected'  => Lang::get('ratmd.bloghub::lang.model.comments.statusRejected'),
+            'spam'      => Lang::get('ratmd.bloghub::lang.model.comments.statusSpam')
         ];
     }
 
     /**
-     * Before Save Event Listener
+     * [HOOK] - Before Save Event Listener
      *
      * @return void
      */
@@ -162,7 +162,7 @@ class Comment extends Model
     }
 
     /**
-     * Set Comment Attribute
+     * [SETTER] Comment Content
      *
      * @return void
      */
@@ -173,11 +173,11 @@ class Comment extends Model
     }
 
     /**
-     * Render content, dependen on the configuration
+     * [GETTER] Comment Content, depending on the set option
      *
      * @return string
      */
-    public function render_content()
+    public function getCommentContentAttribute(): string
     {
         if (BlogHubSettings::get('form_comment_markdown', BlogHubSettings::defaultValue('form_comment_markdown')) === '1') {
             return $this->content_html;
@@ -187,12 +187,23 @@ class Comment extends Model
     }
 
     /**
-     * Get Author [GR]avatar
+     * [GETTER] Comment Content (deprecated version)
+     * @deprecated 1.3.4 (Please use comment_content instead), will be removed in 1.5.0!
+     * 
+     * @return string
+     */
+    public function getRenderContentAttribute(): string
+    {
+        return $this->getCommentContentAttribute();
+    }
+
+    /**
+     * [GETTER] Get Author [GR]avatar
      *
      * @param int $size
      * @return string
      */
-    public function avatar($size = 80)
+    public function getAvatarAttribute($size = 80)
     {
         if (!empty($this->author_email)) {
             $email = md5(strtolower($this->author_email));
@@ -210,11 +221,11 @@ class Comment extends Model
     }
 
     /**
-     * Get Author Display Name, depending on the author type
+     * [GETTER] Authors display name, depending on the author type
      *
-     * @return mixed
+     * @return string
      */
-    public function display_name()
+    public function getDisplayNameAttribute(): string
     {
         if (!empty($this->author)) {
             return $this->author;
@@ -225,16 +236,16 @@ class Comment extends Model
                 return $this->authorable->username;
             }
         } else {
-            return 'Guest';
+            return trans('ratmd.bloghub::lang.model.comments.guest');
         }
     }
 
     /**
-     * Get formatted published ago timestamp.
+     * [GETTER] Formatted published ago date/time.
      *
-     * @return mixed
+     * @return string
      */
-    public function published_ago()
+    public function getPublishedAgoAttribute(): string
     {
         $seconds = (time() - $this->created_at->getTimestamp());
 
@@ -260,33 +271,33 @@ class Comment extends Model
     }
 
     /**
-     * Check if current user already liked this comment
+     * [GETTER] Check if current user already liked this comment.
      *
-     * @return void
+     * @return boolean
      */
-    public function current_likes()
+    public function getCurrentLikesAttribute(): bool
     {
         $visitor = Visitor::currentUser();
         return $visitor->getCommentVote($this->id) === 'like';
     }
 
     /**
-     * Check if current user already disliked this comment
+     * [GETTER] Check if current user already disliked this comment.
      *
-     * @return void
+     * @return boolean
      */
-    public function current_dislikes()
+    public function getCurrentDislikesAttribute(): bool
     {
         $visitor = Visitor::currentUser();
         return $visitor->getCommentVote($this->id) === 'dislike';
     }
 
     /**
-     * Like a Comment
+     * [ACTION] Like a Comment
      *
      * @return bool
      */
-    public function like()
+    public function like(): bool
     {
         $visitor = Visitor::currentUser();
 
@@ -309,7 +320,7 @@ class Comment extends Model
     }
 
     /**
-     * Dislike A Comment
+     * [ACTION] Dislike A Comment
      *
      * @return bool
      */
@@ -336,41 +347,47 @@ class Comment extends Model
     }
 
     /**
-     * Approve a Comment
-     * 
-     * @return bool
+     * [ACTION] Change comment status
+     *
+     * @param string $status
+     * @return boolean
      */
-    public function approve()
+    public function changeStatus(string $status): bool
     {
-        $this->status = 'approved';
-        $this->approved_at = date("Y-m-d H:i:s");
-        return $this->save();
-    }
-    
-    /**
-     * Reject a Comment
-     * 
-     * @return bool
-     */
-    public function reject()
-    {
-        $this->status = 'rejected';
-        $this->approved_at = null;
-        $this->rejected_at = date("Y-m-d H:i:s");
+        $this->status = $status;
+        $this->approved_at = $status === 'approved' ? date("Y-m-d H:i:s") : null;
+        $this->rejected_at = $status !== 'approved' ? date("Y-m-d H:i:s") : null;
         return $this->save();
     }
 
     /**
-     * Mark as Comment as spam
+     * [ACTION] Approve
      * 
-     * @return bool
+     * @return boolean
      */
-    public function spam()
+    public function approve(): bool
     {
-        $this->status = 'spam';
-        $this->approved_at = null;
-        $this->rejected_at = date("Y-m-d H:i:s");
-        return $this->save();
+        return $this->changeStatus('approved');
+    }
+    
+    /**
+     * [ACTION] Reject Comment
+     * 
+     * @return boolean
+     */
+    public function reject(): bool
+    {
+        return $this->changeStatus('rejected');
+    }
+
+    /**
+     * [ACTION] Mark Comment as spam
+     * 
+     * @return boolean
+     */
+    public function spam(): bool
+    {
+        return $this->changeStatus('spam');
     }
 
 }
