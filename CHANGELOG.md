@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.6 - Stable
+----------------------
+- Fix: legacy `ratmd_bloghub_meta_data` returned collection instead of mapped array.
+
+
 Version 1.3.5 - Stable
 ----------------------
 - Fix: strtolower receives null instead of string in Comment model.

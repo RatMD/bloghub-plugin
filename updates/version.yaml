@@ -116,3 +116,6 @@ v1.3.4:
 v1.3.5:
   - "Bugfix"
   - "Fix: strtolower receives null instead of string in Comment model."
+v1.3.6:
+  - "Bugfix"
+  - "Fix: legacy ratmd_bloghub_meta_data returned collection instead of mapped array."
