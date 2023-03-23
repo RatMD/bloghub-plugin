@@ -34,7 +34,7 @@
             {{ comment.comment_content | raw }}
         </article>
 
-        {% if not skip_footer %}
+        {% if not skip_footer|default(false) %}
             <footer class="mt-4">
                 <ul class="list-inline d-flex fs-6">
                     {% if comment.status == 'pending' %}
