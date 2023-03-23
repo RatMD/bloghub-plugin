@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.7 - Stable
+----------------------
+- Fix: Twig strict variables error on component.
+
+
 Version 1.3.6 - Stable
 ----------------------
 - Fix: legacy `ratmd_bloghub_meta_data` returned collection instead of mapped array.

@@ -119,3 +119,6 @@ v1.3.5:
 v1.3.6:
   - "Bugfix"
   - "Fix: legacy ratmd_bloghub_meta_data returned collection instead of mapped array."
+v1.3.7:
+  - "Bugfix"
+  - "Fix: Twig strict variables error on component."
