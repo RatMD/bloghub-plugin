@@ -140,7 +140,7 @@ class Plugin extends PluginBase
             }
         });
 
-        // Implment custom Models
+        // Implement custom Models
         Post::extend(fn (Post $model) => $model->implementClassWith(BlogHubPostModel::class));
         BackendUser::extend(fn (BackendUser $model) => $model->implementClassWith(BlogHubBackendUserModel::class));
 

@@ -195,15 +195,15 @@ class BlogHubPost implements CallsAnyMethod
     /**
      * Get Post Meta Data
      *
-     * @return mixed
+     * @return array
      */
-    public function getMeta()
+    public function getMeta(): array
     { 
         if (empty($this->metaCollection)) {
             $this->metaCollection = $this->model->ratmd_bloghub_meta
                 ->mapWithKeys(fn ($item, $key) => [$item['name'] => $item['value']]);
         }
-        return $this->metaCollection;
+        return $this->metaCollection->all();
     }
 
     /**
