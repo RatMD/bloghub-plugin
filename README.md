@@ -37,7 +37,7 @@ solution for a future update.
 
 Requirements
 -------------
-- OctoberCMS v2/v3 (tested with latest version only)
+- OctoberCMS v2/v3 (tested with latest versions only)
 - PHP 7.4+ / 8.0+
 - [Gregwar/Captcha](https://github.com/Gregwar/Captcha)
 - [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog)
@@ -48,6 +48,6 @@ Requirements
 
 Copyright
 ---------
-Copyright © 2022 rat.md.
+Copyright © 2022 - 2023 rat.md.
 
 Published under the MIT-License.
