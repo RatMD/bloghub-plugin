@@ -206,12 +206,12 @@ class Comment extends Model
     public function getAvatarAttribute($size = 80)
     {
         if (!empty($this->author_email)) {
-            $email = md5(strtolower($this->author_email));
+            $email = md5(strtolower($this->author_email ?? 'none'));
         } else if ($this->author_id) {
             if ($this->author_table === 'Backend\Models\User') {
                 return $this->authorable->getAvatarThumb($size);
             } else {
-                $email = md5(strtolower($this->authorable->email));
+                $email = md5(strtolower($this->authorable->email ?? 'none'));
             }
         } else {
             $email = md5('none');
