@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.5 - Stable
+----------------------
+- Fix: strtolower receives null instead of string in Comment model.
+
+
 Version 1.3.4 - Stable
 ----------------------
 - Update: Use Laravels `[s|g]et[Attribute]Attribute` getters and setters on Comment model.

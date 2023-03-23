@@ -113,3 +113,6 @@ v1.3.4:
   - "Fix: SQL Error: Unknown column 'slug' in 'order clause'."
   - "Fix: Prepared SQL statement error."
   - "Fix: View / Visitor counter does not work on October v2 installations."
+v1.3.5:
+  - "Bugfix"
+  - "Fix: strtolower receives null instead of string in Comment model."
