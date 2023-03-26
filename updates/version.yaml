@@ -122,3 +122,6 @@ v1.3.6:
 v1.3.7:
   - "Bugfix"
   - "Fix: Twig strict variables error on component."
+v1.3.8:
+  - "Bugfix"
+  - "Fix: Wrong method-call on bloghub.prev / getPrevious()."

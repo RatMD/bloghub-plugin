@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.8 - Stable
+----------------------
+- Fix: Wrong method-call on `bloghub.prev` / `getPrevious()`.
+
+
 Version 1.3.7 - Stable
 ----------------------
 - Fix: Twig strict variables error on component.
