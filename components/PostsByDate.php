@@ -249,7 +249,7 @@ class PostsByDate extends Posts
         // Validate Day
         if (!empty($day)) {
             if (is_numeric($day) && ($day = intval($day)) && $day >= 1 && $day <= intval(date('t', strtotime("$year-$month-01")))) {
-                $date['day'] = $month;
+                $date['day'] = $day;
                 $type = 'day';
             } else {
                 return [null, null];
