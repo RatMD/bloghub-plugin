@@ -5,6 +5,8 @@ Version 1.3.8 - Stable
 ----------------------
 - Fix: Wrong method-call on `bloghub.prev` / `getPrevious()`.
 - Fix: Missing underscore on `BlogHubBackendUser->getSlug()` method / output.
+- Fix: Wrong variable used on PostsByDate component.
+- Fix: Missing page variables on PostsByDate component.
 
 
 Version 1.3.7 - Stable

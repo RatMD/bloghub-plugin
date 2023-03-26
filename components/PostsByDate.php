@@ -91,6 +91,8 @@ class PostsByDate extends Posts
      */
     public function onRun()
     {
+        $this->prepareVars();
+
         [$date, $type] = $this->loadDate();
         if (empty($date)) {
             if ($this->getBlogHubConfig()['date404OnInvalid'] === '1') {
