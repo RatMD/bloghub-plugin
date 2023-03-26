@@ -372,7 +372,7 @@ class BlogHubPost implements CallsAnyMethod
      */
     public function getPrev($limit = 1, $sameCategories = false)
     {
-        return $this->prevPrevious($limit, $sameCategories);
+        return $this->getPrevious($limit, $sameCategories);
     }
 
     /**
