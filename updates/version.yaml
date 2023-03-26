@@ -125,3 +125,4 @@ v1.3.7:
 v1.3.8:
   - "Bugfix"
   - "Fix: Wrong method-call on bloghub.prev / getPrevious()."
+  - "Fix: Missing underscore on BlogHubBackendUser->getSlug() method / output."

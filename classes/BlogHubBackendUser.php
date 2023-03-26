@@ -80,10 +80,10 @@ class BlogHubBackendUser implements CallsAnyMethod
      */
     public function getSlug()
     {
-        if (empty($this->model->ratmd_bloghubauthor_slug)) {
+        if (empty($this->model->ratmd_bloghub_author_slug)) {
             return $this->model->login;
         } else {
-            return $this->model->ratmd_bloghubauthor_slug;
+            return $this->model->ratmd_bloghub_author_slug;
         }
     }
 
