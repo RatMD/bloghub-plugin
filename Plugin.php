@@ -381,7 +381,8 @@ class Plugin extends PluginBase
                 'class'         => 'RatMD\BlogHub\Models\BlogHubSettings',
                 'order'         => 500,
                 'keywords'      => 'blog post meta data',
-                'permissions'   => ['rainlab.blog.manage_settings']
+                'permissions'   => ['rainlab.blog.manage_settings'],
+                'size'          => 'adaptive'
             ],
             'ratmd_bloghub_meta' => [
                 'label'         => 'ratmd.bloghub::lang.settings.meta.label',
@@ -391,7 +392,8 @@ class Plugin extends PluginBase
                 'class'         => 'RatMD\BlogHub\Models\MetaSettings',
                 'order'         => 500,
                 'keywords'      => 'blog post meta data',
-                'permissions'   => ['rainlab.blog.manage_settings']
+                'permissions'   => ['rainlab.blog.manage_settings'],
+                'size'          => 'adaptive'
             ]
         ];
     }

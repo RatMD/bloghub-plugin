@@ -3,6 +3,7 @@ BlogHub - Changelog
 
 Version 1.3.8 - Stable
 ----------------------
+- Update: Change configuration / settings admin page size.
 - Fix: Wrong method-call on `bloghub.prev` / `getPrevious()`.
 - Fix: Missing underscore on `BlogHubBackendUser->getSlug()` method / output.
 - Fix: Wrong variable used on PostsByDate component.
