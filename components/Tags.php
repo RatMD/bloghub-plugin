@@ -88,13 +88,13 @@ class Tags extends ComponentBase
 
     /**
      * Load popular tags
-     * 
+     *
      * @return mixed
      */
     protected function listTags()
     {
         $query = TagModel::withCount(['posts_count'])
-            ->where('posts_count_count', '>', 0)
+            ->having('posts_count_count', '>', 0)
             ->orderBy('posts_count_count', 'desc');
 
         if ($this->property('onlyPromoted') === '1') {
