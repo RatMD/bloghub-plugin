@@ -3,6 +3,7 @@ BlogHub - Changelog
 
 Version 1.3.9 - Stable
 ----------------------
+- Update: Unset `blog_meta_temp` temporary property (when necessary), thanks to [Andrea-Tecnotrade](https://github.com/Andrea-Tecnotrade) @ #11.
 - Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to **Prateek Kuber** from [Astra Security](https://www.getastra.com/).
 
 Version 1.3.8 - Stable
