@@ -222,7 +222,7 @@ class Plugin extends PluginBase
             if (!empty($config)) {
                 foreach ($config AS $key => $value) {
                     if (empty($value['tab'])) {
-                        $value['tab'] = 'ratmd.bloghub::lang.settings.defaultTab';
+                        $value['tab'] = 'ratmd.bloghub::lang.settings.meta.defaultTab';
                     }
                     $form->addSecondaryTabFields([
                         "ratmd_bloghub_meta_temp[$key]" => array_merge($value, [
