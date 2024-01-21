@@ -168,8 +168,8 @@ class Comment extends Model
      */
     public function setContentAttribute(string $content)
     {
-        $this->attributes['content'] = $content;
-        $this->attributes['content_html'] = Markdown::parse($content);
+        $this->attributes['content'] = strip_tags($content, '<p><br><br/>');
+        $this->attributes['content_html'] = Markdown::parseClean($content);
     }
 
     /**
@@ -180,9 +180,9 @@ class Comment extends Model
     public function getCommentContentAttribute(): string
     {
         if (BlogHubSettings::get('form_comment_markdown', BlogHubSettings::defaultValue('form_comment_markdown')) === '1') {
-            return $this->content_html;
+            return Markdown::parseClean($this->content_html);
         } else {
-            return $this->content;
+            return strip_tags(nl2br($this->content), '<p><br><br/>');
         }
     }
 

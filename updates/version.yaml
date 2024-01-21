@@ -129,3 +129,6 @@ v1.3.8:
   - "Fix: Missing underscore on BlogHubBackendUser->getSlug() method / output."
   - "Fix: Wrong variable used on PostsByDate component."
   - "Fix: Missing page variables on PostsByDate component."
+v1.3.9:
+  - "Important Security Bugfix & Minor Changes"
+  - "Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to Prateek Kuber from Astra Security.

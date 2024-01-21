@@ -1,6 +1,10 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.9 - Stable
+----------------------
+- Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to **Prateek Kuber** from [Astra Security](https://www.getastra.com/).
+
 Version 1.3.8 - Stable
 ----------------------
 - Update: Change configuration / settings admin page size.
