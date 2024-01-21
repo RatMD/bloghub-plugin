@@ -48,6 +48,6 @@ Requirements
 
 Copyright
 ---------
-Copyright © 2022 - 2023 rat.md.
+Copyright © 2022 - 2024 rat.md.
 
 Published under the MIT-License.
