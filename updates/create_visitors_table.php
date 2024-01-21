@@ -27,7 +27,7 @@ class CreateVisitorsTable extends Migration
 
             $table->increments('id');
             $table->string('user', 64);
-            $table->json('posts')->nullable();
+            $table->text('posts')->nullable();
 
             $table->timestamps();
         });
