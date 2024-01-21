@@ -151,7 +151,9 @@ class BlogHubPostModel extends ExtensionBase
     protected function beforeSave()
     {
         $metaset = $this->model->ratmd_bloghub_meta_temp;
+        /* unset $this->model->attributes['ratmd_bloghub_meta_temp'] if metaset is Empty */
         if (empty($metaset)) {
+            unset($this->model->attributes['ratmd_bloghub_meta_temp']);
             return;
         }
         unset($this->model->attributes['ratmd_bloghub_meta_temp']);
