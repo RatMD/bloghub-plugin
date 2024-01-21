@@ -131,4 +131,6 @@ v1.3.8:
   - "Fix: Missing page variables on PostsByDate component."
 v1.3.9:
   - "Important Security Bugfix & Minor Changes"
-  - "Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to Prateek Kuber from Astra Security.
+  - "Update: Unset `blog_meta_temp` temporary property (when necessary), thanks to Andrea-Tecnotrade."
+  - "Fix: MariaDB Migration on v <= 10.1.48, thanks to alexwenzel."
+  - "Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to Prateek Kuber from Astra Security."

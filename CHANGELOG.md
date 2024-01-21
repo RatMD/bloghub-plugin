@@ -3,7 +3,8 @@ BlogHub - Changelog
 
 Version 1.3.9 - Stable
 ----------------------
-- Update: Unset `blog_meta_temp` temporary property (when necessary), thanks to [Andrea-Tecnotrade](https://github.com/Andrea-Tecnotrade) @ #11.
+- Update: Unset `blog_meta_temp` temporary property (when necessary), thanks to [Andrea-Tecnotrade](https://github.com/Andrea-Tecnotrade) @ [#11](https://github.com/RatMD/bloghub-plugin/pull/12).
+- Fix: MariaDB Migration on v <= 10.1.48, thanks to [alexwenzel](https://github.com/alexwenzel) @ [#12](https://github.com/RatMD/bloghub-plugin/pull/12).
 - Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to **Prateek Kuber** from [Astra Security](https://www.getastra.com/).
 
 Version 1.3.8 - Stable
