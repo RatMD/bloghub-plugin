@@ -1,6 +1,11 @@
 BlogHub - Changelog
 ===================
 
+Version 1.3.10 - Stable
+----------------------
+- Fix: Format new lines and paragraphs accordingly in HTML comment content.
+- Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to **Prateek Kuber** from [Astra Security](https://www.getastra.com/).
+
 Version 1.3.9 - Stable
 ----------------------
 - Update: Unset `blog_meta_temp` temporary property (when necessary), thanks to [Andrea-Tecnotrade](https://github.com/Andrea-Tecnotrade) @ [#11](https://github.com/RatMD/bloghub-plugin/pull/12).

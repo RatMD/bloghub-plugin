@@ -136,3 +136,7 @@ v1.3.9:
   - "Fix: MariaDB Migration on v <= 10.1.48, thanks to alexwenzel."
   - "Fix: SQL Error on bloghubTags component, thanks to alexwenzel."
   - "Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to Prateek Kuber from Astra Security."
+v1.3.10:
+  - "!! Important Security Bugfix & Minor Changes"
+  - "Fix: Format new lines and paragraphs accordingly in HTML comment content."
+  - "Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to Prateek Kuber from Astra Security."

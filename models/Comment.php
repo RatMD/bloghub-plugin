@@ -168,8 +168,8 @@ class Comment extends Model
      */
     public function setContentAttribute(string $content)
     {
-        $this->attributes['content'] = strip_tags($content, '<p><br><br/>');
-        $this->attributes['content_html'] = Markdown::parseClean($content);
+        $this->attributes['content'] = $content;
+        $this->attributes['content_html'] = Markdown::parseClean(preg_replace('/(\S|^)\n(\S|$)/', '$1<br />$2', trim($content)));
     }
 
     /**
@@ -182,7 +182,7 @@ class Comment extends Model
         if (BlogHubSettings::get('form_comment_markdown', BlogHubSettings::defaultValue('form_comment_markdown')) === '1') {
             return Markdown::parseClean($this->content_html);
         } else {
-            return strip_tags(nl2br($this->content), '<p><br><br/>');
+            return Markdown::parseSafe(strip_tags($this->content));
         }
     }
 
