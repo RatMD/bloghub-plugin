@@ -140,3 +140,5 @@ v1.3.10:
   - "!! Important Security Bugfix & Minor Changes"
   - "Fix: Format new lines and paragraphs accordingly in HTML comment content."
   - "Fix: XSS vulnerability in comment content (Plain and Markdown), thanks to Prateek Kuber from Astra Security."
+'v1.3.11':
+  - "Demo Push"
