@@ -1,153 +1,208 @@
-# BlogHub v1.3.0 - Documentation
-
-Welcome on the BlogHub documentation page.
+# BlogHub v1.4.0 - Documentation
+Welcome to the BlogHub documentation page!
 
 ## Table of Contents
 1. Requirements
 2. Overview
-4. Blog Comments
-6. Blog Meta
+3. Blog Comments
+4. Blog Meta
 5. Blog Tags
 6. Template Components
-9. Additional Menus
-10. Additional Permissions
-11. Extended Post Model
-12. Extended User Model
-13. Dashboard Widgets
+7. Additional Menus
+8. Additional Permissions
+9. Extended Post Model
+10. Extended User Model
+11. Dashboard Widgets
 
-## Requirements
-- OctoberCMS v2/v3 (tested with latest version only)
-- PHP 7.4+ / 8.0+
-- RainLab.Blog
-- **Supports:** RainLab.User (optional)
-- **Supports:** RainLab.Pages (optional)
-- **Supports:** RainLab.Translate (optional)
+## 1. Requirements
+As of Version 1.4.0, support for OctoberCMS v2 has been discontinued (though it may still work).
 
-The optional plugins, as shown on the bottom of the list above, just extends existing or provides additional features and functions for the BlogHub plugin, but aren't required of course. The only required extension is **RainLab.Blog** itself.
+**Required**
+- OctoberCMS v3
+- PHP 7.4+ or 8.0+
+- [Gregwar/Captcha](https://github.com/Gregwar/Captcha)
+- [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog)
 
-## Overview
-Our **BlogHub** extension adds a lot of functionallity to RainLab's Blog extension, many of them are especially designed for the use on our own templates - but can be used and implemented by any OctoberCMS user, of course. This documentation just describes the technical components and just shows a few small examples. Thus, you should be familiar with the default OctoberCMS behaviour and development before starting here.
+**Optional**
+- [RainLab.User](https://octobercms.com/plugin/rainlab-user)
+- [RainLab.Pages](https://octobercms.com/plugin/rainlab-pages)
+- [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)
 
-However, the following list shows all available features as in Version 1.3.0:
+The optional plugins listed above extend existing features or provide additional functionalities for 
+the **BlogHub** plugin but are not mandatory. The only required extension is **RainLab.Blog**.
 
-- Blog Comments
-	- Moderatable Post Comments (compatible with RainLab.User, not required)
-	- Multi-Depth Replies (Supports nested or simple view)
-	- Like / Dislike counter and Favourite switch
-	- Honeypot and Captcha field (last is based on Gregwar Captcha)
-	- Author and Favorite Highlights on the comment list
-	- Access on any post model via `post.bloghub.comments` and `*.comments_count`
-	- AJAX enabled environment (requires `{% framework %}` tag)
-	- GDPR friendly - No IP or other sensitive data is stored in plain or recoverable way
-- Blog Meta
-	- Theme-related meta data can be set on the `theme.yaml`
-	- Global meta data can be configured on the backend settings page
-	- Meta Key based access via `post.bloghub.meta.[meta_key]`
-- Blog Tags
-	- Supports unique slug, title, description, promoted flag and color
-	- Supports an own archive page using the `[bloghubTagArchive]` component
-	- Access on the post via `post.bloghub.tags` or `post.bloghub.promoted_tags`
-- Template Components
-	- `[bloghubBase]` - Base settings, should be set on all related base layouts
-	- `[bloghubPostsByAuthor]` - List posts by author	
-	- `[bloghubPostsByCommentCount]` - List posts by comment counter	
-	- `[bloghubPostsByDate]` - List posts by date
-	- `[bloghubPostsByTag]` - List posts by tag
-	- `[bloghubCommentList]` - List comments
-	- `[bloghubCommentSection]` - Comment Section (List and Form) for single posts
-	- `[bloghubTags]` - List or Cloud of tags 
-	- Extends the sorting options of `blogPosts`
-- Additional Menus
-	- *coming soon*
-- Additional Permissions
-	- `ratmd.bloghub.comments`
-	- `ratmd.bloghub.comments.access_comments_settings`
-	- `ratmd.bloghub.comments.moderate_comments`
-	- `ratmd.bloghub.comments.delete_coments`
-	- `ratmd.bloghub.tags`
-	- `ratmd.bloghub.tags.promoted`
-- Extended Post Model
-	- `post.bloghub.detail_meta_title` - Generated Meta title
-	- `post.bloghub.detail_meta_description` - Generated Meta description
-	- `post.bloghub.detail_read_time` - Estimated read time calculation
-	- `post.bloghub.detail_published_ago` - "Published x y ago" string date/time string
-	- `post.bloghub.tags` - Assigned tag collection
-	- `post.bloghub.promoted_tags` - Assigned promoted tag collection
-	- `post.bloghub.meta` - Assigned meta collection (also accessible with meta key)
-	- `post.bloghub.comments` - Comment List (configurable)
-	- `post.bloghub.comments_count` - Comment List Count (configurable)
-	- `post.bloghub.views` - Views Counter
-	- `post.bloghub.unique_views` - Visitor Counter
-	- `post.bloghub.hasSeen` - Switch if current visitor has already seen this post
-	- `post.bloghub.author` - Assigned post author (alias for `post.user`)
-	- `post.bloghub.next` - Get next post (configurable)
-	- `post.bloghub.previous` - Get previous post (configurable)
-	- `post.bloghub.related` - Post List of related post (configurable)
-	- `post.bloghub.random` - Post List of random posts (configurable)
-- Extended User Model (accessible via `post.user` or `post.bloghub.author`)
-	- `post.user.bloghub.url` - Full Author URL (required `bloghubAuthorPage`)
-	- `post.user.bloghub.slug` - Author Slug (used in author archive pages)
-	- `post.user.bloghub.display` - Generated display name (configurable)
-	- `post.user.bloghub.count` - Counts posts (configurable)
-- Dashboard Widgets
-	- Comments List (shows the last and non-approved comments)
-	- Posts Lists (shows the last and own posts)
-	- Posts Statistics (shows some basic statistics about your posts)
+## 2. Overview
+Our **BlogHub** extension significantly enhances the **RainLab.Blog** extension with various 
+functionalities. Many of these features are specifically designed for our own templates but can be 
+utilized and implemented by any OctoberCMS user. This documentation focuses on the technical 
+components and includes a few small examples. Familiarity with the default OctoberCMS behavior and 
+development practices is recommended before diving in.
 
-## Blog Comments
-Version 1.3.0 of our **BlogHub** plugin adds a new comment environment, including some more complex template components. The comment system is highly configurable and supports:
+Below is a list of all available features in Version 1.4.0:
 
-- Favorites (the author can favorite comments to highlight them)
-- Likes / Dislikes (can also be restricted to logged in users)
-- Reply (multi-depth enabled)
-- Moderation (on the backend as well as frontend)
-- Additional title and Markdown-enabled body
-- Username and E-Mail address for not-logged-in users
-- Terms of Service checkbox with link to a CMS or Static Page
-- Honeypot and Catpcha field (using Gregwar Captcha) for guests only
-- Hide on Dislike Ratio
-- Single Post configuration (hide or close comments per post)
+### 2.1. Blog Comments
+- Moderatable post comments (compatible with RainLab.User, but not required)
+- Multi-depth replies (supports nested or simple view)
+- Like/dislike counters and a favorite switch
+- Honeypot and Captcha field (the latter is based on Gregwar Captcha)
+- Author and favorite highlights in the comment list
+- Access any post model via `post.bloghub.comments` and `*.comments_count`
+- AJAX-enabled environment (requires `{% framework %}` tag)
+- GDPR-friendly – No IP or sensitive data is stored in plain or recoverable ways
 
-The comments system distinguish between guests, frontend users and backend users. Guests are required to fill out the username, email address, terms of service box and are controlled by the Honeypot and Captcha fields (when enabled). Logged-In Users can directly enter the comment title and body, are not controlled by any Honeypot or Captcha system and comments can also be set to be approved directly.
+### 2.2. Blog Meta
+- Theme-related metadata can be set in `theme.yaml`
+- Global metadata can be configured on the backend settings page
+- Meta key-based access via `post.bloghub.meta.[meta_key]`
 
-However, backend users are able to view and moderate pending comments on the single post page. Post authors do also have the ability to favorite comments, which pins or highlights them on the respective comments list. Of course, the moderation can also be done on October's backend page - as long as the respective permissions are set.
+### 2.3. Blog Tags
+- Supports unique slug, title, description, promoted flag, and color
+- Supports a dedicated archive page using the `[bloghubTagArchive]` component
+- Access tags via `post.bloghub.tags` or `post.bloghub.promoted_tags`
 
-Comments can either be accessed directly on the post model, using `bloghub.comments` or `bloghub.comments_count`  or by using one of the available template components, as described below.
+### 2.4. Template Components
+- `[bloghubBase]` - Base settings; should be included in all related layouts
+- `[bloghubPostsByAuthor]` - List posts by author
+- `[bloghubPostsByCommentCount]` - List posts sorted by comment count
+- `[bloghubPostsByDate]` - List posts by date
+- `[bloghubPostsByTag]` - List posts by tag
+- `[bloghubCommentList]` - List of comments
+- `[bloghubCommentSection]` - Comment section (list and form) for single posts
+- `[bloghubTags]` - List or cloud of tags 
+- Extends sorting options for `blogPosts`
 
-## Blog Meta
-Each single blog post can be extended and enriched with additional meta fields, for example to provide specific data for the frontend templating or settig SEO-specific values. Meta fields can either be set on the template's `theme.yaml` file or using the "Custom Meta Fields" settings page on Octobers backend. The first solution is meant for template designers to provide "already supported" and implemented meta fields. The second one is especially designed for administrators to provide a general-available set of meta field (which must be implemented manually, of course).
+### 2.5. Additional Menus
+- *Coming soon*
 
-However, the single meta values can be access on the respective post model using `post.bloghub.meta.[meta_key]`.
+### 2.6. Additional Permissions
+- `ratmd.bloghub.comments`
+- `ratmd.bloghub.comments.access_comments_settings`
+- `ratmd.bloghub.comments.moderate_comments`
+- `ratmd.bloghub.comments.delete_comments`
+- `ratmd.bloghub.tags`
+- `ratmd.bloghub.tags.promoted`
 
-### Create Meta Fields via theme.yaml
-Theme-related meta fields must be set in the template's `theme.yaml` file, using Octobers [Form Fields definition syntax](https://docs.octobercms.com/3.x/element/definitions.html):
+### 2.7. Extended Post Model
+- `post.bloghub.detail_meta_title` - Generated meta title
+- `post.bloghub.detail_meta_description` - Generated meta description
+- `post.bloghub.detail_read_time` - Estimated read time calculation
+- `post.bloghub.detail_published_ago` - "Published x y ago" date/time string
+- `post.bloghub.tags` - Assigned tag collection
+- `post.bloghub.promoted_tags` - Assigned promoted tag collection
+- `post.bloghub.meta` - Assigned meta collection (accessible with meta key)
+- `post.bloghub.comments` - Comment list (configurable)
+- `post.bloghub.comments_count` - Comment list count (configurable)
+- `post.bloghub.views` - Views counter
+- `post.bloghub.unique_views` - Visitor counter
+- `post.bloghub.hasSeen` - Indicates if the current visitor has already seen this post
+- `post.bloghub.author` - Assigned post author (alias for `post.user`)
+- `post.bloghub.next` - Retrieve the next post (configurable)
+- `post.bloghub.previous` - Retrieve the previous post (configurable)
+- `post.bloghub.related` - List of related posts (configurable)
+- `post.bloghub.random` - List of random posts (configurable)
+
+### 2.8. Extended User Model (accessible via `post.user` or `post.bloghub.author`)
+- `post.user.bloghub.url` - Full author URL (requires `bloghubAuthorPage`)
+- `post.user.bloghub.slug` - Author slug (used in author archive pages)
+- `post.user.bloghub.display` - Generated display name (configurable)
+- `post.user.bloghub.count` - Post count (configurable)
+
+### 2.9. Dashboard Widgets
+- Comments list (shows the latest and unapproved comments)
+- Posts list (shows the latest posts by the author)
+- Posts statistics (provides basic statistics about your posts)
+
+## 3. Blog Comments
+Version 1.3.0 of our **BlogHub** plugin introduced a new comment environment with enhanced template 
+components. The comment system is highly configurable and supports the following features:
+
+- **Favorites**: Authors can favorite comments to highlight them.
+- **Likes / Dislikes**: Users can express their opinions, with restrictions for logged-in users.
+- **Replies**: Supports multi-depth replies for threaded discussions.
+- **Moderation**: Comments can be moderated both in the backend and frontend.
+- **Customizable Fields**: Additional title and Markdown-enabled body for comments.
+- **Guest Information**: Guests must provide a username and email address.
+- **Terms of Service**: A checkbox with a link to a CMS or static page for agreement.
+- **Honeypot and Captcha**: Optional fields (using Gregwar Captcha) to prevent spam, applicable for guests only.
+- **Hide on Dislike Ratio**: Option to hide comments based on dislike ratios.
+- **Single Post Configuration**: Option to hide or close comments on a per-post basis.
+
+The comments system distinguishes between guests, frontend users, and backend users:
+
+- **Guests**: Required to fill out the username, email address, and terms of service checkbox. 
+They are subject to the Honeypot and Captcha fields when enabled.
+- **Logged-In Users**: Can enter comments directly without the need for Honeypot or Captcha. Their 
+comments can also be set to be approved automatically.
+- **Backend Users**: Have the ability to view and moderate pending comments on the single post page. 
+Post authors can favorite comments, which pins or highlights them in the comments list. Moderation 
+can also be conducted through October's backend interface, provided the necessary permissions are 
+granted.
+
+Comments can be accessed directly on the post model using `bloghub.comments` or 
+`bloghub.comments_count`, or by utilizing one of the available template components, as described 
+below.
+
+## 4. Blog Meta
+Each blog post can be enriched with additional meta fields to provide specific data for frontend 
+templating or to set SEO-related values. Meta fields can be defined in two ways:
+
+1. **Template's `theme.yaml` File**: This method is intended for template designers to provide 
+pre-defined and implemented meta fields.
+2. **Custom Meta Fields Settings Page**: This option is designed for administrators to define a 
+universally available set of meta fields, which must be implemented manually.
+
+### 4.1. Create Meta Fields via `theme.yaml`
+To create theme-related meta fields, you must define them in the template's `theme.yaml` file using 
+October's [Form Fields definition syntax](https://docs.octobercms.com/3.x/element/definitions.html):
 
 ```yaml
 # Your Theme Data
 
 ratmd.bloghub:
-	post:
-		# Your Meta Data
+  post:
+    # Your Meta Data
 ```
 
-### Create Meta Fields via Backend
-Global meta fields can be created on the "Custom Meta Fields" settings page. Here you can define a custom meta name, the respective meta type and te meta configuration... again using Octobers [Form Fields definition syntax](https://docs.octobercms.com/3.x/element/definitions.html).
+### 4.2. Create Meta Fields via Backend
+Global meta fields can be created on the "Custom Meta Fields" settings page. Here, you can define a 
+custom meta name, specify the respective meta type, and configure the meta settings, again using 
+October's [Form Fields definition syntax](https://docs.octobercms.com/3.x/element/definitions.html).
 
-## Blog Tags
-BlogHub provides additional blog tags, which can be created and assigned on the fly on each blog post. However, tags can also be additionally customized by setting a promotion flag, title, description and color. All of those additional values CAN be used by template designers to highlight or describe your tags or tag archive pages even better.
+## 5. Blog Tags
+The **BlogHub** extension offers enhanced functionality for blog tags, allowing you to create and 
+assign tags dynamically to each blog post. Additionally, tags can be customized with various 
+attributes, including:
 
-The assigned Tags can either be accessed directly on the post model using `bloghub.tags` or by using one of the available template components, as described below. One of the components allows to build a tag archive page with support for multipe tag queries. When enabled you can show posts which must contain all tags (ex. `/blog/tag/tag1+tag2`) or which must contain either of the provided tags (ex. `/blog/tag/tag1,tag2`).
+- **Promotion Flag**: Indicates whether a tag is promoted.
+- **Title**: A descriptive title for the tag.
+- **Description**: A brief description to provide more context.
+- **Color**: A color that visually represents the tag.
 
-## Template Components
-The **BlogHub** OctoberCMS plugin provides the following components.
+These attributes can be utilized by template designers to effectively highlight or describe tags and 
+tag archive pages.
 
-### [bloghubBase]
-The `[bloghubBase]` component SHOULD be set on all CMS layouts, which are or can be used to display the blog posts, since it provides the basic configuration for all bloghub and RainLab.Blog components (such as the single archive pages). When this component is not set, the default values (as shown below) will be used, when not otherwise changed.
+Assigned tags can be accessed directly on the post model using `bloghub.tags` or through one of the 
+available template components described below. One of these components enables the creation of a tag 
+archive page that supports multiple tag queries. When this feature is enabled, you can display posts 
+that must contain all specified tags (e.g., `/blog/tag/tag1+tag2`) or posts that must contain any of
+the provided tags (e.g., `/blog/tag/tag1,tag2`).
 
-This component does NOT provide a default template, since it is only be used to configure the exisiting and provided components only. Using `{% component 'bloghubBase' %}` will result in an error.
+## 6. Template Components
+The **BlogHub** OctoberCMS plugin provides a range of useful components for enhancing your blog 
+functionality.
+
+### 6.1. `[bloghubBase]`
+The `[bloghubBase]` component **should** be included in all CMS layouts that display blog posts. 
+This component provides the basic configuration for all BlogHub and RainLab.Blog components, 
+including single archive pages. If this component is not set, default values (as listed below) will 
+be used unless specified otherwise.
+
+**Note**: This component does not provide a default template, as it is intended solely for 
+configuring existing components. Attempting to use `{% component 'bloghubBase' %}` without proper 
+setup will result in an error.
 
 #### Component Arguments
-This component provides the following arguments.
+The `[bloghubBase]` component accepts the following arguments: 
 
 ```ini
 [bloghubBase]
@@ -162,42 +217,52 @@ tagAllowMultiple = 0
 ```
 
 ##### Argument: `archiveAuthor`
-Defines the CMS page, used for the author archives. You can set this argument to 0 to disable the author archive pages in general.
+Defines the CMS page used for author archives. Set this argument to `0` to disable author archive 
+pages entirely.
 
 ##### Argument: `archiveDate`
-Defines the CMS page, used for the date archives. You can set this argument to 0 to disable the date archive pages in general.
+Defines the CMS page used for date archives. Set this argument to `0` to disable date archive pages 
+entirely.
 
 ##### Argument: `archiveTag`
-Defines the CMS page, used for the tag archives. You can set this argument to 0 to disable the tag archive pages in general.
+Defines the CMS page used for tag archives. Set this argument to `0` to disable tag archive pages 
+entirely.
 
 ##### Argument: `authorUseSlugOnly`
-When this argument is set to 1, the author archive page will only look up for the `author_slug` backend user column and skips checking the `login` column. 
+When set to `1`, the author archive page will only check the `author_slug` backend user column and 
+skip the `login` column.
 
 ##### Argument: `date404OnInvalid`
-This argument allows to control if a 404 error should be thrown, when the passed date is invalid (for example: `2022-13-10`).
+Controls whether a 404 error should be thrown when an invalid date is passed (e.g., `2022-13-10`).
 
 ##### Argument: `date404OnEmpty`
-This argument allows to control if a 404 error should be thrown, when the passed date does not contain any post. 
+Controls whether a 404 error should be thrown when a passed date contains no posts.
 
 ##### Argument: `tagAllowMultiple`
-This argument allows to enable the usage of complex tag queries, which includes multiple tags. When enabled, you can combine multiple tags either by using a comma, to display posts that have "either" of the provided tags, or a plus to display posts that have "all" of them.
+Enables the use of complex tag queries that involve multiple tags. When enabled, you can combine 
+multiple tags using a comma to display posts that have **either** of the provided tags, or a plus to 
+display posts that have **all** of them.
 
-For example:
-`http://domain.tld/blog/tag/tag1,tag2,tag3` - Posts must have AT LEAST ONE of the three provided tags (so either tag1, tag2 or tag3).
-
-`http://domain.tld/blog/tag/tag1+tag2+tag3` - Posts must have ALL of the three provided tags (so tag1 AND tag2 AND tag3).
+**Examples**:
+- `http://domain.tld/blog/tag/tag1,tag2,tag3` - Posts must have **at least one** of the specified 
+tags (either `tag1`, `tag2`, or `tag3`).
+- `http://domain.tld/blog/tag/tag1+tag2+tag3` - Posts must have **all** of the specified tags 
+(i.e., `tag1 AND tag2 AND tag3`).
 
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variable:
 
 ##### Variable: `bloghub_config`
 The `bloghub_config` variable contains all configured arguments as described above.
 
-### [bloghubPostsByAuthor]
-This component uses RainLab's `[blogPosts]` component as base class, thus all options below, except for `authorFilter` are exactly the same as on the referenced class. Check out RainLab's extension for more details about the single arguments.
+### 6.2. `[bloghubPostsByAuthor]`
+The `[bloghubPostsByAuthor]` component builds upon RainLab's `[blogPosts]` component as its base 
+class. Therefore, all options listed below, except for `authorFilter`, are identical to those in the 
+referenced class. For detailed information about the individual arguments, please refer to the 
+RainLab extension documentation.
 
 #### Component Arguments
-This component provides the following arguments.
+This component provides the following arguments:
 
 ```ini
 [bloghubPostsByAuthor]
@@ -214,21 +279,32 @@ authorFilter = '{{ :slug }}'
 ```
 
 ##### Argument: `authorFilter`
-The strict author slug or the desired URL parameter. The author slug is either the `author_slug`, when set on the respective backend user, or the `login` value (when `author_slug` is empty) unless it is disabled by the `[bloghubBase]` component as described above. 
+The `authorFilter` argument specifies the strict author slug or the desired URL parameter. The 
+author slug can either be the `author_slug` set on the respective backend user or the `login` value 
+(if `author_slug` is empty). However, this behavior can be disabled by the `[bloghubBase]` component, 
+as described previously.
 
-**Attention:** Due to security aspects, it is highly recommended setting an author_slug on each backend user / author, which differs from the login name. Otherwise attackers could use the login name in bruteforce / rainbow table attacks.
+**Note**: For security reasons, it is highly recommended to set a unique `author_slug` for each 
+backend user/author that differs from the login name. Failing to do so could expose the login name 
+to brute-force or rainbow table attacks.
 
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variable:
 
 ##### Variable: `author`
-This component injects the `author` page variable to the page object, which points to the BackendUser model. The **BlogHub** plugin extends the BackendUser model with a few additional dynamic properties, check below at "Extended User Model" for more details.
+The `author` page variable is injected into the page object and points to the BackendUser model. The 
+**BlogHub** plugin extends the BackendUser model with several additional dynamic properties. For 
+more details, see the "10. Extended User Model" section below.
 
-### [bloghubPostsByCommentCount]
-This component uses RainLab's `[blogPosts]` component as base class, thus all options below, and does not extend the existing arguments as on the references class. It only removed the `sortOrder` option and injects the own sorting method. Check out RainLab's extension for more details about the single arguments.
+### 6.3. `[bloghubPostsByCommentCount]`
+The `[bloghubPostsByCommentCount]` component is based on RainLab's `[blogPosts]` component. Unlike 
+the referenced class, this component does not extend the existing arguments; instead, it removes the 
+`sortOrder` option and implements its own sorting method. For detailed information about the 
+available arguments, please refer to the RainLab extension documentation.
 
 #### Component Arguments
-This component does not provide any additional arguments, check out RainLab.Blog for more details about the existing arguments below.
+This component does not introduce any additional arguments. Below are the existing arguments 
+inherited from the `[blogPosts]` component:
 
 ```ini
 [bloghubPostsByCommentCount]
@@ -243,13 +319,15 @@ exceptCategories =
 ```
 
 #### Page Variables
-This component does not add an additional page variable.
+This component does not add any additional page variables.
 
-### [bloghubPostsByDate]
-This component uses RainLab's `[blogPosts]` component as base class, thus all options below, except for `dateFilter` are exactly the same as on the referenced class. Check out RainLab's extension for more details about the single arguments.
+### 6.4. `[bloghubPostsByDate]`
+The `[bloghubPostsByDate]` component is based on RainLab's `[blogPosts]` component, meaning that all 
+options, except for `dateFilter`, are identical to those in the referenced class. For detailed 
+information about the individual arguments, please refer to the RainLab extension documentation.
 
 #### Component Arguments
-This component provides the following arguments.
+This component provides the following arguments:
 
 ```ini
 [bloghubPostsByDate]
@@ -261,54 +339,69 @@ sortOrder = 'published_at desc'
 categoryPage = 'blog/category'
 postPage = 'blog/post'
 exceptPost = 
-exceptCatgexceptCategories =
-dateFilter =  '{{ :date }}'
+exceptCategories =
+dateFilter = '{{ :date }}'
 ```
 
 ##### Argument: `dateFilter`
-The direct date string (as described below) or the desired URL parameter. Invalid dates and empty date archives will throw an 404 error page, when not otherwise configured in `[bloghubBase]` (see above). Valid Date Formats:
 
-Year archive: `Y` example: `https://domain.tld/blog/date/2022`
-Month archive: `Y-m`, example: `https://domain.tld/blog/date/2022-01`
-Week archive: `Y_W`, example: `https://domain.tld/blog/date/2022_2`
-Day archive: `Y-m-d`, example: `https://domain.tld/blog/date/2022-01-01`
+This argument accepts a direct date string (as described below) or a desired URL parameter. If an 
+invalid date or an empty date archive is encountered, a 404 error page will be displayed unless 
+configured otherwise in `[bloghubBase]` (see above).
 
-We recommend using the following URL parameter to get the year, month and day archive working. Of course, you can also use a more complex regular expression to evaluate the date string more precisely, but this would be unnecessary complex and even more unreadable.
+**Valid Date Formats:**
+
+- **Year archive:** `Y` (e.g., `https://domain.tld/blog/date/2022`)
+- **Month archive:** `Y-m` (e.g., `https://domain.tld/blog/date/2022-01`)
+- **Week archive:** `Y_W` (e.g., `https://domain.tld/blog/date/2022_2`)
+- **Day archive:** `Y-m-d` (e.g., `https://domain.tld/blog/date/2022-01-01`)
+
+We recommend using the following URL parameter to get the year, month, and day archives working 
+smoothly. While you can employ a more complex regular expression to evaluate the date string more 
+precisely, this might unnecessarily complicate the implementation:
 
 ```ini
 url = "/blog/date/:date|^\d{4}(\-\d{2}(\-\d{2}))?/:page?"
 ```
 
-The week archive can be added as follows (and does NOT require a leading zero);
+For the week archive, you can use the following configuration (note that a leading zero is not 
+required):
 
 ```ini
 url = "/blog/date/:date|^\d{4}(\-\d{2}(\-\d{2})|(\_\d{1,2}))?/:page?"
 ```
 
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variables:
 
 ##### Variable: `date`
-The additional `date` page variable contains an array with the evaluated and sanitized date values. Depending on the archive it may contains `year`, `month`, `week` and / or `day`.
+The `date` variable is an array containing the evaluated and sanitized date values. Depending on the 
+archive type, it may include `year`, `month`, `week`, and/or `day`.
 
 ##### Variable: `dateType`
-The `dateType` variable contains a simple string to clarify which archive page / date type has been detected from the passed URL parameter. It points either to `year`, `month`, `week` or `day`.
+The `dateType` variable is a simple string indicating which archive page or date type has been 
+detected from the passed URL parameter. It will point to either `year`, `month`, `week`, or `day`.
 
 ##### Variable: `dateFormat`
-The `dateFormat` page variable contains a formatted date/time string, depending on the detected dateType evaluated from the passed URL parameter. The following list shows the format, used for the respective date types:
+The `dateFormat` variable contains a formatted date/time string based on the detected `dateType` 
+evaluated from the passed URL parameter. The following formats are used for the respective date 
+types:
 
-- dateType: `year` - format: `Y` - example: `2022`
-- dateType: `month` - format: `F, Y` - example: `January, 2022`
-- dateType: `week` - format: `\WW, >` - example: `W2, 2022`
-- dateType: `day` - format: `F, d. Y` - example: `January, 17. 2022`
+- **dateType: `year`** - format: `Y` (e.g., `2022`)
+- **dateType: `month`** - format: `F, Y` (e.g., `January, 2022`)
+- **dateType: `week`** - format: `\WW, Y` (e.g., `W2, 2022`)
+- **dateType: `day`** - format: `F, d. Y` (e.g., `January, 17. 2022`)
 
-It is currently NOT possible to use own date/time formats for the single date types.
+Please note that it is currently NOT possible to use custom date/time formats for the individual 
+date types.
 
-### [bloghubPostsByTag]
-This component uses RainLab's `[blogPosts]` component as base class, thus all options below, except for `tagFilter` are exactly the same as on the referenced class. Check out RainLab's extension for more details about the single arguments.
+### 6.5. `[bloghubPostsByTag]`
+The `[bloghubPostsByTag]` component is built on RainLab's `[blogPosts]` component, meaning that all 
+options, except for `tagFilter`, are identical to those in the referenced class. For detailed 
+information about the individual arguments, please refer to the RainLab extension documentation.
 
 #### Component Arguments
-This component provides the following arguments.
+This component provides the following arguments:
 
 ```ini
 [bloghubPostsByTag]
@@ -320,30 +413,37 @@ sortOrder = 'published_at desc'
 categoryPage = 'blog/category'
 postPage = 'blog/post'
 exceptPost = 
-exceptCatgexceptCategories =
+exceptCategories =
 tagFilter = '{{ :tag }}'
 ```
 
 ##### Argument: `tagFilter`
-The direct tag query string) or the desired URL parameter. When the `tagAllowMultiple` option is set, as described on the `[bloghubBase]` component, you can pass multiple tags using the `+` character (to include posts which contains ALL tags) as well as the `,` character (to include posts with contains at least one of the tags). If none of the listed tag slugs exists, the component will throw the 404 error page.
+This argument accepts a direct tag query string or the desired URL parameter. When the 
+`tagAllowMultiple` option is enabled in the `[bloghubBase]` component, you can pass multiple tags 
+using the `+` character to include posts containing **all** specified tags, or the `,` character to 
+include posts containing **at least one** of the tags. If none of the provided tag slugs exist, the 
+component will return a 404 error page.
 
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variables:
 
 ##### Variable: `tag`
-The single tag class model, when only one tag has been used for the generated archive page.
+The `tag` variable contains the single tag class model when only one tag has been used for the 
+generated archive page.
 
 ##### Variable: `tags`
-The tag class models as array, when more then one tag has been used for the generated archive page. Keep in mind, that multiple-tag archive pages are only available, when the `tagAllowMultiple` option of the `[bloghubBase]` component has been set to true.
+The `tags` variable is an array of tag class models when more than one tag has been used for the 
+generated archive page. Please note that multiple-tag archive pages are only available if the 
+`tagAllowMultiple` option in the `[bloghubBase]` component has been set to true.
 
-### [bloghubCommentList]
-The `[bloghubCommentList]` displays a configurable list of comments.
+### 6.6. `[bloghubCommentList]`
+The `[bloghubCommentList]` component displays a configurable list of comments.
 
 #### Component Arguments
-This component provides the following arguments.
+This component provides the following arguments:
 
 ```ini
-[bloghub_CommentList]
+[bloghubCommentList]
 postPage = 
 excludePosts = 
 amount = 5
@@ -353,57 +453,66 @@ hideOnDislikes = 0
 ```
 
 ##### Argument: `postPage`
-The desired post page, used for the post URLs.
+Specifies the desired post page, which is used for generating the post URLs.
 
 ##### Argument: `excludePosts`
-Allows to exclude one or more posts using their IDs or slugs (in a comma-separated way).
+Allows you to exclude one or more posts by their IDs or slugs, listed in a comma-separated format.
 
 ##### Argument: `amount`
-The desired amount of comments to show.
+Determines the number of comments to display.
 
 ##### Argument: `sortOrder`
-Allows to change the sort order direction of the respective comments list. You can choose from the following values:
+Controls the sort order of the comments list. You can choose from the following values:
 
-- `created_at DESC` - Shows the newest comments on top (default)
-- `created_at ASC` - Shows the oldest comments on top
-- `likes DESC` - Shows the most-liked comments on top
-- `likes ASC` - Shows the most-liked comments on bottom
-- `dislikes DESC` - Shows the most-disliked comments on top
-- `dislikes ASC` - Shows the most-disliked comments on bottom
+- `created_at DESC`: Shows the newest comments at the top (default).
+- `created_at ASC`: Shows the oldest comments at the top.
+- `likes DESC`: Shows the most-liked comments at the top.
+- `likes ASC`: Shows the least-liked comments at the bottom.
+- `dislikes DESC`: Shows the most-disliked comments at the top.
+- `dislikes ASC`: Shows the least-disliked comments at the bottom.
 
 ##### Argument: `onlyFavorites`
-The post author is able to favourite comments, if not disabled via the BlogHub settings page. This option allows to only show favorite comments in the comments list.
+When enabled, this option allows only favorite comments to be displayed in the list. The post author 
+can favorite comments unless this feature is disabled via the BlogHub settings page.
 
 ##### Argument: `hideOnDislikes`
-The `hideOnDislike` argument allows you to hide comments with the declared amount of dislikes or with a relative amount of dislikes compared to the likes, the default value `false` will disable this function completely. 
+The `hideOnDislikes` argument lets you hide comments based on their dislike count. The default value 
+is `false`, which disables this function entirely.
 
-Example: Hide all comments with 10 dislikes or more:
+**Examples:**
 
+- Hide all comments with 10 dislikes or more:
 ```ini
-[bloghubComments]
-hideOnDislike = 10
+[bloghubCommentList]
+hideOnDislikes = 10
 ```
 
-Example: Hide all comments when the dislike counter is double as high as the like one:
-
+- Hide all comments when the dislike count is double that of the like count:
 ```ini
-[bloghubComments]
-hideOnDislike = :2
+[bloghubCommentList]
+hideOnDislikes = :2
 ```
 
-Other example: `:4` (the dislike counter must be four times higher then the like counter to hide the respective comment).
+- Hide all comments when the dislike count is four times higher than the like count:
+```ini
+[bloghubCommentList]
+hideOnDislikes = :4
+```
 
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variable:
 
 ##### Variable: `comments`
-The main collection with the configured amount of comments.
+The `comments` variable contains the main collection of the configured amount of comments.
 
-### [bloghubCommentSection]
-The `[bloghubCommentSection]` component is used to show the comment list and a comment form on the single post CMS page. It is not supported to be used outside, even if it is possible by setting the respective arguments below. However, this has not been tested and may does not work as intended.
+### 6.7. `[bloghubCommentSection]`
+The `[bloghubCommentSection]` component displays a comment list and a comment form on the single 
+post CMS page. Although it is technically possible to use this component outside of its intended 
+context by setting the respective arguments, this usage is not supported, untested, and may not 
+function as expected.
 
 #### Component Arguments
-This component provides the following arguments.
+This component provides the following arguments:
 
 ```ini
 [bloghubCommentSection]
@@ -420,192 +529,249 @@ disableForm = 0
 ```
 
 ##### Argument: `postSlug`
-Allows to pass a strict post slug or a URL parameter which is used to distinguish the current post slug from. When this value is empty (which is the default) the component will try to auto-detect the respective post slug using the `blogPost` argument and similar relations.
+Allows you to pass a strict post slug or a URL parameter to distinguish the current post slug. If 
+this value is empty (the default), the component will attempt to auto-detect the respective post 
+slug using the `blogPost` argument and similar relationships.
 
 ##### Argument: `commentsPerPage`
-Allows to declare the number of comments to be shown per page. The default value is set to 10.
+Specifies the number of comments to show per page. The default value is set to 10.
 
 ##### Argument: `pageNumber`
-Allows to pass a strict page number or a URL parameter, which is used to distinguish the current page number from. When this value is empty (default), it will use and apply the `cpage` URL GET parameter as page nu,ber.
+Allows you to pass a strict page number or a URL parameter to determine the current page number. If 
+this value is empty (default), it will use the `cpage` URL GET parameter as the page number.
 
 ##### Argument: `sortOrder`
-Allows to change the sort order direction of the respective comments list. You can choose from the following values:
+Controls the sort order of the comments list. You can choose from the following values:
 
-- `created_at DESC` - Shows the newest comments on top (default)
-- `created_at ASC` - Shows the oldest comments on top
-- `likes DESC` - Shows the most-liked comments on top
-- `likes ASC` - Shows the most-liked comments on bottom
-- `dislikes DESC` - Shows the most-disliked comments on top
-- `dislikes ASC` - Shows the most-disliked comments on bottom
+- `created_at DESC`: Shows the newest comments at the top (default).
+- `created_at ASC`: Shows the oldest comments at the top.
+- `likes DESC`: Shows the most-liked comments at the top.
+- `likes ASC`: Shows the least-liked comments at the bottom.
+- `dislikes DESC`: Shows the most-disliked comments at the top.
+- `dislikes ASC`: Shows the least-disliked comments at the bottom.
 
-##### Argument: `commntHierarchy`
-Changes the way how the comment list is shown: A hierarchically list will display all replies below their parent comments - This option may highly increase the height of your size, because the `commentsPerPage` argument does NOT recognize the amount of children within the nested tree. Using the flat option (by disabling the `commntHierarchy` option) will display each comment in a single nested list using a "reply to" quotation above the comment content to show the relation of the respective reply.
+##### Argument: `commentHierarchy`
+Controls how the comment list is displayed. When enabled, replies are shown below their parent 
+comments in a hierarchical structure. This option may significantly increase the height of the 
+comment section, as the `commentsPerPage` argument does **not** account for nested comments. 
+Disabling this option will display each comment in a single nested list with a "reply to" quotation 
+above the comment content.
 
 ##### Argument: `pinFavorites`
-The post author is able to favourite comments, if not disabled via the BlogHub settings page. This option allows to pin favorite comments on top of the comments list and thus can be seen by everyone directly.
+Allows the post author to pin favorite comments at the top of the comments list, ensuring they are 
+visible to all users. This feature can be disabled via the BlogHub settings page.
 
 ##### Argument: `hideOnDislikes`
-The `hideOnDislike` argument allows you to hide comments with the declared amount of dislikes or with a relative amount of dislikes compared to the likes, the default value `false` will disable this function completely. 
+This argument allows you to hide comments based on a specified number of dislikes or a relative dislike-to-like ratio. The default value is `false`, disabling this feature entirely.
 
-Example: Hide all comments with 10 dislikes or more:
+**Examples:**
 
+- Hide all comments with 10 dislikes or more:
 ```ini
-[bloghubComments]
-hideOnDislike = 10
+[bloghubCommentSection]
+hideOnDislikes = 10
 ```
 
-Example: Hide all comments when the dislike counter is double as high as the like one:
-
+- Hide comments when the dislike count is double that of the like count:
 ```ini
-[bloghubComments]
-hideOnDislike = :2
+[bloghubCommentSection]
+hideOnDislikes = :2
 ```
 
-Other example: `:4` (the dislike counter must be four times higher then the like counter to hide the respective comment).
+- Hide comments when the dislike count is four times higher than the like count:
+```ini
+[bloghubCommentSection]
+hideOnDislikes = :4
+```
 
 ##### Argument: `formPosition`
-Change the position of the comment form. You can either set the comment form `above` the comment list or `below`. The default value is set to `above`.
+Sets the position of the comment form. You can place the comment form either `above` or `below` the 
+comment list. The default value is `above`.
 
 ##### Argument: `disableForm`
-This argument allows you to disable the comment form, regardless of the configuration set on the single post itself. This is useful for alternative post views, where it should not be possible to comment itself, but to still see the list of comments.
+Disables the comment form, regardless of the configuration set on the single post. This is useful 
+for alternative post views where commenting is not permitted, but the list of comments should still 
+be visible.
 
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variables:
 
 ##### Variable: `showComments`
-A boolean state if the comment section / component should be displayed or not.
+A boolean indicating whether the comment section should be displayed.
 
 ##### Variable: `showCommentsForm`
-A boolean state if the comment form should be displaced or not.
+A boolean indicating whether the comment form should be displayed.
 
 ##### Variable: `showCommentsHierarchical`
-A boolean state pointing to the `commntHierarchy` component argument.
+A boolean indicating the state of the `commentHierarchy` argument.
 
 ##### Variable: `comments`
-The main comments collection to be used on the comments list.
+The main collection of comments used in the comments list.
 
 ##### Variable: `commentsFormPosition`
-The comment form position (above or below) as declared in the component argument.
+Indicates the position of the comment form (above or below), as declared in the component argument.
 
 ##### Variable: `commentsMode`
-The comments mode, declared on the single post configuration and further evaluated on different options and states.
+Represents the comments mode, as configured in the single post settings and evaluated across various 
+options and states.
 
 ##### Variable: `currentUser`
-The current user model or null if the current user is not logged in.
+The current user model, or `null` if the current user is not logged in.
 
 ##### Variable: `currentUserIsGuest`
-A boolean state if the current user is not logged in.
+A boolean indicating if the current user is not logged in.
 
 ##### Variable: `currentUserIsFrontend`
-A boolean state if the current user is a frontend user of the RainLab.User plugin.
+A boolean indicating if the current user is a frontend user of the RainLab.User plugin.
 
 ##### Variable: `currentUserIsBackend`
-A boolean state if the current user is a backend OctoberCMS user.
+A boolean indicating if the current user is a backend OctoberCMS user.
 
 ##### Variable: `isLoggedIn`
-A boolean state if the current user is logged in (either on the frontend or backend authentication method).
+A boolean indicating if the current user is logged in, regardless of frontend or backend 
+authentication.
 
 ##### Variable: `currentUserCanLike`
-A boolean state if the current user can like comments, depending on the used configuration.
+A boolean indicating if the current user can like comments, based on the configuration.
 
 ##### Variable: `currentUserCanDislike`
-A boolean state if the current user can dislike comments, depending on the used configuration.
+A boolean indicating if the current user can dislike comments, based on the configuration.
 
 ##### Variable: `currentUserCanFavorite`
-A boolean state if the current user can favourite comments, depending on the used configuration and if the current user is the post author itself.
+A boolean indicating if the current user can favorite comments, depending on their role and if they 
+are the post author.
 
 ##### Variable: `currentUserCanComment`
-A boolean state if the current user can write comments or replies, depending on the used configuration.
+A boolean indicating if the current user can write comments or replies, based on the configuration.
 
 ##### Variable: `currentUserCanModerate`
-A boolean state if the current user can moderate pending comments, depending on the used configuration and if the current user is a backend OctoberCMS user.
+A boolean indicating if the current user can moderate pending comments, based on their role and the 
+configuration.
 
 ##### Variable: `showCommentFormTitle`
-A boolean state if the comment title form field should be visisble or not, depending on the used configuration.
+A boolean indicating if the comment title field should be visible, depending on the configuration.
 
 ##### Variable: `allowCommentFormMarkdown`
-A boolean state if the comment content supports markdown or not, depending on the used configuration.
+A boolean indicating if the comment content supports Markdown formatting, based on the configuration.
 
 ##### Variable: `showCommentFormTos`
-A boolean state if the Terms of Service checkbox should be visible or not, depending on the used configuration.
+A boolean indicating if the Terms of Service checkbox should be visible, depending on the 
+configuration.
 
 ##### Variable: `commentFormTosLabel`
 The HTML label used for the Terms of Service checkbox, if enabled and visible.
 
 ##### Variable: `showCommentFormCaptcha`
-A boolean state if the GREGWAR Captcha should be shown or not, depending on the used configuration and the current user.
+A boolean indicating if the GREGWAR Captcha should be displayed, depending on the configuration and 
+the current user.
 
 ##### Variable: `captchaImage`
-The base64 encoded GREGWAR Captcha image, used when the cpatcha form field is enabled and shown to the current user.
+The base64-encoded GREGWAR Captcha image, used when the captcha field is enabled.
 
 ##### Variable: `showCommentFormHoneypot`
-A boolean state if the honeypot fields should be shown or not, depending on the used configurations. Wen enabled, the honeyport fields are also added to the form for frontend and bachend users.
+A boolean indicating if the honeypot fields should be shown, depending on the configuration. If
+enabled, honeypot fields are added to the form for both frontend and backend users.
 
 ##### Variable: `honeypotUser`
-The honeypot username form field name, when the honeypot fields are enabled.
+The honeypot username form field name when honeypot fields are enabled.
 
 ##### Variable: `honeypotEmail`
-The honeypot email form field name, when the honeypot fields are enabled.
+The honeypot email form field name when honeypot fields are enabled.
 
 ##### Variable: `honeypotTime`
-The honeypot check-time valuem when the honeypot fields are enabled.
+The honeypot check-time value when honeypot fields are enabled.
 
 ##### Variable: `validationTime`
-A general form validation time, used together with the form validation hash to secure the comment form.
+A general form validation time, used alongside the validation hash to secure the comment form.
 
 ##### Variable: `validationHash`
-A general form validation hash, used together with the form validation time to secure the comment form.
+A general form validation hash, used in conjunction with the validation time to secure the comment form.
 
-### [bloghubTags]
-_descrption_
+### 6.8. `[bloghubTags]`
+The `[bloghubTags]` component is designed to display a list of tags associated with blog posts. This 
+component enhances the user experience by allowing visitors to easily navigate through topics of 
+interest, improving content discoverability on your blog.
 
 #### Component Arguments
-This component provides the following arguments.
+This component provides the following arguments:
 
 ```ini
-[bloghub_PostsByTags]
+[bloghubTags]
 tagPage = 'blog/tag'
-displayAs = 'list'
+onlyPromoted = false
+amount = 5
 ```
 
+##### Argument: `onlyPromoted`
+A boolean value that determines whether to display only promoted tags. If set to `true`, only tags 
+marked as promoted will be shown. The default value is `false`, which means all tags will be 
+displayed.
+
+##### Argument: `amount`
+Defines the number of tags to display. The default value is `5`, but this can be adjusted to show 
+more or fewer tags based on your preference.
+
 #### Page Variables
-This component adds the following page variables.
+This component adds the following page variables:
 
-## Additional Menus
+##### Variable: `tags`
+An array of tag models available on the site, allowing access to the individual tags and their 
+respective properties.
 
+## 7. Additional Menus
+_Coming Soon_
 
-## Additional Permissions
-The **BlogHub** OctoberCMS plugin adds the following permissions.
+## 8. Additional Permissions
+The **BlogHub** OctoberCMS plugin adds the following permissions to enhance the management of 
+omments and tags within the blog:
 
-### `ratmd.bloghub.comments`
-Allows to access the `Comments` side menu on the RainLab.Blog main menu. The `Comments` menu contains access to the comments moderation. However, this permission is NOT required to access the BlogHub and BlogHub / Comments settings page, which requires the default RainLab permission: `rainlab.blog.manage_settings`.
+### 8.1. `ratmd.bloghub.comments`
+This permission allows access to the **Comments** side menu within the RainLab.Blog main menu. 
+The **Comments** menu includes access to comment moderation features. Note that this permission 
+is **not required** for accessing the BlogHub and BlogHub / Comments settings page, which require 
+the default RainLab permission: `rainlab.blog.manage_settings`.
 
-### `ratmd.bloghub.comments.access_comments_settings`
-This permissions allows to get access to the post-related comment configuration tab. This tab contains the options to change the visibility of the whole comment section as well as to change the comment mode for the respective post only.
+### 8.2. `ratmd.bloghub.comments.access_comments_settings`
+This permission grants access to the post-related comment configuration tab. This tab contains 
+options to change the visibility of the entire comment section as well as to modify the comment mode 
+for individual posts.
 
-### `ratmd.bloghub.comments.moderate_comments`
-This permission allows to moderate comments on the backend as well as on the frontend page. The respective user can approve, reject or mark pending comments as spam. While the forntend does only allow to approve and reject pending comments, the backend also supports to change the comment status of any comment.
+### 8.3. `ratmd.bloghub.comments.moderate_comments`
+Users with this permission can moderate comments both in the backend and on the frontend. This 
+includes the ability to approve, reject, or mark pending comments as spam. Note that while frontend 
+moderation allows only the approval and rejection of pending comments, the backend offers additional 
+capabilities, including changing the status of any comment.
 
-### `ratmd.bloghub.comments.delete_coments`
-This permission allows to delete comments of any state and is an extension to the `moderate_comments` permission above.
+### 8.4. `ratmd.bloghub.comments.delete_comments`
+This permission allows users to delete comments of any status. It extends the `moderate_comments` 
+permission mentioned above, providing full control over comment deletion.
 
-### `ratmd.bloghub.tags`
-This permission allows to access the `Tags` side menu on the RainLab.Blog main menu as well as the tags relation field on the single post backend page. The `Tags` menu contains the management environment for all available tags.
+### 8.5. `ratmd.bloghub.tags`
+This permission allows access to the **Tags** side menu within the RainLab.Blog main menu, as well 
+as access to the tags relation field on the single post backend page. The **Tags** menu contains a 
+management environment for all available tags.
 
-### `ratmd.bloghub.tags.promoted`
-This permission allows to set the `Promote` flag on the single tags using the additional `Tags` menu under `Blog`. Since Promoted Tags are may shown different - depending on the theme - this flag has received his own permission additionally to the `tags` one as shown above.
+### 8.6. `ratmd.bloghub.tags.promoted`
+Users with this permission can set the **Promote** flag on individual tags using the additional 
+**Tags** menu under **Blog**. Promoted tags may be displayed differently depending on the theme, 
+so this flag has its own distinct permission in addition to the general `tags` permission described 
+above.
 
-## Extended Post Model
-The **BlogHub** OctoberCMS plugin extends RainLab's Blog Post class model with the following additional properties and methods.
+## 9. Extended Post Model
+The **BlogHub** OctoberCMS plugin enhances RainLab's Blog Post class model with additional 
+properties and methods for better SEO, readability, and user engagement.
 
-### `post.bloghub.detail_meta_title`
-**Work in Progress** - This property returns the post title itself at the moment. However, we're working on additional SEO abilities and functions to be released in a future update.
+### 9.1. `post.bloghub.detail_meta_title`
+**Work in Progress** - Currently, this property returns the post title. Future updates will 
+introduce enhanced SEO capabilities.
 
-### `post.bloghub.detail_meta_description
-**Work in Progress** - This property returns the post escerpt or summary itself at the moment. However, we're working on additional SEO abilities and functions to be released in a future update. Stay tuned.
+### 9.2. `post.bloghub.detail_meta_description`
+**Work in Progress** - This property returns the post excerpt or summary. Additional SEO 
+functionalities are planned for a future release.
 
-### `post.bloghub.detail_read_time`
-Returns a formatted estimated read time calculation of the post content. You can either use it as a dynamic property, which returns `Read Time: x minutes, y seconds`, or as a function.
+### 9.3. `post.bloghub.detail_read_time`
+Returns a formatted estimated read time for the post content. This can be used as a dynamic 
+property or as a function.
 
 ```twig
 {# Formatted Property #}
@@ -616,33 +782,33 @@ Returns a formatted estimated read time calculation of the post content. You can
 Estimated Read Time: {{ read_time.minutes * 60 + read_time.seconds }} seconds
 ```
 
-### `post.bloghub.detail_published_ago`
-The dynamic `detail_published_ago` property / method returns a time ago string instead of the default date/time stamp, using Carbon.
+### 9.4. `post.bloghub.detail_published_ago`
+Returns a "time ago" string using Carbon instead of the default date/time stamp.
 
-### `post.bloghub.tags`
-Returns the tag collection assigned to the current post.
-
-```twig
-<ul>
-	{% for tag in post.bloghub.tags %}
-		<li><a href="{{ tag.url }}">{{ tag.title | default(tag.slug) }}</a></li>
-	{% endfor %}
-</ul>
-```
-
-### `post.bloghub.promoted_tags`
-Returns the filtered tag collection assigned to the current post and contains only the tags with the promote flag set.
+### 9.5. `post.bloghub.tags`
+Returns the collection of tags assigned to the current post.
 
 ```twig
 <ul>
-	{% for tag in post.bloghub.promoted_tags %}
-		<li><a href="{{ tag.url }}">{{ tag.title | default(tag.slug) }}</a></li>
-	{% endfor %}
+    {% for tag in post.bloghub.tags %}
+        <li><a href="{{ tag.url }}">{{ tag.title | default(tag.slug) }}</a></li>
+    {% endfor %}
 </ul>
 ```
 
-### `post.bloghub.meta`
-Returns the meta collection assigned to the current post. The collection has a name => value mapping, which allows you to receive the meta values by its related keys, as shown below.
+### 9.6. `post.bloghub.promoted_tags`
+Returns a filtered collection of tags assigned to the current post that have the promote flag set.
+
+```twig
+<ul>
+    {% for tag in post.bloghub.promoted_tags %}
+        <li><a href="{{ tag.url }}">{{ tag.title | default(tag.slug) }}</a></li>
+    {% endfor %}
+</ul>
+```
+
+### 9.7. `post.bloghub.meta`
+Returns the meta collection assigned to the current post, structured as name => value mappings.
 
 ```twig
 {# Receive a specific meta value #}
@@ -650,34 +816,37 @@ Returns the meta collection assigned to the current post. The collection has a n
 
 {# Receive all meta pairs #}
 <ul>
-    {% for name, value in post.bloghub.meta %}
-        <li>{{ name }}: {{ value | join(', ') }}</li>
-    {% endfor %}
+    {% for name, value in post.bloghub.meta %}
+        <li>{{ name }}: {{ value | join(', ') }}</li>
+    {% endfor %}
 </ul>
 ```
 
-### `post.bloghub.comments`
-Returns the TreeCollection of the approved comments.
+### 9.8. `post.bloghub.comments`
+Returns a TreeCollection of approved comments for the current post.
 
-### `post.bloghub.comments_count`
-Returns the number of the approved comments.
+### 9.9. `post.bloghub.comments_count`
+Returns the total number of approved comments for the current post.
 
-### `post.bloghub.views`
-Returns the view counter of the current post.
+### 9.10. `post.bloghub.views`
+Returns the view count of the current post.
 
-### `post.bloghub.unique_views`
-Returns the unique view counter of the current post.
+### 9.11. `post.bloghub.unique_views`
+Returns the unique view count of the current post.
 
-### `post.bloghub.hasSeen`
-Returns a boolean state, which indicates if the current user has already seen this post. 
+### 9.12. `post.bloghub.hasSeen`
+Returns a boolean indicating if the current user has already seen this post.
 
-**Attention:** At the moment, it doesn't make any sense using this property on the single post page itself, becuase the respective values will be set before the rendering of the page is done. Thus, this will always return true. We're currently working on a solution to set the desired value AFTER the page rendering, which allows you to check if the current user "visits" the blog page for the first time, or not.
+**Note:** Using this property on the single post page may not yield accurate results since the 
+values are set before page rendering. We're working on a solution to set the value after rendering 
+to track first-time visits accurately.
 
-### `post.bloghub.author`
-Returns the BackendUser model of the current author and thus does exactly the same as `post.user`.
+### 9.13. `post.bloghub.author`
+Returns the BackendUser model of the current author, identical to `post.user`.
 
-### `post.bloghub.next`
-Returns the next blog post, which has been published BEFORE the current post model. Using this function as property will just return one single post without any further filter. However, you can also use `bloghub.next()` as method to apply additional rules.
+### 9.14. `post.bloghub.next`
+Returns the next published blog post before the current one. Use as a property to get a single post 
+or as a method for additional rules.
 
 ```twig
 {# Get next blog post #}
@@ -690,10 +859,11 @@ Returns the next blog post, which has been published BEFORE the current post mod
 {{ post.bloghub.next(1, true) }}
 ```
 
-### `post.bloghub.previous`
-Returns the previous blog post, which has been published AFTER the current post model. Using this function as property will just return one single post without any further filter. However, you can also use `bloghub.previous()` as method to apply additional rules.
+### 9.15. `post.bloghub.previous`
+Returns the previous published blog post after the current one. Use as a property to get a single 
+post or as a method for additional rules.
 
-PS.: You can also use `bloghub.prev()`, which is an alias for `bloghub.previous()`.
+**Note:** `bloghub.prev()` is an alias for `bloghub.previous()`.
 
 ```twig
 {# Get previous blog post #}
@@ -706,71 +876,85 @@ PS.: You can also use `bloghub.prev()`, which is an alias for `bloghub.previous(
 {{ post.bloghub.prev(1, true) }}
 ```
 
-### `post.bloghub.related`
-Returns a collection of related blog posts, excluding the current post model. You can change the number of posts with the first parameter and you can exclude one or more posts by passing their IDs as second parameter.
+### 9.16. `post.bloghub.related`
+Returns a collection of related blog posts, excluding the current one. Adjust the number of posts 
+and exclude specific posts by passing their IDs.
 
-### `post.bloghub.random`
-Returns a collection of random blog posts, excluding the current post model. You can change the number of posts with the first parameter and you can exclude one or more posts by passing their IDs as second parameter.
+### 9.17. `post.bloghub.random`
+Returns a collection of random blog posts, excluding the current one. Adjust the number of posts 
+and exclude specific posts by passing their IDs.
 
-## Extended User Model
-The **BlogHub** OctoberCMS plugin extends the backend user class model with the following additional properties and methods. You can receive the author of the current post model using either `post.user` or the bloghub alias `post.bloghub.author`.
+## 10. Extended User Model
+The **BlogHub** OctoberCMS plugin enhances the backend user class model with additional properties 
+and methods. You can retrieve the author of the current post model using either `post.user` or the 
+BlogHub alias `post.bloghub.author`.
 
-### `post.user.bloghub.url`
-Returns the full author archive URL of the current user, as long as the author page is set using the `[bloghubBase]` component, as described above.
+### 10.1. `post.user.bloghub.url`
+Returns the full author archive URL for the current user, provided the author page is set using the 
+`[bloghubBase]` component as described in the documentation.
 
-### `post.user.bloghub.slug`
-Returns the plain author URL slug of the current user, which is either the `ratmd_bloghub_author_slug` column or the `login` name if the first is not set.
+### 10.2. `post.user.bloghub.slug`
+Returns the plain author URL slug for the current user. This can either be derived from the 
+`ratmd_bloghub_author_slug` column or fall back to the `login` name if the former is not set.
 
-### `post.user.bloghub.display`
-Returns the display name of the current user. The display name is either the `ratmd_bloghub_display_name` column, the `first_name last_name` columns or the titlized login name.
+### 10.3. `post.user.bloghub.display`
+Returns the display name of the current user. The display name is determined in the following order:
 
-### `post.user.bloghub.about` 
-Returns the `ratmd_bloghub_about_me` column of the current user.
+- From the `ratmd_bloghub_display_name` column
+- From a combination of `first_name` and `last_name` columns
+- As a titlized version of the login name if none of the above are set.
 
-### `post.user.bloghub.count`
-Returns the number of published posts of the current user.
+### 10.4. `post.user.bloghub.about`
+Returns the content of the `ratmd_bloghub_about_me` column for the current user. This provides a 
+brief biography or description of the author.
 
-## Dashboard Widgets
+### 10.5. `post.user.bloghub.count`
+Returns the number of published posts authored by the current user. This helps in displaying author 
+statistics and engagement metrics.
 
-### Comments List
-The Comments List dashboard widget shows the last 6 comments (including the possibility to approve, reject and mark pending comments as spam), including the overall counters.
+## 11. Dashboard Widgets
+The **BlogHub** OctoberCMS plugin provides the following 3 backend dashboard widgets.
 
-#### Options
-The dashboard widget provides the following options:
+### 11.1. Comments List
+The **Comments List** dashboard widget displays the last 6 comments, allowing users to approve, 
+reject, or mark pending comments as spam. It also includes overall counters for comment statuses.
 
-##### Option: `postPage`
-The `postPage` option allows to set the single post CMS page as used to link in post title, which is shown on the respective comment.
+#### Option: `postPage`
+Sets the single post CMS page to be linked in the post title shown with each respective comment.
 
-##### Option: `defaultTab`
-The `defaultTab` option allows to change the default open tab to `Pending`, `Approved`, `Rejected` or `Mark as Spam`. The default value is `Pending`.
+#### Option: `defaultTab`
+Allows you to change the default open tab for the widget. Options include:
 
-### Posts List
-The Posts List dashboard widget shows the last published posts, including some small details such as the view counter, category and author.
+  - `Pending` (Default)
+  - `Approved`
+  - `Rejected`
+  - `Mark as Spam`
 
-#### Options
-The dashboard widget provides the following options:
+### 11.2. Posts List
+The **Posts List** dashboard widget shows the most recently published posts, along with details 
+such as view counters, categories, and authors.
 
-##### Option: `postPage`
-The `postPage` option allows to set the single post CMS page as used to link in post title, which is shown on the respective comment.
+#### Option: `postPage`
+Sets the single post CMS page to be linked in the post title shown within the widget.
 
-##### Option: `amount`
-The `amount` option allows to change the number of posts to be shown within this widget,
+#### Option: `amount`
+Changes the number of posts displayed within this widget.
 
-##### Option: `excludeCategories`
-The `excludeCategories` option allows to exclude posts from one or more categories. You can pass one or more comma-separated category ids or slugs.
+#### Option: `excludeCategories`
+Excludes posts from specified categories. You can pass one or more comma-separated category IDs or 
+slugs.
 
-### Posts Statistics
-The Posts Statistics dashboard widget shows some summarized information as graphs about your blog posts. This way you can quickly view the number of published posts in a specific date range, the number of views, unique views, likes and dislikes.
+### 11.3. Posts Statistics
+The **Posts Statistics** dashboard widget presents summarized information as graphs about your blog 
+posts, enabling quick insights into the number of published posts within a specific date range, as 
+well as metrics for views, unique views, likes, and dislikes.
 
-The following date ranges are supported:
+#### Supported Date Ranges
 - Last 7 days
 - Last 14 days
 - Last month
 - Last 3 months
 - Last 6 months
 
-#### Options
-The dashboard widget provides the following options:
-
-##### Option: `defaultDateRange`
-The `defaultDateRange` option allows to change the default date range used to generate the graphs. The default value is `Last 7 days`.
+#### Option: `defaultDateRange`
+Changes the default date range used to generate the statistics graphs. (Default: Last 7 days).

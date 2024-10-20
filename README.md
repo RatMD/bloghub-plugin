@@ -33,13 +33,21 @@ Twig tag is added to your template layouts if not already present. We're working
 optional solution for a future update.
 
 ## Requirements
+As of Version 1.4.0, support for OctoberCMS v2 has been discontinued (though it may still work).
+
+**Required**
 - OctoberCMS v3
-- PHP 7.4+ / 8.0+
+- PHP 7.4+ or 8.0+
 - [Gregwar/Captcha](https://github.com/Gregwar/Captcha)
 - [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog)
-- **Supports:** [RainLab.User](https://octobercms.com/plugin/rainlab-user) (optional)
-- **Supports:** [RainLab.Pages](https://octobercms.com/plugin/rainlab-pages) (optional)
-- **Supports:** [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate) (optional)
+
+**Optional**
+- [RainLab.User](https://octobercms.com/plugin/rainlab-user)
+- [RainLab.Pages](https://octobercms.com/plugin/rainlab-pages)
+- [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)
+
+The optional plugins listed above extend existing features or provide additional functionalities for 
+the **BlogHub** plugin but are not mandatory. The only required extension is **RainLab.Blog**.
 
 ## Copyright
 Copyright © 2022 - 2024 rat.md. \
