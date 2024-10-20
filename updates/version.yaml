@@ -144,3 +144,8 @@ v1.3.11:
   - "Demo Push"
 v1.3.12:
   - "Demo Push"
+v1.4.0:
+  - "Maintenance Release"
+  - "Update: composer.json dependencies."
+  - "Fix: Load parent-theme configuration, if available."
+  - "Remove: Official support for OctoberCMS v2."

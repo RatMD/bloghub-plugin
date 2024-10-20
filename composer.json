@@ -1,7 +1,7 @@
 {
     "name": "ratmd/bloghub-plugin",
     "type": "october-plugin",
-    "version": "1.3.10",
+    "version": "1.4.0",
     "description": "Extends RainLab's Blog extension with custom meta details, additional archives and more.",
     "keywords": [
         "october", 
@@ -29,7 +29,7 @@
     "require": {
         "php": ">= 7.4 || >= 8.0",
         "composer/installers": "~1.0",
-        "gregwar/captcha": "^1.1"
+        "gregwar/captcha": "^1.2"
     },
     "config": {
         "optimize-autoloader": true,

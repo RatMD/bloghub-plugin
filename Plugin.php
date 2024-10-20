@@ -216,7 +216,19 @@ class Plugin extends PluginBase
                     }
                 }
             }
-            $config = array_merge($config, Theme::getActiveTheme()->getConfig()['ratmd.bloghub']['post'] ?? []);
+
+            // Load theme configuration
+            $themeConfig = Theme::getActiveTheme()->getConfig();
+            $ratConfig = $themeConfig['ratmd.bloghub'] ?? [];
+            if (array_key_exists('parent', $themeConfig) && Theme::exists($themeConfig['parent'])) {
+                $temp = Theme::load($themeConfig['parent'])->getConfig()['ratmd.bloghub'] ?? [];
+                foreach ($temp AS $key => $val) {
+                    $ratConfig[$key] = $ratConfig[$key] ?? $val;
+                }
+            }
+            if (!empty($ratConfig['post'])) {
+                $config = array_merge($config, $ratConfig['post']);
+            }
 
             // Add Custom Meta Fields
             if (!empty($config)) {
