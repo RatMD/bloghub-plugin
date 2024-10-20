@@ -1,6 +1,9 @@
 BlogHub - Changelog
 ===================
 
+## Version 1.4.1 - Stable
+- Fix: Missing RainLab.User v3 Support.
+
 ## Version 1.4.0 - Stable
 - Update: composer.json dependencies.
 - Fix: Load parent-theme configuration, if available.

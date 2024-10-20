@@ -149,3 +149,6 @@ v1.4.0:
   - "Update: composer.json dependencies."
   - "Fix: Load parent-theme configuration, if available."
   - "Remove: Official support for OctoberCMS v2."
+v1.4.1:
+  - "Bugfix Release"
+  - "Fix: Missing RainLab.User v3 Support."

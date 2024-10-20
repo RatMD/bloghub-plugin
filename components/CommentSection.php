@@ -17,6 +17,8 @@ use RatMD\BlogHub\Models\Comment;
 use RatMD\BlogHub\Models\Visitor;
 use System\Classes\PluginManager;
 use System\Classes\UpdateManager;
+use System\Classes\VersionManager;
+use System\Models\PluginVersion;
 
 class CommentSection extends ComponentBase
 {
@@ -287,14 +289,17 @@ class CommentSection extends ComponentBase
      */
     protected function getFrontendUser()
     {
-        if (PluginManager::instance()->hasPlugin('RainLab.User')) {
-            $rainLabAuth = \RainLab\User\Classes\AuthManager::instance();
+        $versionManager = VersionManager::instance();
 
-            if ($rainLabAuth->check()) {
-                return $rainLabAuth->getUser();
+        if (PluginManager::instance()->hasPlugin('RainLab.User')) {
+            $user = false;
+            if (version_compare($versionManager->getLatestVersion('RainLab.User'), '3.0.0', '>=')) {
+                $user = app()->resolved('auth') && \Auth::check() ? \Auth::user() : null;
             } else {
-                return null;
+                $rainAuth = \RainLab\User\Classes\AuthManager::instance();
+                $user = $rainAuth->check() ? $rainAuth->getUser() : null;
             }
+            return $user;
         } else {
             return null;
         }
