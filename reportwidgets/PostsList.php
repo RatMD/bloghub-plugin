@@ -8,7 +8,6 @@ use Cms\Classes\Page;
 use Cms\Classes\Theme;
 use Lang;
 use RainLab\Blog\Models\Post;
-use System\Classes\UpdateManager;
 
 class PostsList extends ReportWidgetBase
 {
@@ -77,9 +76,7 @@ class PostsList extends ReportWidgetBase
      */
     protected function loadAssets()
     {
-        if (version_compare(UpdateManager::instance()->getCurrentVersion(), '3.0.0', '<')) {
-            $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-octoberv2.css');
-        }
+        // Nothing to do here...
     }
 
     /**

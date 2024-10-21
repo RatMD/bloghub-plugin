@@ -10,7 +10,6 @@ use Cms\Classes\Controller;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
 use RatMD\BlogHub\Models\Comment;
-use System\Classes\UpdateManager;
 
 class CommentsList extends ReportWidgetBase
 {
@@ -71,9 +70,6 @@ class CommentsList extends ReportWidgetBase
     protected function loadAssets()
     {
         $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-commentslist.css');
-        if (version_compare(UpdateManager::instance()->getCurrentVersion(), '3.0.0', '<')) {
-            $this->addCss('/plugins/ratmd/bloghub/assets/css/widget-octoberv2.css');
-        }
     }
 
     /**
