@@ -1,5 +1,8 @@
 BlogHub - OctoberCMS Plugin
 ===========================
+![PHP Version](https://img.shields.io/badge/PHP-v8.0%2B-blue?style=flat-square&color=4f5b93)
+![OctoberCMS Version](https://img.shields.io/badge/OctoberCMS-v3.1%2B-blue?style=flat-square&color=DB6B26&logo=october-cms)
+
 **BlogHub** enhances the [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog) plugin for 
 OctoberCMS by introducing a variety of essential features that streamline blog management and 
 improve user experience. From moderatable comments to advanced tagging and custom meta fields, 
