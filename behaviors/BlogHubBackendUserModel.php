@@ -31,10 +31,6 @@ class BlogHubBackendUserModel extends ExtensionBase
     public function __construct(User $model)
     {
         $this->model = $model;
-
-        // Deprecated Methods
-        $model->addDynamicMethod('bloghub_display', fn () => $this->getBloghubAttribute()->display());
-        $model->addDynamicMethod('bloghub_slug', fn () => $this->getBloghubAttribute()->slug());
     }
 
     /**

@@ -123,15 +123,7 @@ return [
             'amount_validation' => 'Die Angaben zur Anzahl der Kommentare ist ungültig.',
             'view' => 'Ansicht',
             'view_comment' => 'Verändere die Ansicht der Schlagwörter.'
-        ],
-        'deprecated' => [
-            'authors_label' => '[ALT] Beiträge nach Autor',
-            'authors_comment' => '[VERALTET] - Bitte verwende "Beiträge nach Autor" oberhalb.',
-            'dates_label' => '[ALT] Beiträge nach Datum',
-            'dates_comment' => '[VERALTET] - Bitte verwende "Beiträge nach Datum" overhalb.',
-            'tags_label' => '[ALT] Beitäge nach Schlagwort',
-            'tags_comment' => '[VERALTET] - Bitte verwende "Beiträge nach Schlagwort" overhalb.',
-        ],
+        ]
     ],
 
     'frontend' => [

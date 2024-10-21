@@ -18,8 +18,8 @@ Welcome to the BlogHub documentation page!
 As of Version 1.4.0, support for OctoberCMS v2 has been discontinued (though it may still work).
 
 **Required**
-- OctoberCMS v3
-- PHP 7.4+ or 8.0+
+- OctoberCMS v3.1+
+- PHP 8.0+
 - [Gregwar/Captcha](https://github.com/Gregwar/Captcha)
 - [RainLab.Blog](https://octobercms.com/plugin/rainlab-blog)
 

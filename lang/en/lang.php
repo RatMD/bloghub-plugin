@@ -122,15 +122,7 @@ return [
             'amount_validation' => 'Invalid format of the the amount value.',
             'view' => 'Tag View',
             'view_comment' => 'Change the View of the Tag list'
-        ],
-        'deprecated' => [
-            'authors_label' => '[OLD] Posts by Author',
-            'authors_comment' => '[DEPRECATED] - Please use "Posts By Author" above.',
-            'dates_label' => '[OLD] Posts by Date',
-            'dates_comment' => '[DEPRECATED] - Please use "Posts By Date" above.',
-            'tags_label' => '[OLD] Posts by Tag',
-            'tags_comment' => '[DEPRECATED] - Please use "Posts by Tags" above.',
-        ],
+        ]
     ],
 
     'frontend' => [

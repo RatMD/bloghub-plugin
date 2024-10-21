@@ -56,7 +56,7 @@ class BlogHubPost implements CallsAnyMethod
                 $model->categories->each(fn($cat) => $cat->setUrl($props['categoryPage'], $ctrl));
             }
 
-            // Check New and Deprecated BlogHub Base settings
+            // Check BlogHub Base settings
             if (empty($props = $layout->getComponent('bloghubBase'))) {
                 $viewBag = $layout->getViewBag()->getProperties();
                 $props = [

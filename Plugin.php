@@ -322,11 +322,6 @@ class Plugin extends PluginBase
             \RatMD\BlogHub\Components\CommentList::class => 'bloghubCommentList',
             \RatMD\BlogHub\Components\CommentSection::class => 'bloghubCommentSection',
             \RatMD\BlogHub\Components\Tags::class => 'bloghubTags',
-
-            // Deprecated Components
-            \RatMD\BlogHub\Components\DeprecatedAuthors::class => 'bloghubAuthorArchive',
-            \RatMD\BlogHub\Components\DeprecatedDates::class => 'bloghubDateArchive',
-            \RatMD\BlogHub\Components\DeprecatedTag::class => 'bloghubTagArchive',
         ];
     }
 

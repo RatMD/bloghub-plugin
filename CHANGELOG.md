@@ -1,6 +1,16 @@
 BlogHub - Changelog
 ===================
 
+## Version 1.5.0 - Stable
+- Info: OctoberCMS v3.1+ is required as new minimum version.
+- Fix: Add  `NestedTreeScope` class use.
+- Remove: Deprecated CMS components.
+- Remove: Deprecated methods on BlogHub's backend user model (`\RatMD\BlogHub\Behaviors\BlogHubBackendUserModel`).
+- Remove: Deprecated methods on BlogHub's post model (`\RatMD\BlogHub\Behaviors\BlogHubPostModel`).
+- Remove: Deprecated render_content attribute on Comment model (`\RatMD\BlogHub\Models\Comment`).
+- Remove: Official support for OctoberCMS v3.0 (requires at least v3.1+).
+- Remove: Support for PHP 7.x (requires at least PHP 8.0+).
+
 ## Version 1.4.1 - Stable
 - Fix: Missing RainLab.User v3 Support.
 

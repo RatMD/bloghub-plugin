@@ -187,17 +187,6 @@ class Comment extends Model
     }
 
     /**
-     * [GETTER] Comment Content (deprecated version)
-     * @deprecated 1.3.4 (Please use comment_content instead), will be removed in 1.5.0!
-     * 
-     * @return string
-     */
-    public function getRenderContentAttribute(): string
-    {
-        return $this->getCommentContentAttribute();
-    }
-
-    /**
      * [GETTER] Get Author [GR]avatar
      *
      * @param int $size
