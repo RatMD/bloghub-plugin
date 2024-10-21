@@ -1,5 +1,7 @@
 BlogHub - OctoberCMS Plugin
 ===========================
+[![GitHub Release](https://img.shields.io/github/v/release/RatMD/bloghub-plugin?style=flat-square&label=Release)](https://github.com/RatMD/bloghub-plugin/releases)
+[![License](https://img.shields.io/github/license/RatMD/bloghub-plugin?style=flat-square&label=License)](https://github.com/RatMD/bloghub-plugin/tree/master?tab=MIT-1-ov-file#readme)
 ![PHP Version](https://img.shields.io/badge/PHP-v8.0%2B-blue?style=flat-square&color=4f5b93&logo=php)
 ![OctoberCMS Version](https://img.shields.io/badge/OctoberCMS-v3.1%2B-blue?style=flat-square&color=DB6B26&logo=october-cms)
 
