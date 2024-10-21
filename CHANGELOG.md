@@ -4,7 +4,7 @@ BlogHub - Changelog
 ## Version 1.5.0 - Stable
 - Info: OctoberCMS v3.1+ is required as new minimum version.
 - Fix: Add  `NestedTreeScope` class use.
-- Remove: Deprecated CMS components.
+- Remove: Deprecated CMS components and OctoberCMS v2 related code.
 - Remove: Deprecated methods on BlogHub's backend user model (`\RatMD\BlogHub\Behaviors\BlogHubBackendUserModel`).
 - Remove: Deprecated methods on BlogHub's post model (`\RatMD\BlogHub\Behaviors\BlogHubPostModel`).
 - Remove: Deprecated render_content attribute on Comment model (`\RatMD\BlogHub\Models\Comment`).
