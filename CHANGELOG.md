@@ -3,6 +3,7 @@ BlogHub - Changelog
 
 ## Version 1.5.0 - Stable
 - Info: OctoberCMS v3.1+ is required as new minimum version.
+- Add: New `PostImport` importer class, which supports `features_image_urls`.
 - Fix: Add  `NestedTreeScope` class use.
 - Remove: Deprecated CMS components and OctoberCMS v2 related code.
 - Remove: Deprecated methods on BlogHub's backend user model (`\RatMD\BlogHub\Behaviors\BlogHubBackendUserModel`).
@@ -87,7 +88,7 @@ BlogHub - Changelog
 - Add: New `[bloghubPostsByCommentCount]` component to list posts by their comments count.
 - Add: New `[bloghubPostsByDate]` component for date archive pages.
 - Add: New `[bloghubPostsByTag]` component for tag archive pages.
-- Add: New vendor `Gregwar/Captcha` for the new comment system. 
+- Add: New vendor `Gregwar/Captcha` for the new comment system.
 - Update: Add missing translation strings (for both english and german).
 - Update: Set RatMD.BlogHub as owner on side menu items.
 - Update: The new date archive component supports now week archives as well.
@@ -142,7 +143,7 @@ BlogHub - Changelog
 - Update: Use `author_slug` instead of login (when `author_slug` is not empty).
 
 ## Version 1.1.0 - Stable
-- Add: View / Unique View table and counter system. 
+- Add: View / Unique View table and counter system.
 - Add: Tags list component (similar to the Categories list component).
 - Add: `posts_count` belongsToMany value and getter.
 - Add: `Visitor` model.
