@@ -29,7 +29,7 @@ class PostImport extends RainLabPostImport
         // Import
         foreach ($results as $row => $data) {
             try {
-                if (!$title = array_get($data, 'title')) {
+                if (empty(array_get($data, 'title'))) {
                     $this->logSkipped($row, 'Missing post title');
                     continue;
                 }
@@ -85,9 +85,7 @@ class PostImport extends RainLabPostImport
                 } else {
                     $this->logCreated();
                 }
-            }
-            catch (Exception $ex) {
-                throw $ex;
+            } catch (Exception $ex) {
                 $this->logError($row, $ex->getMessage());
             }
         }
